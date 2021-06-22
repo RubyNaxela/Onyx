@@ -14,38 +14,64 @@ package com.rubynaxela.onyx.gui.dialogs;
 import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.datatypes.Contractor;
 import com.rubynaxela.onyx.data.datatypes.Invoice;
+import com.rubynaxela.onyx.gui.InvoiceTableModel;
 import com.rubynaxela.onyx.gui.components.DefaultJPanel;
+import com.rubynaxela.onyx.gui.components.DefaultJScrollPane;
+import com.rubynaxela.onyx.gui.components.StaticJTable;
 import com.rubynaxela.onyx.util.Utils;
 
 import javax.swing.*;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class InvoiceDialogPanel extends DefaultJPanel {
 
-    public final JLabel idLabel, dateLabel, contractorLabel;
+    public final JLabel idLabel, dateLabel, contractorLabel, itemsLabel;
     public final JTextField idInput, dateInput;
     public final JComboBox<Contractor> contractorInput;
     public final JButton okButton;
+    public final StaticJTable itemsTable;
+    public final InvoiceTableModel itemsTableModel;
 
     public InvoiceDialogPanel(Invoice editedElement, DatabaseAccessor databaseAccessor) {
 
         idLabel = new JLabel("Numer");
         dateLabel = new JLabel("Data");
         contractorLabel = new JLabel("Kontrahent");
+        itemsLabel = new JLabel("Przedmioty");
         idInput = new JTextField();
         dateInput = new JTextField();
         contractorInput = new JComboBox<>(databaseAccessor.getContractorsVector());
+        itemsTable = new StaticJTable();
+        itemsTableModel = new InvoiceTableModel(editedElement);
+        itemsTableModel.addTableModelListener(e -> itemsTable.resizeColumnWidth(15, 300));
         okButton = new JButton("OK");
 
         register(idLabel, Utils.gridElementSettings(0, 0));
         register(idInput, Utils.gridElementSettings(0, 1));
         register(dateLabel, Utils.gridElementSettings(1, 0));
         register(dateInput, Utils.gridElementSettings(1, 1));
-        register(contractorLabel, Utils.gridElementSettings(2, 0, 2, 1));
-        register(contractorInput, Utils.gridElementSettings(3, 0, 2, 1));
+        register(new JLabel("   "), Utils.gridElementSettings(0, 2, 1, 2));
+        register(contractorLabel, Utils.gridElementSettings(0, 3));
+        register(contractorInput, Utils.gridElementSettings(1, 3));
+        register(itemsLabel, Utils.gridElementSettings(2, 0, 5, 1));
+        register(new DefaultJScrollPane(itemsTable, 900, 350),
+                 Utils.gridElementSettings(3, 0, 5, 1));
 
         idInput.setText(editedElement != null ? editedElement.getId() : "");
         dateInput.setText(editedElement != null ? editedElement.getDate() : "");
+        contractorInput.setSelectedItem(editedElement != null ?
+                                        databaseAccessor.getObject(editedElement.getContractorUuid()) : null);
+        itemsTable.setModel(itemsTableModel);
+        itemsTable.resizeColumnWidth(15, 300);
+
+        final DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        itemsTable.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
+        itemsTable.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+        itemsTable.getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
+        itemsTable.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
+        itemsTable.getColumnModel().getColumn(7).setCellRenderer(rightRenderer);
 
         final DocumentListener textFieldListener = createInputValidator();
         idInput.getDocument().addDocumentListener(textFieldListener);
