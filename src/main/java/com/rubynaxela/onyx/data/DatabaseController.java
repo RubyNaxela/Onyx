@@ -13,7 +13,6 @@ package com.rubynaxela.onyx.data;
 
 import com.rubynaxela.onyx.Onyx;
 import com.rubynaxela.onyx.data.datatypes.Identifiable;
-import com.rubynaxela.onyx.data.datatypes.Invoice;
 import com.rubynaxela.onyx.data.datatypes.raw.RawDatabase;
 import com.rubynaxela.onyx.io.IOHandler;
 
