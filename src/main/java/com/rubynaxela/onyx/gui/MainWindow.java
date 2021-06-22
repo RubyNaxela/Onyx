@@ -14,13 +14,10 @@ package com.rubynaxela.onyx.gui;
 import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.datatypes.Identifiable;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.NavigationLeafNode;
-import com.rubynaxela.onyx.data.datatypes.auxiliary.OnyxTableModel;
 import com.rubynaxela.onyx.gui.components.*;
 import com.rubynaxela.onyx.util.Utils;
 
 import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.dnd.*;
@@ -45,7 +42,7 @@ public final class MainWindow extends DefaultJFrame implements DropTargetListene
             editButton = new DefaultJButton("Edytuj"),
             removeButton = new DefaultJButton("Usuń");
 
-    public final StaticJTable dataTable = new StaticJTable();
+    public final StaticJTable dataTable;
     public final OnyxTableModel dataTableModel;
     public Identifiable currentElement;
 
@@ -55,8 +52,9 @@ public final class MainWindow extends DefaultJFrame implements DropTargetListene
         super(true);
         setTitle(title);
 
+        dataTable = new StaticJTable();
         dataTableModel = new OnyxTableModel(databaseAccessor);
-        dataTableModel.addTableModelListener(e -> resizeColumnWidth(15, 300));
+        dataTableModel.addTableModelListener(e -> dataTable.resizeColumnWidth(15, 300));
 
         final JPanel navigationButtonsPanelWrapper = new JPanel();
         register(navigationButtonsPanelWrapper, Utils.gridElementSettings(0, 0));
@@ -132,19 +130,6 @@ public final class MainWindow extends DefaultJFrame implements DropTargetListene
 
     public void setFileDropListener(FileDropListener listener) {
         this.fileDropListener = listener;
-    }
-
-    public void resizeColumnWidth(int minWidth, int maxWidth) {
-        final TableColumnModel columnModel = dataTable.getColumnModel();
-        for (int column = 0; column < dataTable.getColumnCount(); column++) {
-            int width = minWidth;
-            for (int row = 0; row < dataTable.getRowCount(); row++) {
-                final TableCellRenderer renderer = dataTable.getCellRenderer(row, column);
-                width = Math.max(dataTable.prepareRenderer(renderer, row, column).getPreferredSize().width + 1, width);
-            }
-            if (width > maxWidth) width = maxWidth;
-            columnModel.getColumn(column).setPreferredWidth(width);
-        }
     }
 
     @Override
