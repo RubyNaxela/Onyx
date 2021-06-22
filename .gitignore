@@ -1,4 +1,7 @@
 # Project exclude paths
+/.idea/
 /.gradle/
 /build/
 /build/classes/java/main/
+/database.json
+/dictionary.txt
