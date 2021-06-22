@@ -11,28 +11,6 @@
 
 package com.rubynaxela.onyx.data.datatypes;
 
-public abstract class Transaction implements Operation {
+public abstract class Transaction extends Operation {
 
-    private String uuid, date, contractorUuid;
-    private double amount;
-
-    @Override
-    public String getUuid() {
-        return uuid;
-    }
-
-    @Override
-    public String getDate() {
-        return date;
-    }
-
-    @Override
-    public String getContractorUuid() {
-        return contractorUuid;
-    }
-
-    @Override
-    public double getAmount() {
-        return amount;
-    }
 }

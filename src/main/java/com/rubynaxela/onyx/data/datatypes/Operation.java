@@ -11,11 +11,29 @@
 
 package com.rubynaxela.onyx.data.datatypes;
 
-public interface Operation extends Identifiable {
+public abstract class Operation implements Identifiable {
 
-    String getDate();
+    private String uuid, date, contractorUuid, description;
+    private double amount;
 
-    String getContractorUuid();
+    public String getDate() {
+        return date;
+    }
 
-    double getAmount();
+    public String getContractorUuid() {
+        return contractorUuid;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    @Override
+    public String getUuid() {
+        return uuid;
+    }
 }
