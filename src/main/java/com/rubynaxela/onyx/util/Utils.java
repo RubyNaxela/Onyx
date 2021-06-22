@@ -11,9 +11,12 @@
 
 package com.rubynaxela.onyx.util;
 
+import com.rubynaxela.onyx.gui.components.StaticJTable;
 import org.jetbrains.annotations.Contract;
 
 import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 
 public final class Utils {

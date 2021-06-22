@@ -9,10 +9,11 @@
  * Written by Jacek Pawelski <rubynaxela@gmail.com>
  */
 
-package com.rubynaxela.onyx.data.datatypes.auxiliary;
+package com.rubynaxela.onyx.gui;
 
 import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.datatypes.OnyxObjects;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.Arrays;
@@ -23,7 +24,7 @@ public class OnyxTableModel extends DefaultTableModel {
     public static Vector<String>
             contractorsTableHeaders = new Vector<>(Arrays.asList("Nazwa", "Szczegóły")),
             invoicesTableHeaders = new Vector<>(Arrays.asList("Numer", "Data", "Kontrahent", "Kwota brutto")),
-            transactionsTableHeaders = new Vector<>(Arrays.asList("UUID", "Kontrahent", "Kwota"));
+            transactionsTableHeaders = new Vector<>(Arrays.asList("Data", "Kontrahent", "Tytuł", "Kwota"));
 
     private final DatabaseAccessor databaseAccessor;
     private Vector<ObjectRow> dataVector;
