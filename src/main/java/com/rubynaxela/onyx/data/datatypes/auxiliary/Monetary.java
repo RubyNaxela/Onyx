@@ -33,8 +33,15 @@ public class Monetary {
 
     public Monetary(double amount) {
         final double absAmount = Math.abs(amount);
-        wholePart = (amount < 0 ? -1 : 1) * Math.round(Math.floor(absAmount));
-        hundredthsPart = (amount < 0 ? -1 : 1) * Math.round((absAmount - Math.abs(wholePart)) * 100);
+        long _wholePart = Math.round(Math.floor(absAmount));
+        long _hundredthsPart = Math.round((absAmount - _wholePart) * 100);
+        if (_hundredthsPart == 100) {
+            _hundredthsPart = 0;
+            _wholePart++;
+        }
+        final int sign = amount >= 0 ? 1 : -1;
+        this.wholePart = sign * _wholePart;
+        this.hundredthsPart = sign * _hundredthsPart;
     }
 
     public void add(@NotNull Monetary other) {
@@ -44,19 +51,20 @@ public class Monetary {
 
     @Contract(value = "_ -> new", pure = true)
     public Monetary plus(@NotNull Monetary other) {
-        Monetary sum = new Monetary(wholePart, hundredthsPart);
+        final Monetary sum = new Monetary(wholePart, hundredthsPart);
         sum.add(other);
         return sum;
     }
 
     public void multiply(double factor) {
-        wholePart = Math.round(wholePart * factor) + Math.round(hundredthsPart * factor) / 100;
-        hundredthsPart = Math.round(hundredthsPart * factor) % 100;
+        final Monetary result = new Monetary(factor * (wholePart + hundredthsPart / 100.0));
+        this.wholePart = result.wholePart;
+        this.hundredthsPart = result.hundredthsPart;
     }
 
     @Contract(value = "_ -> new", pure = true)
     public Monetary times(double factor) {
-        Monetary product = new Monetary(wholePart, hundredthsPart);
+        final Monetary product = new Monetary(wholePart, hundredthsPart);
         product.multiply(factor);
         return product;
     }
