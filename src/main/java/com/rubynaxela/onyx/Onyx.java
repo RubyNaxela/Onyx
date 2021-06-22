@@ -50,10 +50,7 @@ public final class Onyx {
      * @param args unused
      */
     public static void main(String[] args) {
-//        new Onyx();
-        Monetary amount1 = new Monetary(5, 93), amount2 = new Monetary(5, 8);
-        amount1.add(amount2);
-        System.out.println(amount1);
+        new Onyx();
     }
 
     public OnyxDatabase getDatabase() {

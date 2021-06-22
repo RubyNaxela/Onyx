@@ -11,6 +11,7 @@
 
 package com.rubynaxela.onyx.data.datatypes;
 
+import com.rubynaxela.onyx.data.datatypes.auxiliary.Monetary;
 import com.rubynaxela.onyx.data.datatypes.raw.ImportedInvoice;
 import org.jetbrains.annotations.Contract;
 
@@ -49,9 +50,10 @@ public abstract class Invoice implements Identifiable {
         return uuid;
     }
 
-    public int calculateAmount() {
-        int sum = 0;
-        for (InvoiceItem item : items) sum += Math.round(100 * item.getQuantity() * item.getRate());
+    public Monetary calculateAmount() {
+        Monetary sum = new Monetary(0);
+        for (InvoiceItem item : items)
+            sum.add(new Monetary(item.getRate()).times(item.getQuantity() != 0 ? item.getQuantity() : 1));
         return sum;
     }
 }
