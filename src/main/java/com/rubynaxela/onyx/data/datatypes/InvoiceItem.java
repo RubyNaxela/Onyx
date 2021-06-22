@@ -12,6 +12,7 @@
 package com.rubynaxela.onyx.data.datatypes;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.Monetary;
 
 import java.util.UUID;
 
@@ -44,6 +45,10 @@ public class InvoiceItem implements Identifiable {
 
     public double getQuantity() {
         return quantity;
+    }
+
+    public Monetary calculateAmount() {
+        return new Monetary(rate).times(quantity != 0 ? quantity : 1);
     }
 
     @Override
