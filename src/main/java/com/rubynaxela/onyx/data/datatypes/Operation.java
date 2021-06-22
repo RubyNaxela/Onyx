@@ -13,7 +13,9 @@ package com.rubynaxela.onyx.data.datatypes;
 
 public interface Operation extends Identifiable {
 
-    double getAmount();
+    String getDate();
 
     String getContractorUuid();
+
+    double getAmount();
 }
