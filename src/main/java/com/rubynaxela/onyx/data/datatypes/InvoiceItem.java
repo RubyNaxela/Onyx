@@ -11,9 +11,15 @@
 
 package com.rubynaxela.onyx.data.datatypes;
 
-public class InvoiceItem {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-    private String date, source, description, tax;
+import java.util.UUID;
+
+@SuppressWarnings("unused")
+@JsonIgnoreProperties("uuid")
+public class InvoiceItem implements Identifiable {
+
+    private String uuid, date, source, description, tax;
     private double rate, quantity;
 
     public String getDate() {
@@ -38,5 +44,11 @@ public class InvoiceItem {
 
     public double getQuantity() {
         return quantity;
+    }
+
+    @Override
+    public String getUuid() {
+        if (uuid == null) uuid = UUID.randomUUID().toString();
+        return uuid;
     }
 }
