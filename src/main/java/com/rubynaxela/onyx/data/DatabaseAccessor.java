@@ -14,8 +14,11 @@ package com.rubynaxela.onyx.data;
 import com.rubynaxela.onyx.data.datatypes.*;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Vector;
 
 public final class DatabaseAccessor {
@@ -28,14 +31,16 @@ public final class DatabaseAccessor {
 
     @Contract(value = "-> new", pure = true)
     public Vector<ObjectRow> getContractorsTableVector() {
-        Vector<ObjectRow> data = new Vector<>();
-        for (Contractor contractor : database.getObjects(Contractor.class)) {
+        final List<Contractor> contractors = database.getObjects(Contractor.class);
+        contractors.sort(Comparator.comparing(Contractor::getName));
+        final Vector<ObjectRow> table = new Vector<>();
+        for (Contractor contractor : contractors) {
             ObjectRow contractorData = new ObjectRow(contractor);
             contractorData.add(contractor.getName());
             contractorData.add(contractor.getDetails());
-            data.add(contractorData);
+            table.add(contractorData);
         }
-        return data;
+        return table;
     }
 
     @Contract(value = "-> new", pure = true)
@@ -44,16 +49,17 @@ public final class DatabaseAccessor {
     }
 
     private Vector<ObjectRow> getInvoicesTableVector(LinkedList<? extends Invoice> invoices) {
-        Vector<ObjectRow> data = new Vector<>();
+        invoices.sort(Comparator.comparing(Invoice::getDate));
+        final Vector<ObjectRow> table = new Vector<>();
         for (Invoice invoice : invoices) {
             ObjectRow invoiceData = new ObjectRow(invoice);
             invoiceData.add(invoice.getId());
             invoiceData.add(invoice.getDate());
-            invoiceData.add(((Contractor) database.getObject(invoice.getContractorUuid())).getName());
+            invoiceData.add(database.getObject(invoice.getContractorUuid()).toString());
             invoiceData.add(invoice.calculateAmount() + " PLN");
-            data.add(invoiceData);
+            table.add(invoiceData);
         }
-        return data;
+        return table;
     }
 
     @Contract(value = "-> new", pure = true)
@@ -67,15 +73,17 @@ public final class DatabaseAccessor {
     }
 
     private Vector<ObjectRow> getOperationsTableVector(LinkedList<? extends Operation> operations) {
-        Vector<ObjectRow> data = new Vector<>();
+        operations.sort(Comparator.comparing(Operation::getDate));
+        final Vector<ObjectRow> table = new Vector<>();
         for (Operation operation : operations) {
             ObjectRow operationData = new ObjectRow(operation);
-            operationData.add(operation.getUuid());
-            operationData.add(operation.getContractorUuid());
+            operationData.add(operation.getDate());
+            operationData.add(database.getObject(operation.getContractorUuid()).toString());
+            operationData.add(operation.getDescription());
             operationData.add(operation.getAmount() + " PLN");
-            data.add(operationData);
+            table.add(operationData);
         }
-        return data;
+        return table;
     }
 
     @Contract(value = "-> new", pure = true)
@@ -98,7 +106,7 @@ public final class DatabaseAccessor {
         return getOperationsTableVector(database.getObjects(Payment.class));
     }
 
-    public Identifiable getObject(String uuid) {
+    public Identifiable getObject(@Nullable String uuid) {
         return (Identifiable) database.getObjects().stream().filter(
                 c -> ((Identifiable) c).getUuid().equals(uuid)).findFirst().orElse(null);
     }
