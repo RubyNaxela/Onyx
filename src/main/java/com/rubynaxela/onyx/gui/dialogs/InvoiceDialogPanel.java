@@ -14,6 +14,8 @@ package com.rubynaxela.onyx.gui.dialogs;
 import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.datatypes.Contractor;
 import com.rubynaxela.onyx.data.datatypes.Invoice;
+import com.rubynaxela.onyx.data.datatypes.InvoiceItem;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
 import com.rubynaxela.onyx.gui.InvoiceTableModel;
 import com.rubynaxela.onyx.gui.components.DefaultJPanel;
 import com.rubynaxela.onyx.gui.components.DefaultJScrollPane;
@@ -89,5 +91,9 @@ public class InvoiceDialogPanel extends DefaultJPanel {
                        && !dateInput.getText().equals("");
             }
         };
+    }
+
+    public InvoiceItem[] getInvoiceItems() {
+        return itemsTableModel.getInvoice().getItems();
     }
 }

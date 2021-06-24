@@ -73,6 +73,6 @@ public class DialogsHandler {
                new ClosedInvoice(editedElement == null ? UUID.randomUUID().toString() : editedElement.getUuid(),
                                  dialogPanel.idInput.getText(), dialogPanel.dateInput.getText(),
                                  ((Contractor) Objects.requireNonNull(dialogPanel.contractorInput.getSelectedItem())).getUuid(),
-                                 editedElement == null ? new InvoiceItem[0] : editedElement.getItems()) : null;
+                                 editedElement == null ? new InvoiceItem[0] : dialogPanel.getInvoiceItems()) : null;
     }
 }

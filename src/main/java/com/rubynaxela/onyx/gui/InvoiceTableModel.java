@@ -39,4 +39,8 @@ public class InvoiceTableModel extends DefaultTableModel {
     public ObjectRow getRow(int index) {
         return dataVector.get(index);
     }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
 }
