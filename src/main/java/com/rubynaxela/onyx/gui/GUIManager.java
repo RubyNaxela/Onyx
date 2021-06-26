@@ -19,11 +19,13 @@ import com.rubynaxela.onyx.data.datatypes.ClosedInvoice;
 import com.rubynaxela.onyx.data.datatypes.Contractor;
 import com.rubynaxela.onyx.data.datatypes.Invoice;
 import com.rubynaxela.onyx.data.datatypes.OnyxObjects;
-import com.rubynaxela.onyx.data.datatypes.auxiliary.NavigationLeafNode;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.LeafLabel;
 import com.rubynaxela.onyx.data.datatypes.raw.ImportedInvoice;
-import com.rubynaxela.onyx.gui.dialogs.DialogsHandler;
+import com.rubynaxela.onyx.gui.dialogs.InputDialogsHandler;
+import com.rubynaxela.onyx.gui.dialogs.MessageDialogsHandler;
 import com.rubynaxela.onyx.io.IOHandler;
 import com.rubynaxela.onyx.util.OsCheck;
+import com.rubynaxela.onyx.util.Reference;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,14 +44,15 @@ import java.util.Objects;
 @SuppressWarnings("FieldCanBeLocal")
 public class GUIManager {
 
+    private final MessageDialogsHandler messageDialogsHandler;
     private final IOHandler ioHandler;
     private final DatabaseAccessor databaseAccessor;
     private final DatabaseController databaseController;
-
-    private DialogsHandler dialogsHandler;
+    private InputDialogsHandler inputDialogsHandler;
     private MainWindow window;
 
     public GUIManager(Onyx instance) {
+        this.messageDialogsHandler = instance.getMessageDialogsHandler();
         this.ioHandler = instance.getIOHandler();
         this.databaseAccessor = instance.getDatabaseAccessor();
         this.databaseController = instance.getDatabaseController();
@@ -70,13 +73,13 @@ public class GUIManager {
 
         final ActionListener addButtonAction = e -> {
             if (window.dataTableModel.getCurrentTable() == OnyxObjects.CONTRACTORS) {
-                final Contractor contractor = dialogsHandler.showContractorDialog(null);
+                final Contractor contractor = inputDialogsHandler.showContractorDialog(null);
                 if (contractor != null) {
                     databaseController.addEntry(contractor);
                     window.dataTableModel.display(OnyxObjects.CONTRACTORS);
                 }
             } else if (window.dataTableModel.getCurrentTable() == OnyxObjects.CLOSED_INVOICES) {
-                final Invoice invoice = dialogsHandler.showInvoiceDialog(null);
+                final Invoice invoice = inputDialogsHandler.showInvoiceDialog(null);
                 if (invoice != null) {
                     databaseController.addEntry(invoice);
                     window.dataTableModel.display(OnyxObjects.CLOSED_INVOICES);
@@ -85,13 +88,13 @@ public class GUIManager {
         };
         final ActionListener editButtonAction = e -> {
             if (window.dataTableModel.getCurrentTable() == OnyxObjects.CONTRACTORS) {
-                final Contractor contractor = dialogsHandler.showContractorDialog((Contractor) window.currentElement);
+                final Contractor contractor = inputDialogsHandler.showContractorDialog((Contractor) window.currentElement);
                 if (contractor != null) {
                     databaseController.editEntry(window.currentElement, contractor);
                     window.dataTableModel.display(OnyxObjects.CONTRACTORS);
                 }
             } else if (window.dataTableModel.getCurrentTable() == OnyxObjects.CLOSED_INVOICES) {
-                final Invoice invoice = dialogsHandler.showInvoiceDialog((ClosedInvoice) window.currentElement);
+                final Invoice invoice = inputDialogsHandler.showInvoiceDialog((ClosedInvoice) window.currentElement);
                 if (invoice != null) {
                     databaseController.editEntry(window.currentElement, invoice);
                     window.dataTableModel.display(OnyxObjects.CLOSED_INVOICES);
@@ -99,7 +102,8 @@ public class GUIManager {
             }
         };
         final ActionListener removeButtonAction = e -> {
-            if (dialogsHandler.askYesNoQuestion("Czy na pewno chcesz usunąć ten obiekt?", false)) {
+            if (messageDialogsHandler.askYesNoQuestion(
+                    Reference.getString("message.action.confirm_remove"), false)) {
                 databaseController.removeEntry(window.currentElement);
                 window.dataTableModel.refresh();
             }
@@ -108,8 +112,11 @@ public class GUIManager {
         // Initial GUI settings
         initialSettings();
 
+        // Loading the strings dictionary
+        Reference.init(ioHandler, messageDialogsHandler);
+
         window = new MainWindow("Onyx", databaseAccessor);
-        dialogsHandler = new DialogsHandler(window, databaseAccessor);
+        inputDialogsHandler = new InputDialogsHandler(window, databaseAccessor);
 
         window.setFileDropListener(e -> {
             try {
@@ -118,7 +125,7 @@ public class GUIManager {
                     for (File file : (List<File>) e.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
                         try {
                             final ImportedInvoice imported = Objects.requireNonNull(ioHandler.parseInvoice(file));
-                            final Invoice invoice = dialogsHandler.showInvoiceDialog(Invoice.imported(imported));
+                            final Invoice invoice = inputDialogsHandler.showInvoiceDialog(Invoice.imported(imported));
                             if (invoice != null) {
                                 databaseController.addEntry(invoice);
                                 if (imported.isOpen()) window.dataTableModel.display(OnyxObjects.OPEN_INVOICES);
@@ -126,8 +133,8 @@ public class GUIManager {
                                 window.dataTableModel.refresh();
                             }
                         } catch (Exception ex) {
-                            dialogsHandler.showError("Plik " + file.getName() + " nie mógł zostać odczytany " +
-                                                     "jako obiekt systemu Onyx", false);
+                            messageDialogsHandler.showError(Reference.getFormatString("message.error.unrecognized_file",
+                                                                                      file.getName()), false);
                             break;
                         }
                     }
@@ -143,9 +150,9 @@ public class GUIManager {
         window.navigation.addTreeSelectionListener(e -> {
             final Object selectedNode = (
                     (DefaultMutableTreeNode) window.navigation.getLastSelectedPathComponent()).getUserObject();
-            if (selectedNode instanceof NavigationLeafNode) {
+            if (selectedNode instanceof LeafLabel) {
 
-                final NavigationLeafNode selectedNodeLabel = (NavigationLeafNode) selectedNode;
+                final LeafLabel selectedNodeLabel = (LeafLabel) selectedNode;
 
                 if (selectedNodeLabel.equals(MainWindow.contractorsLabel))
                     window.dataTableModel.display(OnyxObjects.CONTRACTORS);
@@ -196,12 +203,7 @@ public class GUIManager {
         // Platform-dependent utilization of the application top bar
         switch (OsCheck.getOperatingSystemType()) {
             case MAC_OS:
-                try {
-                    System.setProperty("apple.awt.application.name", "Onyx");
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                    System.err.println("Could not set the appbar title. String manager not initialized");
-                }
+                System.setProperty("apple.awt.application.name", "Onyx");
                 System.setProperty("apple.laf.useScreenMenuBar", "true");
                 break;
             case WINDOWS:

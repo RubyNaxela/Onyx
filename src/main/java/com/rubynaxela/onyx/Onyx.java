@@ -14,15 +14,16 @@ package com.rubynaxela.onyx;
 import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.DatabaseController;
 import com.rubynaxela.onyx.data.OnyxDatabase;
-import com.rubynaxela.onyx.data.datatypes.Transaction;
-import com.rubynaxela.onyx.data.datatypes.auxiliary.Monetary;
 import com.rubynaxela.onyx.gui.GUIManager;
+import com.rubynaxela.onyx.gui.dialogs.MessageDialogsHandler;
 import com.rubynaxela.onyx.io.IOHandler;
+import com.rubynaxela.onyx.util.Language;
 
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 public final class Onyx {
 
     private final OnyxDatabase database;
+    private final MessageDialogsHandler messageDialogsHandler;
     private final IOHandler ioHandler;
     private final DatabaseController databaseController;
     private final DatabaseAccessor databaseAccessor;
@@ -34,12 +35,14 @@ public final class Onyx {
         database = new OnyxDatabase();
 
         // Load all application handlers, managers and controllers
+        messageDialogsHandler = new MessageDialogsHandler(null);
         ioHandler = new IOHandler();
         databaseAccessor = new DatabaseAccessor(database);
         databaseController = new DatabaseController(this);
         guiManager = new GUIManager(this);
 
         // Initial GUI settings and loading the main window
+        Language.useLanguage("pl_PL");
         guiManager.initMainWindow();
         databaseController.loadDatabase();
     }
@@ -57,6 +60,10 @@ public final class Onyx {
         return database;
     }
 
+    public MessageDialogsHandler getMessageDialogsHandler() {
+        return messageDialogsHandler;
+    }
+
     public IOHandler getIOHandler() {
         return ioHandler;
     }
@@ -69,25 +76,7 @@ public final class Onyx {
         return databaseAccessor;
     }
 
-    static class Test {
-
-        private int numberField;
-        private Transaction[] textArray;
-
-        public int getNumberField() {
-            return numberField;
-        }
-
-        public void setNumberField(int numberField) {
-            this.numberField = numberField;
-        }
-
-        public Transaction[] getTextArray() {
-            return textArray;
-        }
-
-        public void setTextArray(Transaction[] textArray) {
-            this.textArray = textArray;
-        }
+    public GUIManager getGuiManager() {
+        return guiManager;
     }
 }

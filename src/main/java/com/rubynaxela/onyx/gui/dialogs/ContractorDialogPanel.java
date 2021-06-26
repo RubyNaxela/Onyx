@@ -13,6 +13,7 @@ package com.rubynaxela.onyx.gui.dialogs;
 
 import com.rubynaxela.onyx.data.datatypes.Contractor;
 import com.rubynaxela.onyx.gui.components.DefaultJPanel;
+import com.rubynaxela.onyx.util.Reference;
 import com.rubynaxela.onyx.util.Utils;
 
 import javax.swing.*;
@@ -27,11 +28,11 @@ public class ContractorDialogPanel extends DefaultJPanel {
 
     public ContractorDialogPanel(Contractor editedElement) {
 
-        nameLabel = new JLabel("Nazwa");
-        detailsLabel = new JLabel("Dane szczegółowe");
+        nameLabel = new JLabel(Reference.getString("label.contractor.name"));
+        detailsLabel = new JLabel(Reference.getString("label.contractor.details"));
         nameInput = new JTextField();
         detailsInput = new JTextArea(5, 30);
-        okButton = new JButton("OK");
+        okButton = new JButton(Reference.getString("button.ok"));
 
         register(nameLabel, Utils.gridElementSettings(0, 0));
         register(nameInput, Utils.gridElementSettings(0, 1));

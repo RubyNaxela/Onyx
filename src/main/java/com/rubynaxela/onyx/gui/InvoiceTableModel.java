@@ -13,6 +13,7 @@ package com.rubynaxela.onyx.gui;
 
 import com.rubynaxela.onyx.data.datatypes.Invoice;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
+import com.rubynaxela.onyx.util.Reference;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.Arrays;
@@ -21,7 +22,14 @@ import java.util.Vector;
 public class InvoiceTableModel extends DefaultTableModel {
 
     public static Vector<String> invoiceItemsTableHeaders = new Vector<>(
-            Arrays.asList("Data", "Żródło", "Opis", "Cena j. netto", "Ilość", "Suma netto", "VAT", "Suma brutto"));
+            Arrays.asList(Reference.getString("label.invoice_item.date"),
+                          Reference.getString("label.invoice_item.source"),
+                          Reference.getString("label.invoice_item.description"),
+                          Reference.getString("label.invoice_item.net_unit_price"),
+                          Reference.getString("label.invoice_item.quantity"),
+                          Reference.getString("label.invoice_item.net_total"),
+                          Reference.getString("label.invoice_item.tax"),
+                          Reference.getString("label.invoice_item.total")));
 
     private final Invoice invoice;
     private Vector<ObjectRow> dataVector;

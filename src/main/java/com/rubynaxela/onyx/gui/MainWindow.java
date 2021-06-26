@@ -13,8 +13,9 @@ package com.rubynaxela.onyx.gui;
 
 import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.datatypes.Identifiable;
-import com.rubynaxela.onyx.data.datatypes.auxiliary.NavigationLeafNode;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.LeafLabel;
 import com.rubynaxela.onyx.gui.components.*;
+import com.rubynaxela.onyx.util.Reference;
 import com.rubynaxela.onyx.util.Utils;
 
 import javax.swing.*;
@@ -27,20 +28,20 @@ import java.awt.dnd.*;
  */
 public final class MainWindow extends DefaultJFrame implements DropTargetListener {
 
-    public static final NavigationLeafNode
-            contractorsLabel = new NavigationLeafNode("Kontrahenci"),
-            openInvoicesLabel = new NavigationLeafNode("Nierozliczone"),
-            closedInvoicesLabel = new NavigationLeafNode("Rozliczone"),
-            claimsLabel = new NavigationLeafNode("Należności"),
-            liabilitiesLabel = new NavigationLeafNode("Zobowiązania"),
-            contributionsLabel = new NavigationLeafNode("Wpłaty"),
-            paymentsLabel = new NavigationLeafNode("Wypłaty");
+    public static final LeafLabel
+            contractorsLabel = new LeafLabel(Reference.getString("navigation.contractors")),
+            openInvoicesLabel = new LeafLabel(Reference.getString("navigation.invoices.unaccounted")),
+            closedInvoicesLabel = new LeafLabel(Reference.getString("navigation.invoices.cleared")),
+            claimsLabel = new LeafLabel(Reference.getString("navigation.operations.transactions.claims")),
+            liabilitiesLabel = new LeafLabel(Reference.getString("navigation.operations.transactions.liabilities")),
+            contributionsLabel = new LeafLabel(Reference.getString("navigation.operations.considerations.contributions")),
+            paymentsLabel = new LeafLabel(Reference.getString("navigation.operations.considerations.payments"));
     public final JTree navigation;
 
     public final DefaultJButton
-            addButton = new DefaultJButton("Dodaj"),
-            editButton = new DefaultJButton("Edytuj"),
-            removeButton = new DefaultJButton("Usuń");
+            addButton = new DefaultJButton(Reference.getString("button.add")),
+            editButton = new DefaultJButton(Reference.getString("button.edit")),
+            removeButton = new DefaultJButton(Reference.getString("button.remove"));
 
     public final StaticJTable dataTable;
     public final OnyxTableModel dataTableModel;
@@ -68,7 +69,8 @@ public final class MainWindow extends DefaultJFrame implements DropTargetListene
                 {
                     final DefaultMutableTreeNode contractors = new DefaultMutableTreeNode(contractorsLabel);
                     root.add(contractors);
-                    final DefaultMutableTreeNode invoices = new DefaultMutableTreeNode("Faktury");
+                    final DefaultMutableTreeNode invoices = new DefaultMutableTreeNode(
+                            Reference.getString("navigation.invoices"));
                     root.add(invoices);
                     {
                         final DefaultMutableTreeNode openInvoices = new DefaultMutableTreeNode(openInvoicesLabel);
@@ -76,10 +78,12 @@ public final class MainWindow extends DefaultJFrame implements DropTargetListene
                         final DefaultMutableTreeNode closedInvoices = new DefaultMutableTreeNode(closedInvoicesLabel);
                         invoices.add(closedInvoices);
                     }
-                    final DefaultMutableTreeNode allOperations = new DefaultMutableTreeNode("Księgowość");
+                    final DefaultMutableTreeNode allOperations = new DefaultMutableTreeNode(
+                            Reference.getString("navigation.operations"));
                     root.add(allOperations);
                     {
-                        final DefaultMutableTreeNode transactions = new DefaultMutableTreeNode("Rozrachunki");
+                        final DefaultMutableTreeNode transactions = new DefaultMutableTreeNode(
+                                Reference.getString("navigation.operations.transactions"));
                         allOperations.add(transactions);
                         {
                             final DefaultMutableTreeNode claims = new DefaultMutableTreeNode(claimsLabel);
@@ -87,7 +91,8 @@ public final class MainWindow extends DefaultJFrame implements DropTargetListene
                             final DefaultMutableTreeNode liabilities = new DefaultMutableTreeNode(liabilitiesLabel);
                             transactions.add(liabilities);
                         }
-                        final DefaultMutableTreeNode considerations = new DefaultMutableTreeNode("Rozliczenia");
+                        final DefaultMutableTreeNode considerations = new DefaultMutableTreeNode(
+                                Reference.getString("navigation.operations.considerations"));
                         allOperations.add(considerations);
                         {
                             final DefaultMutableTreeNode contributions = new DefaultMutableTreeNode(contributionsLabel);

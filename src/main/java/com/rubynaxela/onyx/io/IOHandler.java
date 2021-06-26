@@ -11,13 +11,15 @@
 
 package com.rubynaxela.onyx.io;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rubynaxela.onyx.Onyx;
 import com.rubynaxela.onyx.data.datatypes.raw.ImportedInvoice;
 import com.rubynaxela.onyx.data.datatypes.raw.RawDatabase;
+import com.rubynaxela.onyx.gui.dialogs.MessageDialogsHandler;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * The {@code FileIOHandler} class is responsible for handling JSON files - reading
@@ -31,10 +33,20 @@ public final class IOHandler {
     private static final File DATA_FILE = new File("database.json");
     private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
+    @SuppressWarnings("unchecked")
+    public Map<String, String> parseLanguageFile(String languageCode) {
+        try {
+            return JSON_MAPPER.readValue(Onyx.class.getResource("/lang/" + languageCode + ".json"), Map.class);
+        } catch (NullPointerException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public RawDatabase parseDatabase() {
         try {
             return JSON_MAPPER.readValue(DATA_FILE, RawDatabase.class);
-        } catch (Exception e) {
+        } catch (NullPointerException | IOException e) {
             e.printStackTrace();
             return null;
         }
@@ -43,7 +55,7 @@ public final class IOHandler {
     public void exportDatabase(RawDatabase data) {
         try {
             JSON_MAPPER.writeValue(DATA_FILE, data);
-        } catch (Exception e) {
+        } catch (NullPointerException | IOException e) {
             e.printStackTrace();
         }
     }

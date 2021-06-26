@@ -15,11 +15,11 @@ import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.datatypes.Contractor;
 import com.rubynaxela.onyx.data.datatypes.Invoice;
 import com.rubynaxela.onyx.data.datatypes.InvoiceItem;
-import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
 import com.rubynaxela.onyx.gui.InvoiceTableModel;
 import com.rubynaxela.onyx.gui.components.DefaultJPanel;
 import com.rubynaxela.onyx.gui.components.DefaultJScrollPane;
 import com.rubynaxela.onyx.gui.components.StaticJTable;
+import com.rubynaxela.onyx.util.Reference;
 import com.rubynaxela.onyx.util.Utils;
 
 import javax.swing.*;
@@ -37,17 +37,17 @@ public class InvoiceDialogPanel extends DefaultJPanel {
 
     public InvoiceDialogPanel(Invoice editedElement, DatabaseAccessor databaseAccessor) {
 
-        idLabel = new JLabel("Numer");
-        dateLabel = new JLabel("Data");
-        contractorLabel = new JLabel("Kontrahent");
-        itemsLabel = new JLabel("Przedmioty");
+        idLabel = new JLabel(Reference.getString("label.invoice.id"));
+        dateLabel = new JLabel(Reference.getString("label.invoice.date"));
+        contractorLabel = new JLabel(Reference.getString("label.invoice.contractor"));
+        itemsLabel = new JLabel(Reference.getString("label.invoice.items"));
         idInput = new JTextField();
         dateInput = new JTextField();
         contractorInput = new JComboBox<>(databaseAccessor.getContractorsVector());
         itemsTable = new StaticJTable();
         itemsTableModel = new InvoiceTableModel(editedElement);
         itemsTableModel.addTableModelListener(e -> itemsTable.resizeColumnWidth(15, 300));
-        okButton = new JButton("OK");
+        okButton = new JButton(Reference.getString("button.ok"));
 
         register(idLabel, Utils.gridElementSettings(0, 0));
         register(idInput, Utils.gridElementSettings(0, 1));
@@ -87,8 +87,8 @@ public class InvoiceDialogPanel extends DefaultJPanel {
         return new AbstractValidInputListener(okButton) {
             @Override
             protected boolean dataValid() {
-                return !idInput.getText().equals("")
-                       && !dateInput.getText().equals("");
+                return !idInput.getText().equals("") &&
+                       !dateInput.getText().equals("");
             }
         };
     }

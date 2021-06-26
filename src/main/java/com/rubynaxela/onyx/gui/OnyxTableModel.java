@@ -14,6 +14,7 @@ package com.rubynaxela.onyx.gui;
 import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.datatypes.OnyxObjects;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
+import com.rubynaxela.onyx.util.Reference;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.Arrays;
@@ -22,9 +23,16 @@ import java.util.Vector;
 public class OnyxTableModel extends DefaultTableModel {
 
     public static Vector<String>
-            contractorsTableHeaders = new Vector<>(Arrays.asList("Nazwa", "Szczegóły")),
-            invoicesTableHeaders = new Vector<>(Arrays.asList("Numer", "Data", "Kontrahent", "Kwota brutto")),
-            transactionsTableHeaders = new Vector<>(Arrays.asList("Data", "Kontrahent", "Tytuł", "Kwota"));
+            contractorsTableHeaders = new Vector<>(Arrays.asList(Reference.getString("label.contractor.name"),
+                                                                 Reference.getString("label.contractor.details"))),
+            invoicesTableHeaders = new Vector<>(Arrays.asList(Reference.getString("label.invoice.id"),
+                                                              Reference.getString("label.invoice.date"),
+                                                              Reference.getString("label.invoice.contractor"),
+                                                              Reference.getString("label.invoice.total"))),
+            operationsTableHeaders = new Vector<>(Arrays.asList(Reference.getString("label.operation.date"),
+                                                                Reference.getString("label.operation.contractor"),
+                                                                Reference.getString("label.operation.description"),
+                                                                Reference.getString("label.operation.amount")));
 
     private final DatabaseAccessor databaseAccessor;
     private Vector<ObjectRow> dataVector;
@@ -44,13 +52,13 @@ public class OnyxTableModel extends DefaultTableModel {
         else if (table == OnyxObjects.CLOSED_INVOICES)
             setDataVector(dataVector = databaseAccessor.getClosedInvoicesTableVector(), invoicesTableHeaders);
         else if (table == OnyxObjects.CLAIMS)
-            setDataVector(dataVector = databaseAccessor.getClaimsTableVector(), transactionsTableHeaders);
+            setDataVector(dataVector = databaseAccessor.getClaimsTableVector(), operationsTableHeaders);
         else if (table == OnyxObjects.LIABILITIES)
-            setDataVector(dataVector = databaseAccessor.getLiabilitiesTableVector(), transactionsTableHeaders);
+            setDataVector(dataVector = databaseAccessor.getLiabilitiesTableVector(), operationsTableHeaders);
         else if (table == OnyxObjects.CONTRIBUTIONS)
-            setDataVector(dataVector = databaseAccessor.getContributionsTableVector(), transactionsTableHeaders);
+            setDataVector(dataVector = databaseAccessor.getContributionsTableVector(), operationsTableHeaders);
         else if (table == OnyxObjects.PAYMENTS)
-            setDataVector(dataVector = databaseAccessor.getPaymentsTableVector(), transactionsTableHeaders);
+            setDataVector(dataVector = databaseAccessor.getPaymentsTableVector(), operationsTableHeaders);
     }
 
     public void refresh() {
