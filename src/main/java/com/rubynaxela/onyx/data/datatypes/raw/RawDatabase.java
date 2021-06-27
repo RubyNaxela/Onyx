@@ -31,6 +31,7 @@ public class RawDatabase {
     }
 
     public RawDatabase(OnyxDatabase database) {
+        this.companyName = database.getCompanyName();
         this.contractors = database.getObjects(Contractor.class).toArray(new Contractor[0]);
         this.openInvoices = database.getObjects(OpenInvoice.class).toArray(new OpenInvoice[0]);
         this.closedInvoices = database.getObjects(ClosedInvoice.class).toArray(new ClosedInvoice[0]);
