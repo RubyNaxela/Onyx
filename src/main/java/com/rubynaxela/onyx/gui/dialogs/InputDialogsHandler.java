@@ -67,6 +67,8 @@ public class InputDialogsHandler {
                                          dialogPanel.dateInput.getText(),
                                          ((Contractor) Objects.requireNonNull(
                                                  dialogPanel.contractorInput.getSelectedItem())).getUuid(),
+                                         ((ClosedInvoice.PaymentMethod) Objects.requireNonNull(
+                                                 dialogPanel.paymentMethodInput.getSelectedItem())).getUuid(),
                                          dialogPanel.getInvoiceItems());
             }
         else return null;

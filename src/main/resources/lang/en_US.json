@@ -13,6 +13,7 @@
   "label.invoice.id": "ID",
   "label.invoice.cleared": "Cleared",
   "label.invoice.items": "Items",
+  "label.invoice.payment_method": "Payment method",
   "label.invoice.total": "Total",
   "label.invoice_item.date": "Date",
   "label.invoice_item.description": "Description",
@@ -43,5 +44,8 @@
   "title.dialog.contractor.new": "New contractor",
   "title.dialog.error": "Error",
   "title.dialog.invoice.edit": "Edit invoice",
-  "title.dialog.invoice.new": "New invoice"
+  "title.dialog.invoice.new": "New invoice",
+  "value.payment_method.cash": "Cash",
+  "value.payment_method.unknown": "Unknown",
+  "value.payment_method.transfer": "Transfer"
 }

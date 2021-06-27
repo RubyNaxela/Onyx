@@ -13,6 +13,7 @@
   "label.invoice.id": "Numer",
   "label.invoice.cleared": "Rozliczona",
   "label.invoice.items": "Przedmioty",
+  "label.invoice.payment_method": "Metoda płatności",
   "label.invoice.total": "Kwota brutto",
   "label.invoice_item.date": "Data",
   "label.invoice_item.description": "Opis",
@@ -43,5 +44,8 @@
   "title.dialog.contractor.new": "Dodawanie kontrahenta",
   "title.dialog.error": "Błąd",
   "title.dialog.invoice.edit": "Edycja faktury",
-  "title.dialog.invoice.new": "Dodawanie faktury"
+  "title.dialog.invoice.new": "Dodawanie faktury",
+  "value.payment_method.cash": "Gotówka",
+  "value.payment_method.unknown": "Nieznana",
+  "value.payment_method.transfer": "Przelew"
 }
