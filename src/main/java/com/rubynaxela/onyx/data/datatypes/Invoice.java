@@ -57,12 +57,14 @@ public abstract class Invoice implements Identifiable {
         return uuid;
     }
 
+    @Contract(value = " -> new", pure = true)
     public Monetary calculateAmount() {
-        Monetary sum = new Monetary(0);
+        final Monetary sum = new Monetary(0);
         for (InvoiceItem item : items) sum.add(item.calculateAmount());
         return sum;
     }
 
+    @Contract(value = " -> new", pure = true)
     public Vector<ObjectRow> getItemsTableVector() {
         final Vector<ObjectRow> table = new Vector<>();
         for (InvoiceItem item : items) {
