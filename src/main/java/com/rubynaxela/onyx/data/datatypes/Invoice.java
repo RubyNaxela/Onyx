@@ -66,7 +66,7 @@ public abstract class Invoice implements Identifiable {
     public Vector<ObjectRow> getItemsTableVector() {
         final Vector<ObjectRow> table = new Vector<>();
         for (InvoiceItem item : items) {
-            final double taxRate = TaxRate.get(item.getTax());
+            final double taxRate = TaxRate.get(item.getTax()) / (1 + TaxRate.get(item.getTax()));
             final Monetary itemAmount = item.calculateAmount();
             ObjectRow itemData = new ObjectRow(item);
             itemData.add(item.getDate());
