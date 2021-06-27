@@ -130,7 +130,7 @@ public class GUIManager {
         initialSettings();
 
         // Loading the strings dictionary
-        Reference.init(ioHandler, messageDialogsHandler);
+        Reference.initDictionary(ioHandler, messageDialogsHandler);
 
         window = new MainWindow("Onyx", databaseAccessor);
         inputDialogsHandler = new InputDialogsHandler(window, databaseAccessor);

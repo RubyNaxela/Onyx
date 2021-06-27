@@ -23,21 +23,21 @@ public class MessageDialogsHandler {
         this.anchor = anchor;
     }
 
-    public void showError(String message, boolean exitOnClose) {
+    public void showError(String msg, boolean critical) {
         final String okButtonText = Reference.getString("button.ok", "OK");
         Object okButton;
-        if (exitOnClose) {
+        if (critical) {
             okButton = new JButton(okButtonText);
             ((JButton) okButton).addActionListener(e -> System.exit(0));
         } else
             okButton = okButtonText;
-        JOptionPane.showOptionDialog(anchor, message, Reference.getString("title.dialog.error", "Error"),
+        JOptionPane.showOptionDialog(anchor, msg, Reference.getString("title.dialog.error", "Error"),
                                      JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
                                      Reference.getIcon("dialog.error"), new Object[]{okButton}, okButton);
     }
 
-    public boolean askYesNoQuestion(String message, boolean defaultAnswer) {
-        return JOptionPane.showOptionDialog(anchor, message, "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+    public boolean askYesNoQuestion(String msg, boolean defaultAnswer) {
+        return JOptionPane.showOptionDialog(anchor, msg, "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
                                             Reference.getIcon("dialog.question"), new String[]{
                         Reference.getString("button.yes", "Yes"),
                         Reference.getString("button.no", "No")
