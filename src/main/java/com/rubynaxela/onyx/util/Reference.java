@@ -22,18 +22,40 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 
 public class Reference {
 
-    private static Map<String, String> primaryDictionary, backupDictionary;
+    private static final File PROPERTIES_FILE = new File(".properties");
+    private static final Properties properties = new Properties();
+    private static final HashMap<String, String> primaryDictionary = new HashMap<>(), backupDictionary = new HashMap<>();
 
-    public static void init(IOHandler ioHandler, MessageDialogsHandler messageDialogsHandler) {
-        primaryDictionary = ioHandler.parseLanguageFile(Language.getUsedLanguage());
-        backupDictionary = ioHandler.parseLanguageFile(Language.ENGLISH_US);
-        if (primaryDictionary == null && backupDictionary == null)
-            messageDialogsHandler.showError("Attempt to read the language file has resulted an unhandled error.", true);
+    public static void loadProperties(MessageDialogsHandler messageDialogsHandler) {
+        try {
+            properties.load(new FileReader(PROPERTIES_FILE));
+        } catch (IOException e) {
+            messageDialogsHandler.showError("Could not read the properties file. Using default settings.", false);
+        }
+    }
+
+    public static String getProperty(@NotNull String key) {
+        return properties.containsKey(key) ? properties.getProperty(key) : "property." + key;
+    }
+
+    public static void initDictionary(IOHandler ioHandler, MessageDialogsHandler messageDialogsHandler) {
+        final Map<String, String> _primaryDictionary = ioHandler.parseLanguageFile(getProperty("language"));
+        final Map<String, String> _backupDictionary = ioHandler.parseLanguageFile("en_US");
+        if (_primaryDictionary == null && _backupDictionary == null)
+            messageDialogsHandler.showError("Could not read any language file. The program will now exit.", true);
+        if (_primaryDictionary != null) primaryDictionary.putAll(_primaryDictionary);
+        if (_backupDictionary != null) backupDictionary.putAll(_backupDictionary);
     }
 
     /**

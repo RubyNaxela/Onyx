@@ -12,6 +12,7 @@
 package com.rubynaxela.onyx.gui;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.rubynaxela.onyx.Onyx;
 import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.DatabaseController;
@@ -215,9 +216,13 @@ public class GUIManager {
                 break;
         }
 
-        // Darcula theme look and feel
+        // Look and feel settings
         try {
-            UIManager.setLookAndFeel(new FlatDarculaLaf());
+            if (!Reference.getProperty("theme").equals("dark")) {
+                UIManager.setLookAndFeel(new FlatIntelliJLaf());
+            } else {
+                UIManager.setLookAndFeel(new FlatDarculaLaf());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

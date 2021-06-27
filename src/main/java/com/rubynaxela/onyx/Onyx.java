@@ -17,7 +17,7 @@ import com.rubynaxela.onyx.data.OnyxDatabase;
 import com.rubynaxela.onyx.gui.GUIManager;
 import com.rubynaxela.onyx.gui.dialogs.MessageDialogsHandler;
 import com.rubynaxela.onyx.io.IOHandler;
-import com.rubynaxela.onyx.util.Language;
+import com.rubynaxela.onyx.util.Reference;
 
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 public final class Onyx {
@@ -31,20 +31,17 @@ public final class Onyx {
 
     private Onyx() {
 
-        // Initialize an empty database object
         database = new OnyxDatabase();
 
-        // Load all application handlers, managers and controllers
         messageDialogsHandler = new MessageDialogsHandler(null);
         ioHandler = new IOHandler();
         databaseAccessor = new DatabaseAccessor(database);
         databaseController = new DatabaseController(this);
         guiManager = new GUIManager(this);
 
-        // Initial GUI settings and loading the main window
-        Language.useLanguage("pl_PL");
-        guiManager.initMainWindow();
+        Reference.loadProperties(messageDialogsHandler);
         databaseController.loadDatabase();
+        guiManager.initMainWindow();
     }
 
     /**
