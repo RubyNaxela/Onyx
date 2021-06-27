@@ -15,10 +15,7 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 import com.rubynaxela.onyx.Onyx;
 import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.DatabaseController;
-import com.rubynaxela.onyx.data.datatypes.ClosedInvoice;
-import com.rubynaxela.onyx.data.datatypes.Contractor;
-import com.rubynaxela.onyx.data.datatypes.Invoice;
-import com.rubynaxela.onyx.data.datatypes.OnyxObjects;
+import com.rubynaxela.onyx.data.datatypes.*;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.LeafLabel;
 import com.rubynaxela.onyx.data.datatypes.raw.ImportedInvoice;
 import com.rubynaxela.onyx.gui.dialogs.InputDialogsHandler;
@@ -78,6 +75,12 @@ public class GUIManager {
                     databaseController.addEntry(contractor);
                     window.dataTableModel.display(OnyxObjects.CONTRACTORS);
                 }
+            } else if (window.dataTableModel.getCurrentTable() == OnyxObjects.OPEN_INVOICES) {
+                final Invoice invoice = inputDialogsHandler.showInvoiceDialog(null);
+                if (invoice != null) {
+                    databaseController.addEntry(invoice);
+                    window.dataTableModel.display(OnyxObjects.OPEN_INVOICES);
+                }
             } else if (window.dataTableModel.getCurrentTable() == OnyxObjects.CLOSED_INVOICES) {
                 final Invoice invoice = inputDialogsHandler.showInvoiceDialog(null);
                 if (invoice != null) {
@@ -91,13 +94,19 @@ public class GUIManager {
                 final Contractor contractor = inputDialogsHandler.showContractorDialog((Contractor) window.currentElement);
                 if (contractor != null) {
                     databaseController.editEntry(window.currentElement, contractor);
-                    window.dataTableModel.display(OnyxObjects.CONTRACTORS);
+                    window.dataTableModel.refresh();
+                }
+            } else if (window.dataTableModel.getCurrentTable() == OnyxObjects.OPEN_INVOICES) {
+                final Invoice invoice = inputDialogsHandler.showInvoiceDialog((OpenInvoice) window.currentElement);
+                if (invoice != null) {
+                    databaseController.editEntry(window.currentElement, invoice);
+                    window.dataTableModel.refresh();
                 }
             } else if (window.dataTableModel.getCurrentTable() == OnyxObjects.CLOSED_INVOICES) {
                 final Invoice invoice = inputDialogsHandler.showInvoiceDialog((ClosedInvoice) window.currentElement);
                 if (invoice != null) {
                     databaseController.editEntry(window.currentElement, invoice);
-                    window.dataTableModel.display(OnyxObjects.CLOSED_INVOICES);
+                    window.dataTableModel.refresh();
                 }
             }
         };
@@ -118,19 +127,21 @@ public class GUIManager {
         window = new MainWindow("Onyx", databaseAccessor);
         inputDialogsHandler = new InputDialogsHandler(window, databaseAccessor);
 
-        window.setFileDropListener(e -> {
+        window.setFileDropListener(event -> {
             try {
-                if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                    e.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-                    for (File file : (List<File>) e.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
+                if (event.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                    event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+                    final List<File> droppedFiles = (List<File>) event.getTransferable()
+                                                                      .getTransferData(DataFlavor.javaFileListFlavor);
+                    event.dropComplete(true);
+                    for (File file : droppedFiles) {
                         try {
                             final ImportedInvoice imported = Objects.requireNonNull(ioHandler.parseInvoice(file));
                             final Invoice invoice = inputDialogsHandler.showInvoiceDialog(Invoice.imported(imported));
                             if (invoice != null) {
                                 databaseController.addEntry(invoice);
-                                if (imported.isOpen()) window.dataTableModel.display(OnyxObjects.OPEN_INVOICES);
+                                if (invoice instanceof OpenInvoice) window.dataTableModel.display(OnyxObjects.OPEN_INVOICES);
                                 else window.dataTableModel.display(OnyxObjects.CLOSED_INVOICES);
-                                window.dataTableModel.refresh();
                             }
                         } catch (Exception ex) {
                             messageDialogsHandler.showError(Reference.getFormatString("message.error.unrecognized_file",
@@ -138,9 +149,8 @@ public class GUIManager {
                             break;
                         }
                     }
-                    e.dropComplete(true);
                 } else {
-                    e.rejectDrop();
+                    event.rejectDrop();
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

@@ -15,6 +15,7 @@ import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.datatypes.ClosedInvoice;
 import com.rubynaxela.onyx.data.datatypes.Contractor;
 import com.rubynaxela.onyx.data.datatypes.Invoice;
+import com.rubynaxela.onyx.data.datatypes.OpenInvoice;
 import com.rubynaxela.onyx.util.Reference;
 
 import javax.swing.*;
@@ -53,12 +54,21 @@ public class InputDialogsHandler {
                                          JOptionPane.QUESTION_MESSAGE, Reference.getIcon("dialog.data"),
                                          new Object[]{dialogPanel.okButton, Reference.getString("button.cancel")},
                                          dialogPanel.okButton) == 0)
-            return new ClosedInvoice(editedElement == null ? UUID.randomUUID().toString() : editedElement.getUuid(),
-                                     dialogPanel.idInput.getText(),
-                                     dialogPanel.dateInput.getText(),
-                                     ((Contractor) Objects.requireNonNull(
-                                             dialogPanel.contractorInput.getSelectedItem())).getUuid(),
-                                     dialogPanel.getInvoiceItems());
+            if (!dialogPanel.clearedCheckBox.isSelected()) {
+                return new OpenInvoice(editedElement == null ? UUID.randomUUID().toString() : editedElement.getUuid(),
+                                       dialogPanel.idInput.getText(),
+                                       dialogPanel.dateInput.getText(),
+                                       ((Contractor) Objects.requireNonNull(
+                                               dialogPanel.contractorInput.getSelectedItem())).getUuid(),
+                                       dialogPanel.getInvoiceItems());
+            } else {
+                return new ClosedInvoice(editedElement == null ? UUID.randomUUID().toString() : editedElement.getUuid(),
+                                         dialogPanel.idInput.getText(),
+                                         dialogPanel.dateInput.getText(),
+                                         ((Contractor) Objects.requireNonNull(
+                                                 dialogPanel.contractorInput.getSelectedItem())).getUuid(),
+                                         dialogPanel.getInvoiceItems());
+            }
         else return null;
     }
 }

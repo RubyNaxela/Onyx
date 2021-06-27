@@ -49,7 +49,7 @@ public final class DatabaseAccessor {
     }
 
     private Vector<ObjectRow> getInvoicesTableVector(LinkedList<? extends Invoice> invoices) {
-        invoices.sort(Comparator.comparing(Invoice::getDate));
+        invoices.sort(Comparator.comparing(Invoice::getDate).thenComparing(Invoice::getId));
         final Vector<ObjectRow> table = new Vector<>();
         for (Invoice invoice : invoices) {
             ObjectRow invoiceData = new ObjectRow(invoice);

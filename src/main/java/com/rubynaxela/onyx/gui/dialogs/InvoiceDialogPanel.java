@@ -12,9 +12,7 @@
 package com.rubynaxela.onyx.gui.dialogs;
 
 import com.rubynaxela.onyx.data.DatabaseAccessor;
-import com.rubynaxela.onyx.data.datatypes.Contractor;
-import com.rubynaxela.onyx.data.datatypes.Invoice;
-import com.rubynaxela.onyx.data.datatypes.InvoiceItem;
+import com.rubynaxela.onyx.data.datatypes.*;
 import com.rubynaxela.onyx.gui.InvoiceTableModel;
 import com.rubynaxela.onyx.gui.components.DefaultJPanel;
 import com.rubynaxela.onyx.gui.components.DefaultJScrollPane;
@@ -28,12 +26,13 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 public class InvoiceDialogPanel extends DefaultJPanel {
 
-    public final JLabel idLabel, dateLabel, contractorLabel, itemsLabel;
+    public final JLabel idLabel, dateLabel, contractorLabel, itemsLabel, clearedLabel;
     public final JTextField idInput, dateInput;
     public final JComboBox<Contractor> contractorInput;
-    public final JButton okButton;
+    public final JCheckBox clearedCheckBox;
     public final StaticJTable itemsTable;
     public final InvoiceTableModel itemsTableModel;
+    public final JButton okButton;
 
     public InvoiceDialogPanel(Invoice editedElement, DatabaseAccessor databaseAccessor) {
 
@@ -41,9 +40,11 @@ public class InvoiceDialogPanel extends DefaultJPanel {
         dateLabel = new JLabel(Reference.getString("label.invoice.date"));
         contractorLabel = new JLabel(Reference.getString("label.invoice.contractor"));
         itemsLabel = new JLabel(Reference.getString("label.invoice.items"));
+        clearedLabel = new JLabel(Reference.getString("label.invoice.cleared"));
         idInput = new JTextField();
         dateInput = new JTextField();
         contractorInput = new JComboBox<>(databaseAccessor.getContractorsVector());
+        clearedCheckBox = new JCheckBox();
         itemsTable = new StaticJTable();
         itemsTableModel = new InvoiceTableModel(editedElement);
         itemsTableModel.addTableModelListener(e -> itemsTable.resizeColumnWidth(15, 300));
@@ -56,14 +57,17 @@ public class InvoiceDialogPanel extends DefaultJPanel {
         register(new JLabel("   "), Utils.gridElementSettings(0, 2, 1, 2));
         register(contractorLabel, Utils.gridElementSettings(0, 3));
         register(contractorInput, Utils.gridElementSettings(1, 3));
-        register(itemsLabel, Utils.gridElementSettings(2, 0, 5, 1));
+        register(clearedLabel, Utils.gridElementSettings(0, 4));
+        register(clearedCheckBox, Utils.gridElementSettings(0, 5));
+        register(itemsLabel, Utils.gridElementSettings(2, 0, 7, 1));
         register(new DefaultJScrollPane(itemsTable, 900, 350),
-                 Utils.gridElementSettings(3, 0, 5, 1));
+                 Utils.gridElementSettings(3, 0, 7, 1));
 
         idInput.setText(editedElement != null ? editedElement.getId() : "");
         dateInput.setText(editedElement != null ? editedElement.getDate() : "");
         contractorInput.setSelectedItem(editedElement != null ?
                                         databaseAccessor.getObject(editedElement.getContractorUuid()) : null);
+        clearedCheckBox.setSelected(editedElement instanceof ClosedInvoice);
         itemsTable.setModel(itemsTableModel);
         itemsTable.resizeColumnWidth(15, 300);
 
