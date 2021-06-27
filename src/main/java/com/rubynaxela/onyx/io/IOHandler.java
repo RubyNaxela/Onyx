@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rubynaxela.onyx.Onyx;
 import com.rubynaxela.onyx.data.datatypes.raw.ImportedInvoice;
 import com.rubynaxela.onyx.data.datatypes.raw.RawDatabase;
-import com.rubynaxela.onyx.gui.dialogs.MessageDialogsHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +43,7 @@ public final class IOHandler {
     }
 
     public RawDatabase parseDatabase() {
+        if (!DATA_FILE.exists()) exportDatabase(RawDatabase.empty());
         try {
             return JSON_MAPPER.readValue(DATA_FILE, RawDatabase.class);
         } catch (NullPointerException | IOException e) {
