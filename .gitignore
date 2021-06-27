@@ -3,5 +3,6 @@
 /.gradle/
 /build/
 /build/classes/java/main/
+/.properties
 /database.json
 /dictionary.txt
