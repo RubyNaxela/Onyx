@@ -13,6 +13,7 @@ package com.rubynaxela.onyx.data.datatypes.raw;
 
 import com.rubynaxela.onyx.data.OnyxDatabase;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.*;
+import org.jetbrains.annotations.Contract;
 
 @SuppressWarnings("unused")
 public class RawDatabase {
@@ -37,6 +38,28 @@ public class RawDatabase {
         this.liabilities = database.getObjects(Liability.class).toArray(new Liability[0]);
         this.contributions = database.getObjects(Contribution.class).toArray(new Contribution[0]);
         this.payments = database.getObjects(Payment.class).toArray(new Payment[0]);
+    }
+
+    @Contract(value = "-> new", pure = true)
+    public static RawDatabase empty() {
+        final RawDatabase emptyDatabase = new RawDatabase();
+        emptyDatabase.companyName = "";
+        emptyDatabase.contractors = new Contractor[0];
+        emptyDatabase.openInvoices = new OpenInvoice[0];
+        emptyDatabase.closedInvoices = new ClosedInvoice[0];
+        emptyDatabase.claims = new Claim[0];
+        emptyDatabase.liabilities = new Liability[0];
+        emptyDatabase.contributions = new Contribution[0];
+        emptyDatabase.payments = new Payment[0];
+        return emptyDatabase;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public Contractor[] getContractors() {
