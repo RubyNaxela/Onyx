@@ -124,6 +124,7 @@ public final class MainWindow extends DefaultJFrame implements DropTargetListene
             }
             viewPanel.register(new DefaultJScrollPane(dataTable, 600, 350),
                                Utils.gridElementSettings(1, 0));
+            dataTableModel.setupTable();
         }
         pack();
 

@@ -41,9 +41,9 @@ public class OnyxTableModel extends DefaultTableModel {
     private final StaticJTable ownerTable;
     private final DefaultJButton addButton, editButton, removeButton;
 
-    public Identifiable currentObject;
     private Vector<ObjectRow> dataVector;
     private OnyxObjectsGroup currentObjects;
+    private Identifiable currentObject;
 
     public OnyxTableModel(DatabaseAccessor databaseAccessor, StaticJTable ownerTable,
                           DefaultJButton addButton, DefaultJButton editButton, DefaultJButton removeButton) {
@@ -53,7 +53,9 @@ public class OnyxTableModel extends DefaultTableModel {
         this.addButton = addButton;
         this.editButton = editButton;
         this.removeButton = removeButton;
+    }
 
+    public void setupTable() {
         ownerTable.setModel(this);
         ownerTable.getSelectionModel().addListSelectionListener(e -> {
             int rowIndex = ownerTable.getSelectedRow();
@@ -67,10 +69,6 @@ public class OnyxTableModel extends DefaultTableModel {
                 removeButton.setEnabled(false);
             }
         });
-    }
-
-    public Identifiable getCurrentObject() {
-        return currentObject;
     }
 
     public void display(OnyxObjectsGroup table) {
@@ -89,7 +87,6 @@ public class OnyxTableModel extends DefaultTableModel {
             setDataVector(dataVector = databaseAccessor.getContributionsTableVector(), operationsTableHeaders);
         else if (table == OnyxObjectsGroup.PAYMENTS)
             setDataVector(dataVector = databaseAccessor.getPaymentsTableVector(), operationsTableHeaders);
-
         addButton.setEnabled(true);
     }
 
@@ -99,6 +96,10 @@ public class OnyxTableModel extends DefaultTableModel {
 
     public OnyxObjectsGroup getCurrentObjects() {
         return currentObjects;
+    }
+
+    public Identifiable getCurrentObject() {
+        return currentObject;
     }
 
     public ObjectRow getRow(int index) {
