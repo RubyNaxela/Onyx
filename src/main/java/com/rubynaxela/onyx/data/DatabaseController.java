@@ -29,15 +29,17 @@ public final class DatabaseController {
         this.ioHandler = instance.getIOHandler();
     }
 
+    @SuppressWarnings("unchecked")
     public void loadDatabase() {
         final RawDatabase data = Objects.requireNonNull(ioHandler.parseDatabase());
-        database.getObjects().addAll(Arrays.asList(data.getContractors()));
-        database.getObjects().addAll(Arrays.asList(data.getOpenInvoices()));
-        database.getObjects().addAll(Arrays.asList(data.getClosedInvoices()));
-        database.getObjects().addAll(Arrays.asList(data.getClaims()));
-        database.getObjects().addAll(Arrays.asList(data.getLiabilities()));
-        database.getObjects().addAll(Arrays.asList(data.getContributions()));
-        database.getObjects().addAll(Arrays.asList(data.getPayments()));
+        database.init(data.getCompanyName(),
+                      Arrays.asList(data.getContractors()),
+                      Arrays.asList(data.getOpenInvoices()),
+                      Arrays.asList(data.getClosedInvoices()),
+                      Arrays.asList(data.getClaims()),
+                      Arrays.asList(data.getLiabilities()),
+                      Arrays.asList(data.getContributions()),
+                      Arrays.asList(data.getPayments()));
     }
 
     private void saveChanges() {

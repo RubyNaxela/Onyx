@@ -61,7 +61,7 @@ public final class MainWindow extends DefaultJFrame implements DropTargetListene
             final DefaultJPanel navigationButtonsPanel = new DefaultJPanel();
             navigationButtonsPanelWrapper.add(navigationButtonsPanel);
             {
-                final DefaultMutableTreeNode root = new DefaultMutableTreeNode("RubyNaxela");
+                final DefaultMutableTreeNode root = new DefaultMutableTreeNode(databaseAccessor.getCompanyName());
                 navigation = new JTree(root);
                 navigation.setShowsRootHandles(true);
                 {

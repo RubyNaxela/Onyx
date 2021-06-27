@@ -17,6 +17,7 @@ import com.rubynaxela.onyx.data.datatypes.databaseobjects.*;
 @SuppressWarnings("unused")
 public class RawDatabase {
 
+    private String companyName;
     private Contractor[] contractors;
     private OpenInvoice[] openInvoices;
     private ClosedInvoice[] closedInvoices;

@@ -11,7 +11,6 @@
 
 package com.rubynaxela.onyx.data;
 
-import com.rubynaxela.onyx.data.datatypes.databaseobjects.Identifiable;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.*;
 import org.jetbrains.annotations.Contract;
@@ -28,6 +27,10 @@ public final class DatabaseAccessor {
 
     public DatabaseAccessor(OnyxDatabase database) {
         this.database = database;
+    }
+
+    public String getCompanyName() {
+        return database.getCompanyName();
     }
 
     @Contract(value = "-> new", pure = true)

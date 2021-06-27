@@ -15,10 +15,22 @@ import com.rubynaxela.onyx.data.datatypes.databaseobjects.Identifiable;
 import org.jetbrains.annotations.Contract;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public final class OnyxDatabase {
 
     private final LinkedList<? super Identifiable> objects = new LinkedList<>();
+    private String companyName;
+
+    @SuppressWarnings("unchecked")
+    public void init(String companyName, List<? extends Identifiable>... lists) {
+        this.companyName = companyName;
+        for (List<? extends Identifiable> list : lists) objects.addAll(list);
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
 
     public LinkedList<? super Identifiable> getObjects() {
         return objects;
