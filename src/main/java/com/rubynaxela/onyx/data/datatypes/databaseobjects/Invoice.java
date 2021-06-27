@@ -9,14 +9,14 @@
  * Written by Jacek Pawelski <rubynaxela@gmail.com>
  */
 
-package com.rubynaxela.onyx.data.datatypes;
+package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.Monetary;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.Quantity;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.TaxRate;
 import com.rubynaxela.onyx.data.datatypes.raw.ImportedInvoice;
-import com.rubynaxela.onyx.util.TaxRate;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Vector;
@@ -68,7 +68,7 @@ public abstract class Invoice implements Identifiable {
     public Vector<ObjectRow> getItemsTableVector() {
         final Vector<ObjectRow> table = new Vector<>();
         for (InvoiceItem item : items) {
-            final double taxRate = TaxRate.get(item.getTax()) / (1 + TaxRate.get(item.getTax()));
+            final double taxRate = TaxRate.get(item.getTax()).rate / (1 + TaxRate.get(item.getTax()).rate);
             final Monetary itemAmount = item.calculateAmount();
             ObjectRow itemData = new ObjectRow(item);
             itemData.add(item.getDate());

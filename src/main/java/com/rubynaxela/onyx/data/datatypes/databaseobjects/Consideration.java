@@ -9,8 +9,8 @@
  * Written by Jacek Pawelski <rubynaxela@gmail.com>
  */
 
-package com.rubynaxela.onyx.data.datatypes;
+package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
-public class Payment extends Consideration {
+public abstract class Consideration extends Operation {
 
 }

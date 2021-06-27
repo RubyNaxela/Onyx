@@ -9,8 +9,11 @@
  * Written by Jacek Pawelski <rubynaxela@gmail.com>
  */
 
-package com.rubynaxela.onyx.data.datatypes;
+package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
-public class Liability extends Transaction {
+import java.util.UUID;
 
+public interface Identifiable {
+
+    String getUuid();
 }

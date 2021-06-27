@@ -11,7 +11,7 @@
 
 package com.rubynaxela.onyx.data.datatypes.raw;
 
-import com.rubynaxela.onyx.data.datatypes.InvoiceItem;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.InvoiceItem;
 
 public class ImportedInvoice {
 

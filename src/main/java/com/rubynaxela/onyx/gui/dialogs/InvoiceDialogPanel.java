@@ -12,10 +12,11 @@
 package com.rubynaxela.onyx.gui.dialogs;
 
 import com.rubynaxela.onyx.data.DatabaseAccessor;
-import com.rubynaxela.onyx.data.datatypes.ClosedInvoice;
-import com.rubynaxela.onyx.data.datatypes.Contractor;
-import com.rubynaxela.onyx.data.datatypes.Invoice;
-import com.rubynaxela.onyx.data.datatypes.InvoiceItem;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.PaymentMethod;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.ClosedInvoice;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Contractor;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Invoice;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.InvoiceItem;
 import com.rubynaxela.onyx.gui.InvoiceTableModel;
 import com.rubynaxela.onyx.gui.components.DefaultJPanel;
 import com.rubynaxela.onyx.gui.components.DefaultJScrollPane;
@@ -33,7 +34,7 @@ public class InvoiceDialogPanel extends DefaultJPanel {
     public final JTextField idInput, dateInput;
     public final JComboBox<Contractor> contractorInput;
     public final JCheckBox clearedCheckBox;
-    public final JComboBox<ClosedInvoice.PaymentMethod> paymentMethodInput;
+    public final JComboBox<PaymentMethod> paymentMethodInput;
     public final StaticJTable itemsTable;
     public final InvoiceTableModel itemsTableModel;
     public final JButton okButton;
@@ -52,7 +53,7 @@ public class InvoiceDialogPanel extends DefaultJPanel {
         dateInput = new JTextField();
         contractorInput = new JComboBox<>(databaseAccessor.getContractorsVector());
         clearedCheckBox = new JCheckBox();
-        paymentMethodInput = new JComboBox<>(ClosedInvoice.PaymentMethod.values());
+        paymentMethodInput = new JComboBox<>(PaymentMethod.values());
         itemsTable = new StaticJTable();
         itemsTableModel = new InvoiceTableModel(editedElement);
         itemsTableModel.addTableModelListener(e -> itemsTable.resizeColumnWidth(15, 300));
@@ -79,7 +80,7 @@ public class InvoiceDialogPanel extends DefaultJPanel {
         clearedCheckBox.setSelected(clearedInvoice);
         paymentMethodLabel.setEnabled(clearedInvoice);
         if (clearedInvoice)
-            paymentMethodInput.setSelectedItem(ClosedInvoice.PaymentMethod.get(
+            paymentMethodInput.setSelectedItem(PaymentMethod.get(
                     ((ClosedInvoice) editedElement).getPaymentMethodUuid()));
         paymentMethodInput.setEnabled(clearedInvoice);
         itemsTable.setModel(itemsTableModel);

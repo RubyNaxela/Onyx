@@ -9,7 +9,7 @@
  * Written by Jacek Pawelski <rubynaxela@gmail.com>
  */
 
-package com.rubynaxela.onyx.util;
+package com.rubynaxela.onyx.data.datatypes.auxiliary;
 
 import org.jetbrains.annotations.Nullable;
 

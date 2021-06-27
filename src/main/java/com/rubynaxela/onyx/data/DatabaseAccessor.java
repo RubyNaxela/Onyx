@@ -11,8 +11,9 @@
 
 package com.rubynaxela.onyx.data;
 
-import com.rubynaxela.onyx.data.datatypes.*;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Identifiable;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.*;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 

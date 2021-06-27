@@ -11,7 +11,7 @@
 
 package com.rubynaxela.onyx.gui;
 
-import com.rubynaxela.onyx.data.datatypes.Invoice;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Invoice;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
 import com.rubynaxela.onyx.util.Reference;
 

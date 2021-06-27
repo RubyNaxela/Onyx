@@ -11,7 +11,7 @@
 
 package com.rubynaxela.onyx.gui.dialogs;
 
-import com.rubynaxela.onyx.data.datatypes.Contractor;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Contractor;
 import com.rubynaxela.onyx.gui.components.DefaultJPanel;
 import com.rubynaxela.onyx.util.Reference;
 import com.rubynaxela.onyx.util.Utils;

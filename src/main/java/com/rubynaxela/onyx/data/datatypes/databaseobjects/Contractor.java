@@ -9,7 +9,7 @@
  * Written by Jacek Pawelski <rubynaxela@gmail.com>
  */
 
-package com.rubynaxela.onyx.data.datatypes;
+package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
 public class Contractor implements Identifiable {
 

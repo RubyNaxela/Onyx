@@ -12,7 +12,6 @@
 package com.rubynaxela.onyx.gui;
 
 import com.rubynaxela.onyx.data.DatabaseAccessor;
-import com.rubynaxela.onyx.data.datatypes.Identifiable;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.LeafLabel;
 import com.rubynaxela.onyx.gui.components.*;
 import com.rubynaxela.onyx.util.Reference;
@@ -45,7 +44,6 @@ public final class MainWindow extends DefaultJFrame implements DropTargetListene
 
     public final StaticJTable dataTable;
     public final OnyxTableModel dataTableModel;
-    public Identifiable currentElement;
 
     private FileDropListener fileDropListener;
 
@@ -54,7 +52,7 @@ public final class MainWindow extends DefaultJFrame implements DropTargetListene
         setTitle(title);
 
         dataTable = new StaticJTable();
-        dataTableModel = new OnyxTableModel(databaseAccessor);
+        dataTableModel = new OnyxTableModel(databaseAccessor, dataTable, addButton, editButton, removeButton);
         dataTableModel.addTableModelListener(e -> dataTable.resizeColumnWidth(15, 300));
 
         final JPanel navigationButtonsPanelWrapper = new JPanel();
@@ -124,7 +122,6 @@ public final class MainWindow extends DefaultJFrame implements DropTargetListene
                     editorButtonsPanel.register(removeButton, Utils.gridElementSettings(0, 2));
                 }
             }
-            dataTable.setModel(dataTableModel);
             viewPanel.register(new DefaultJScrollPane(dataTable, 600, 350),
                                Utils.gridElementSettings(1, 0));
         }

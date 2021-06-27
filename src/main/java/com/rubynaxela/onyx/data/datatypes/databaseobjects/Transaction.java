@@ -9,11 +9,8 @@
  * Written by Jacek Pawelski <rubynaxela@gmail.com>
  */
 
-package com.rubynaxela.onyx.data.datatypes;
+package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
-import java.util.UUID;
+public abstract class Transaction extends Operation {
 
-public interface Identifiable {
-
-    String getUuid();
 }

@@ -12,8 +12,11 @@
 package com.rubynaxela.onyx.gui;
 
 import com.rubynaxela.onyx.data.DatabaseAccessor;
-import com.rubynaxela.onyx.data.datatypes.OnyxObjects;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Identifiable;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.OnyxObjectsGroup;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
+import com.rubynaxela.onyx.gui.components.DefaultJButton;
+import com.rubynaxela.onyx.gui.components.StaticJTable;
 import com.rubynaxela.onyx.util.Reference;
 
 import javax.swing.table.DefaultTableModel;
@@ -35,38 +38,67 @@ public class OnyxTableModel extends DefaultTableModel {
                                                                 Reference.getString("label.operation.amount")));
 
     private final DatabaseAccessor databaseAccessor;
-    private Vector<ObjectRow> dataVector;
-    private OnyxObjects currentTable;
+    private final StaticJTable ownerTable;
+    private final DefaultJButton addButton, editButton, removeButton;
 
-    public OnyxTableModel(DatabaseAccessor databaseAccessor) {
+    public Identifiable currentObject;
+    private Vector<ObjectRow> dataVector;
+    private OnyxObjectsGroup currentObjects;
+
+    public OnyxTableModel(DatabaseAccessor databaseAccessor, StaticJTable ownerTable,
+                          DefaultJButton addButton, DefaultJButton editButton, DefaultJButton removeButton) {
         super();
         this.databaseAccessor = databaseAccessor;
+        this.ownerTable = ownerTable;
+        this.addButton = addButton;
+        this.editButton = editButton;
+        this.removeButton = removeButton;
+
+        ownerTable.setModel(this);
+        ownerTable.getSelectionModel().addListSelectionListener(e -> {
+            int rowIndex = ownerTable.getSelectedRow();
+            if (rowIndex >= 0 && this.getCurrentObjects() != null) {
+                currentObject = databaseAccessor.getObject(this.getRow(rowIndex).getObjectUuid());
+                editButton.setEnabled(true);
+                removeButton.setEnabled(true);
+            } else {
+                currentObject = null;
+                editButton.setEnabled(false);
+                removeButton.setEnabled(false);
+            }
+        });
     }
 
-    public void display(OnyxObjects table) {
-        currentTable = table;
-        if (table == OnyxObjects.CONTRACTORS)
+    public Identifiable getCurrentObject() {
+        return currentObject;
+    }
+
+    public void display(OnyxObjectsGroup table) {
+        currentObjects = table;
+        if (table == OnyxObjectsGroup.CONTRACTORS)
             setDataVector(dataVector = databaseAccessor.getContractorsTableVector(), contractorsTableHeaders);
-        else if (table == OnyxObjects.OPEN_INVOICES)
+        else if (table == OnyxObjectsGroup.OPEN_INVOICES)
             setDataVector(dataVector = databaseAccessor.getOpenInvoicesTableVector(), invoicesTableHeaders);
-        else if (table == OnyxObjects.CLOSED_INVOICES)
+        else if (table == OnyxObjectsGroup.CLOSED_INVOICES)
             setDataVector(dataVector = databaseAccessor.getClosedInvoicesTableVector(), invoicesTableHeaders);
-        else if (table == OnyxObjects.CLAIMS)
+        else if (table == OnyxObjectsGroup.CLAIMS)
             setDataVector(dataVector = databaseAccessor.getClaimsTableVector(), operationsTableHeaders);
-        else if (table == OnyxObjects.LIABILITIES)
+        else if (table == OnyxObjectsGroup.LIABILITIES)
             setDataVector(dataVector = databaseAccessor.getLiabilitiesTableVector(), operationsTableHeaders);
-        else if (table == OnyxObjects.CONTRIBUTIONS)
+        else if (table == OnyxObjectsGroup.CONTRIBUTIONS)
             setDataVector(dataVector = databaseAccessor.getContributionsTableVector(), operationsTableHeaders);
-        else if (table == OnyxObjects.PAYMENTS)
+        else if (table == OnyxObjectsGroup.PAYMENTS)
             setDataVector(dataVector = databaseAccessor.getPaymentsTableVector(), operationsTableHeaders);
+
+        addButton.setEnabled(true);
     }
 
     public void refresh() {
-        display(currentTable);
+        display(currentObjects);
     }
 
-    public OnyxObjects getCurrentTable() {
-        return currentTable;
+    public OnyxObjectsGroup getCurrentObjects() {
+        return currentObjects;
     }
 
     public ObjectRow getRow(int index) {

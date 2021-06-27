@@ -9,8 +9,8 @@
  * Written by Jacek Pawelski <rubynaxela@gmail.com>
  */
 
-package com.rubynaxela.onyx.data.datatypes;
+package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
-public enum OnyxObjects {
-    CONTRACTORS, OPEN_INVOICES, CLOSED_INVOICES, CLAIMS, LIABILITIES, CONTRIBUTIONS, PAYMENTS
+public class Payment extends Consideration {
+
 }

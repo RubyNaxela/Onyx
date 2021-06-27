@@ -11,7 +11,7 @@
 
 package com.rubynaxela.onyx.data;
 
-import com.rubynaxela.onyx.data.datatypes.Identifiable;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Identifiable;
 import org.jetbrains.annotations.Contract;
 
 import java.util.LinkedList;

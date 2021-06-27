@@ -9,8 +9,8 @@
  * Written by Jacek Pawelski <rubynaxela@gmail.com>
  */
 
-package com.rubynaxela.onyx.data.datatypes;
+package com.rubynaxela.onyx.data.datatypes.auxiliary;
 
-public abstract class Transaction extends Operation {
-
+public enum OnyxObjectsGroup {
+    CONTRACTORS, OPEN_INVOICES, CLOSED_INVOICES, CLAIMS, LIABILITIES, CONTRIBUTIONS, PAYMENTS
 }

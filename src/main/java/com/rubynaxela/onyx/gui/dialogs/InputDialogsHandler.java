@@ -12,10 +12,11 @@
 package com.rubynaxela.onyx.gui.dialogs;
 
 import com.rubynaxela.onyx.data.DatabaseAccessor;
-import com.rubynaxela.onyx.data.datatypes.ClosedInvoice;
-import com.rubynaxela.onyx.data.datatypes.Contractor;
-import com.rubynaxela.onyx.data.datatypes.Invoice;
-import com.rubynaxela.onyx.data.datatypes.OpenInvoice;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.PaymentMethod;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.ClosedInvoice;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Contractor;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Invoice;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.OpenInvoice;
 import com.rubynaxela.onyx.util.Reference;
 
 import javax.swing.*;
@@ -67,7 +68,7 @@ public class InputDialogsHandler {
                                          dialogPanel.dateInput.getText(),
                                          ((Contractor) Objects.requireNonNull(
                                                  dialogPanel.contractorInput.getSelectedItem())).getUuid(),
-                                         ((ClosedInvoice.PaymentMethod) Objects.requireNonNull(
+                                         ((PaymentMethod) Objects.requireNonNull(
                                                  dialogPanel.paymentMethodInput.getSelectedItem())).getUuid(),
                                          dialogPanel.getInvoiceItems());
             }

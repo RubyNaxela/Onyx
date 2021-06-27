@@ -15,8 +15,12 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 import com.rubynaxela.onyx.Onyx;
 import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.DatabaseController;
-import com.rubynaxela.onyx.data.datatypes.*;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.LeafLabel;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.OnyxObjectsGroup;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.ClosedInvoice;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Contractor;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Invoice;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.OpenInvoice;
 import com.rubynaxela.onyx.data.datatypes.raw.ImportedInvoice;
 import com.rubynaxela.onyx.gui.dialogs.InputDialogsHandler;
 import com.rubynaxela.onyx.gui.dialogs.MessageDialogsHandler;
@@ -69,43 +73,46 @@ public class GUIManager {
     public void initMainWindow() {
 
         final ActionListener addButtonAction = e -> {
-            if (window.dataTableModel.getCurrentTable() == OnyxObjects.CONTRACTORS) {
+            if (window.dataTableModel.getCurrentObjects() == OnyxObjectsGroup.CONTRACTORS) {
                 final Contractor contractor = inputDialogsHandler.showContractorDialog(null);
                 if (contractor != null) {
                     databaseController.addEntry(contractor);
-                    window.dataTableModel.display(OnyxObjects.CONTRACTORS);
+                    window.dataTableModel.display(OnyxObjectsGroup.CONTRACTORS);
                 }
-            } else if (window.dataTableModel.getCurrentTable() == OnyxObjects.OPEN_INVOICES) {
+            } else if (window.dataTableModel.getCurrentObjects() == OnyxObjectsGroup.OPEN_INVOICES) {
                 final Invoice invoice = inputDialogsHandler.showInvoiceDialog(null);
                 if (invoice != null) {
                     databaseController.addEntry(invoice);
-                    window.dataTableModel.display(OnyxObjects.OPEN_INVOICES);
+                    window.dataTableModel.display(OnyxObjectsGroup.OPEN_INVOICES);
                 }
-            } else if (window.dataTableModel.getCurrentTable() == OnyxObjects.CLOSED_INVOICES) {
+            } else if (window.dataTableModel.getCurrentObjects() == OnyxObjectsGroup.CLOSED_INVOICES) {
                 final Invoice invoice = inputDialogsHandler.showInvoiceDialog(null);
                 if (invoice != null) {
                     databaseController.addEntry(invoice);
-                    window.dataTableModel.display(OnyxObjects.CLOSED_INVOICES);
+                    window.dataTableModel.display(OnyxObjectsGroup.CLOSED_INVOICES);
                 }
             }
         };
         final ActionListener editButtonAction = e -> {
-            if (window.dataTableModel.getCurrentTable() == OnyxObjects.CONTRACTORS) {
-                final Contractor contractor = inputDialogsHandler.showContractorDialog((Contractor) window.currentElement);
+            if (window.dataTableModel.getCurrentObjects() == OnyxObjectsGroup.CONTRACTORS) {
+                final Contractor contractor = inputDialogsHandler.showContractorDialog(
+                        (Contractor) window.dataTableModel.getCurrentObject());
                 if (contractor != null) {
-                    databaseController.editEntry(window.currentElement, contractor);
+                    databaseController.editEntry(window.dataTableModel.getCurrentObject(), contractor);
                     window.dataTableModel.refresh();
                 }
-            } else if (window.dataTableModel.getCurrentTable() == OnyxObjects.OPEN_INVOICES) {
-                final Invoice invoice = inputDialogsHandler.showInvoiceDialog((OpenInvoice) window.currentElement);
+            } else if (window.dataTableModel.getCurrentObjects() == OnyxObjectsGroup.OPEN_INVOICES) {
+                final Invoice invoice = inputDialogsHandler.showInvoiceDialog(
+                        (OpenInvoice) window.dataTableModel.getCurrentObject());
                 if (invoice != null) {
-                    databaseController.editEntry(window.currentElement, invoice);
+                    databaseController.editEntry(window.dataTableModel.getCurrentObject(), invoice);
                     window.dataTableModel.refresh();
                 }
-            } else if (window.dataTableModel.getCurrentTable() == OnyxObjects.CLOSED_INVOICES) {
-                final Invoice invoice = inputDialogsHandler.showInvoiceDialog((ClosedInvoice) window.currentElement);
+            } else if (window.dataTableModel.getCurrentObjects() == OnyxObjectsGroup.CLOSED_INVOICES) {
+                final Invoice invoice = inputDialogsHandler.showInvoiceDialog(
+                        (ClosedInvoice) window.dataTableModel.getCurrentObject());
                 if (invoice != null) {
-                    databaseController.editEntry(window.currentElement, invoice);
+                    databaseController.editEntry(window.dataTableModel.getCurrentObject(), invoice);
                     window.dataTableModel.refresh();
                 }
             }
@@ -113,7 +120,7 @@ public class GUIManager {
         final ActionListener removeButtonAction = e -> {
             if (messageDialogsHandler.askYesNoQuestion(
                     Reference.getString("message.action.confirm_remove"), false)) {
-                databaseController.removeEntry(window.currentElement);
+                databaseController.removeEntry(window.dataTableModel.getCurrentObject());
                 window.dataTableModel.refresh();
             }
         };
@@ -140,8 +147,9 @@ public class GUIManager {
                             final Invoice invoice = inputDialogsHandler.showInvoiceDialog(Invoice.imported(imported));
                             if (invoice != null) {
                                 databaseController.addEntry(invoice);
-                                if (invoice instanceof OpenInvoice) window.dataTableModel.display(OnyxObjects.OPEN_INVOICES);
-                                else window.dataTableModel.display(OnyxObjects.CLOSED_INVOICES);
+                                if (invoice instanceof OpenInvoice)
+                                    window.dataTableModel.display(OnyxObjectsGroup.OPEN_INVOICES);
+                                else window.dataTableModel.display(OnyxObjectsGroup.CLOSED_INVOICES);
                             }
                         } catch (Exception ex) {
                             messageDialogsHandler.showError(Reference.getFormatString("message.error.unrecognized_file",
@@ -165,34 +173,19 @@ public class GUIManager {
                 final LeafLabel selectedNodeLabel = (LeafLabel) selectedNode;
 
                 if (selectedNodeLabel.equals(MainWindow.contractorsLabel))
-                    window.dataTableModel.display(OnyxObjects.CONTRACTORS);
+                    window.dataTableModel.display(OnyxObjectsGroup.CONTRACTORS);
                 else if (selectedNodeLabel.equals(MainWindow.openInvoicesLabel))
-                    window.dataTableModel.display(OnyxObjects.OPEN_INVOICES);
+                    window.dataTableModel.display(OnyxObjectsGroup.OPEN_INVOICES);
                 else if (selectedNodeLabel.equals(MainWindow.closedInvoicesLabel))
-                    window.dataTableModel.display(OnyxObjects.CLOSED_INVOICES);
+                    window.dataTableModel.display(OnyxObjectsGroup.CLOSED_INVOICES);
                 else if (selectedNodeLabel.equals(MainWindow.claimsLabel))
-                    window.dataTableModel.display(OnyxObjects.CLAIMS);
+                    window.dataTableModel.display(OnyxObjectsGroup.CLAIMS);
                 else if (selectedNodeLabel.equals(MainWindow.liabilitiesLabel))
-                    window.dataTableModel.display(OnyxObjects.LIABILITIES);
+                    window.dataTableModel.display(OnyxObjectsGroup.LIABILITIES);
                 else if (selectedNodeLabel.equals(MainWindow.contributionsLabel))
-                    window.dataTableModel.display(OnyxObjects.CONTRIBUTIONS);
+                    window.dataTableModel.display(OnyxObjectsGroup.CONTRIBUTIONS);
                 else if (selectedNodeLabel.equals(MainWindow.paymentsLabel))
-                    window.dataTableModel.display(OnyxObjects.PAYMENTS);
-
-                window.addButton.setEnabled(true);
-            }
-        });
-
-        window.dataTable.getSelectionModel().addListSelectionListener(e -> {
-            int rowIndex = window.dataTable.getSelectedRow();
-            if (rowIndex >= 0 && window.dataTableModel.getCurrentTable() != null) {
-                window.currentElement = databaseAccessor.getObject(window.dataTableModel.getRow(rowIndex).getObjectUuid());
-                window.editButton.setEnabled(true);
-                window.removeButton.setEnabled(true);
-            } else {
-                window.currentElement = null;
-                window.editButton.setEnabled(false);
-                window.removeButton.setEnabled(false);
+                    window.dataTableModel.display(OnyxObjectsGroup.PAYMENTS);
             }
         });
 

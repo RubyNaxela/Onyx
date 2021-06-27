@@ -11,7 +11,7 @@
 
 package com.rubynaxela.onyx.data.datatypes.auxiliary;
 
-import com.rubynaxela.onyx.data.datatypes.Identifiable;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Identifiable;
 
 import java.util.UUID;
 
