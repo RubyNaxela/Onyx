@@ -12,6 +12,7 @@
 package com.rubynaxela.onyx.gui.dialogs;
 
 import com.rubynaxela.onyx.data.DatabaseAccessor;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.Monetary;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectType;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.PaymentMethod;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.*;
@@ -37,7 +38,7 @@ public class InputDialogsHandler {
     public Contractor showContractorDialog(@Nullable Contractor editedObject) {
         final ContractorDialogPanel dialogPanel = new ContractorDialogPanel(editedObject);
         final String title = editedObject == null ? Reference.getString("title.dialog.contractor.new")
-                                                   : Reference.getString("title.dialog.contractor.edit");
+                                                  : Reference.getString("title.dialog.contractor.edit");
         if (JOptionPane.showOptionDialog(anchor, dialogPanel, title, JOptionPane.YES_NO_OPTION,
                                          JOptionPane.QUESTION_MESSAGE, Reference.getIcon("dialog.data"),
                                          new Object[]{dialogPanel.okButton, Reference.getString("button.cancel")},
@@ -52,38 +53,109 @@ public class InputDialogsHandler {
     public Invoice showInvoiceDialog(@Nullable Invoice editedObject) {
         final InvoiceDialogPanel dialogPanel = new InvoiceDialogPanel(editedObject, databaseAccessor);
         final String title = editedObject == null ? Reference.getString("title.dialog.invoice.new")
-                                                   : Reference.getString("title.dialog.invoice.edit");
+                                                  : Reference.getString("title.dialog.invoice.edit");
         if (JOptionPane.showOptionDialog(anchor, dialogPanel, title, JOptionPane.YES_NO_OPTION,
                                          JOptionPane.QUESTION_MESSAGE, Reference.getIcon("dialog.data"),
                                          new Object[]{dialogPanel.okButton, Reference.getString("button.cancel")},
                                          dialogPanel.okButton) == 0)
-            if (!dialogPanel.clearedCheckBox.isSelected()) {
+            if (!dialogPanel.clearedCheckBox.isSelected())
                 return new OpenInvoice(editedObject == null ? UUID.randomUUID().toString() : editedObject.getUuid(),
                                        dialogPanel.idInput.getText(),
                                        dialogPanel.dateInput.getText(),
                                        ((Contractor) Objects.requireNonNull(
                                                dialogPanel.contractorInput.getSelectedItem())).getUuid(),
                                        dialogPanel.getInvoiceItems());
-            } else {
-                return new ClosedInvoice(editedObject == null ? UUID.randomUUID().toString() : editedObject.getUuid(),
-                                         dialogPanel.idInput.getText(),
-                                         dialogPanel.dateInput.getText(),
-                                         ((Contractor) Objects.requireNonNull(
-                                                 dialogPanel.contractorInput.getSelectedItem())).getUuid(),
-                                         ((PaymentMethod) Objects.requireNonNull(
-                                                 dialogPanel.paymentMethodInput.getSelectedItem())).getUuid(),
-                                         dialogPanel.getInvoiceItems());
-            }
+            else return new ClosedInvoice(editedObject == null ? UUID.randomUUID().toString() : editedObject.getUuid(),
+                                          dialogPanel.idInput.getText(),
+                                          dialogPanel.dateInput.getText(),
+                                          ((Contractor) Objects.requireNonNull(
+                                                  dialogPanel.contractorInput.getSelectedItem())).getUuid(),
+                                          ((PaymentMethod) Objects.requireNonNull(
+                                                  dialogPanel.paymentMethodInput.getSelectedItem())).getUuid(),
+                                          dialogPanel.getInvoiceItems());
+
+        else return null;
+    }
+
+    @Nullable
+    public Claim showClaimDialog(@Nullable Claim editedObject) {
+        final OperationDialogPanel dialogPanel = new OperationDialogPanel(editedObject, databaseAccessor);
+        final String title = editedObject == null ? Reference.getString("title.dialog.operation.new")
+                                                  : Reference.getString("title.dialog.operation.edit");
+        if (JOptionPane.showOptionDialog(anchor, dialogPanel, title, JOptionPane.YES_NO_OPTION,
+                                         JOptionPane.QUESTION_MESSAGE, Reference.getIcon("dialog.data"),
+                                         new Object[]{dialogPanel.okButton, Reference.getString("button.cancel")},
+                                         dialogPanel.okButton) == 0)
+            return new Claim(editedObject == null ? UUID.randomUUID().toString() : editedObject.getUuid(),
+                             dialogPanel.dateInput.getText(),
+                             ((Contractor) Objects.requireNonNull(dialogPanel.contractorInput.getSelectedItem())).getUuid(),
+                             dialogPanel.descriptionInput.getText(),
+                             new Monetary(dialogPanel.amountInput.getText()).toDouble());
+        else return null;
+    }
+
+    @Nullable
+    public Liability showLiabilityDialog(@Nullable Liability editedObject) {
+        final OperationDialogPanel dialogPanel = new OperationDialogPanel(editedObject, databaseAccessor);
+        final String title = editedObject == null ? Reference.getString("title.dialog.operation.new")
+                                                  : Reference.getString("title.dialog.operation.edit");
+        if (JOptionPane.showOptionDialog(anchor, dialogPanel, title, JOptionPane.YES_NO_OPTION,
+                                         JOptionPane.QUESTION_MESSAGE, Reference.getIcon("dialog.data"),
+                                         new Object[]{dialogPanel.okButton, Reference.getString("button.cancel")},
+                                         dialogPanel.okButton) == 0)
+            return new Liability(editedObject == null ? UUID.randomUUID().toString() : editedObject.getUuid(),
+                                 dialogPanel.dateInput.getText(),
+                                 ((Contractor) Objects.requireNonNull(dialogPanel.contractorInput.getSelectedItem())).getUuid(),
+                                 dialogPanel.descriptionInput.getText(),
+                                 new Monetary(dialogPanel.amountInput.getText()).toDouble());
+        else return null;
+    }
+
+    @Nullable
+    public Contribution showContributionDialog(@Nullable Contribution editedObject) {
+        final OperationDialogPanel dialogPanel = new OperationDialogPanel(editedObject, databaseAccessor);
+        final String title = editedObject == null ? Reference.getString("title.dialog.operation.new")
+                                                  : Reference.getString("title.dialog.operation.edit");
+        if (JOptionPane.showOptionDialog(anchor, dialogPanel, title, JOptionPane.YES_NO_OPTION,
+                                         JOptionPane.QUESTION_MESSAGE, Reference.getIcon("dialog.data"),
+                                         new Object[]{dialogPanel.okButton, Reference.getString("button.cancel")},
+                                         dialogPanel.okButton) == 0)
+            return new Contribution(editedObject == null ? UUID.randomUUID().toString() : editedObject.getUuid(),
+                                    dialogPanel.dateInput.getText(),
+                                    ((Contractor) Objects.requireNonNull(
+                                            dialogPanel.contractorInput.getSelectedItem())).getUuid(),
+                                    dialogPanel.descriptionInput.getText(),
+                                    new Monetary(dialogPanel.amountInput.getText()).toDouble());
+        else return null;
+    }
+
+    @Nullable
+    public Payment showPaymentDialog(@Nullable Payment editedObject) {
+        final OperationDialogPanel dialogPanel = new OperationDialogPanel(editedObject, databaseAccessor);
+        final String title = editedObject == null ? Reference.getString("title.dialog.operation.new")
+                                                  : Reference.getString("title.dialog.operation.edit");
+        if (JOptionPane.showOptionDialog(anchor, dialogPanel, title, JOptionPane.YES_NO_OPTION,
+                                         JOptionPane.QUESTION_MESSAGE, Reference.getIcon("dialog.data"),
+                                         new Object[]{dialogPanel.okButton, Reference.getString("button.cancel")},
+                                         dialogPanel.okButton) == 0)
+            return new Payment(editedObject == null ? UUID.randomUUID().toString() : editedObject.getUuid(),
+                               dialogPanel.dateInput.getText(),
+                               ((Contractor) Objects.requireNonNull(dialogPanel.contractorInput.getSelectedItem())).getUuid(),
+                               dialogPanel.descriptionInput.getText(),
+                               new Monetary(dialogPanel.amountInput.getText()).toDouble());
         else return null;
     }
 
     @Nullable
     public Identifiable showObjectDialog(@NotNull ObjectType group, @Nullable Identifiable editedObject) {
         final Identifiable object;
-        if (group == ObjectType.CONTRACTOR)
-            object = showContractorDialog((Contractor) editedObject);
-        else if (group == ObjectType.OPEN_INVOICE || group == ObjectType.CLOSED_INVOICE)
-            object = showInvoiceDialog((Invoice) editedObject);
+        if (group == ObjectType.CONTRACTOR) object = showContractorDialog((Contractor) editedObject);
+        else if (group == ObjectType.OPEN_INVOICE ||
+                 group == ObjectType.CLOSED_INVOICE) object = showInvoiceDialog((Invoice) editedObject);
+        else if (group == ObjectType.CLAIM) object = showClaimDialog((Claim) editedObject);
+        else if (group == ObjectType.LIABILITY) object = showLiabilityDialog((Liability) editedObject);
+        else if (group == ObjectType.CONTRIBUTION) object = showContributionDialog((Contribution) editedObject);
+        else if (group == ObjectType.PAYMENT) object = showPaymentDialog((Payment) editedObject);
         else object = null;
         return object;
     }

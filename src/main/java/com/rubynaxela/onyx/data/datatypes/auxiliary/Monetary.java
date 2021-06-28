@@ -44,6 +44,10 @@ public class Monetary {
         this.hundredthsPart = sign * _hundredthsPart;
     }
 
+    public Monetary(String amount) {
+        this(Double.parseDouble(amount.replace(",", ".")));
+    }
+
     public void add(@NotNull Monetary other) {
         this.wholePart += other.wholePart + (this.hundredthsPart + other.hundredthsPart) / 100;
         this.hundredthsPart = (this.hundredthsPart + other.hundredthsPart) % 100;
@@ -67,6 +71,10 @@ public class Monetary {
         final Monetary product = new Monetary(wholePart, hundredthsPart);
         product.multiply(factor);
         return product;
+    }
+
+    public double toDouble() {
+        return wholePart + 0.01 * hundredthsPart;
     }
 
     @Override

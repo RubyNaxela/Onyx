@@ -13,8 +13,8 @@ package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
 public abstract class Operation implements Identifiable {
 
-    private String uuid, date, contractorUuid, description;
-    private double amount;
+    protected String uuid, date, contractorUuid, description;
+    protected double amount;
 
     public String getDate() {
         return date;

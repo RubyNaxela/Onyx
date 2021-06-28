@@ -11,6 +11,17 @@
 
 package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
+@SuppressWarnings("unused")
 public class Claim extends Transaction {
 
+    public Claim() {
+    }
+
+    public Claim(String uuid, String date, String contractorUuid, String description, double amount) {
+        this.uuid = uuid;
+        this.date = date;
+        this.contractorUuid = contractorUuid;
+        this.description = description;
+        this.amount = amount;
+    }
 }

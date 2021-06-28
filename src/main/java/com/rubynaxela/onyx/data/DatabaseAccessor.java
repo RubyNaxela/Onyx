@@ -12,6 +12,7 @@
 package com.rubynaxela.onyx.data;
 
 import com.rubynaxela.onyx.Onyx;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.Monetary;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectType;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.*;
@@ -97,7 +98,7 @@ public final class DatabaseAccessor {
             operationData.add(operation.getDate());
             operationData.add(database.getObject(operation.getContractorUuid()).toString());
             operationData.add(operation.getDescription());
-            operationData.add(operation.getAmount() + " PLN");
+            operationData.add(new Monetary(operation.getAmount()) + " PLN");
             table.add(operationData);
         }
         return table;

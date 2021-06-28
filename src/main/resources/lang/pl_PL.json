@@ -45,6 +45,8 @@
   "title.dialog.error": "Błąd",
   "title.dialog.invoice.edit": "Edycja faktury",
   "title.dialog.invoice.new": "Dodawanie faktury",
+  "title.dialog.operation.edit": "Edycja operacji",
+  "title.dialog.operation.new": "Dodawanie operacji",
   "value.payment_method.cash": "Gotówka",
   "value.payment_method.unknown": "Nieznana",
   "value.payment_method.transfer": "Przelew"

@@ -45,6 +45,8 @@
   "title.dialog.error": "Error",
   "title.dialog.invoice.edit": "Edit invoice",
   "title.dialog.invoice.new": "New invoice",
+  "title.dialog.operation.edit": "Edit operation",
+  "title.dialog.operation.new": "New operation",
   "value.payment_method.cash": "Cash",
   "value.payment_method.unknown": "Unknown",
   "value.payment_method.transfer": "Transfer"
