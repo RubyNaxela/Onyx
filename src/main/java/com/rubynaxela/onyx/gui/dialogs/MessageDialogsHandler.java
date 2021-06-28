@@ -15,7 +15,7 @@ import com.rubynaxela.onyx.util.Reference;
 
 import javax.swing.*;
 
-public class MessageDialogsHandler {
+public final class MessageDialogsHandler {
 
     private final JFrame anchor;
 

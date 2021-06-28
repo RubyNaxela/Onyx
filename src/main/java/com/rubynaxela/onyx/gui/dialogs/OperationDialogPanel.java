@@ -20,9 +20,8 @@ import com.rubynaxela.onyx.util.Reference;
 import com.rubynaxela.onyx.util.Utils;
 
 import javax.swing.*;
-import javax.swing.event.DocumentListener;
 
-public class OperationDialogPanel extends DefaultJPanel {
+public final class OperationDialogPanel extends DefaultJPanel {
 
     public final JLabel dateLabel, contractorLabel, descriptionLabel, amountLabel, amountPostfixLabel;
     public final JTextField dateInput, descriptionInput, amountInput;

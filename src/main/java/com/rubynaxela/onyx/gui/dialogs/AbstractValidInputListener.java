@@ -26,7 +26,7 @@ import java.util.HashMap;
  *
  * @author Jacek Pawelski
  */
-abstract class AbstractValidInputListener implements DocumentListener {
+public abstract class AbstractValidInputListener implements DocumentListener {
 
     private static final Border
             defaultBorder = new JTextField().getBorder(),

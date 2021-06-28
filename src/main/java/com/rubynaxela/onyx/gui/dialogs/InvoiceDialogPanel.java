@@ -28,7 +28,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
-public class InvoiceDialogPanel extends DefaultJPanel {
+public final class InvoiceDialogPanel extends DefaultJPanel {
 
     public final JLabel idLabel, dateLabel, contractorLabel, itemsLabel, clearedLabel, paymentMethodLabel;
     public final JTextField idInput, dateInput;

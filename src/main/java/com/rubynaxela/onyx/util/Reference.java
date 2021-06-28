@@ -23,7 +23,6 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -32,7 +31,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 
-public class Reference {
+public final class Reference {
 
     private static final File PROPERTIES_FILE = new File(".properties");
     private static final Properties properties = new Properties();

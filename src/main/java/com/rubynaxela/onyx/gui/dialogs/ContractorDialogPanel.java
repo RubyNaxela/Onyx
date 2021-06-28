@@ -18,7 +18,7 @@ import com.rubynaxela.onyx.util.Utils;
 
 import javax.swing.*;
 
-public class ContractorDialogPanel extends DefaultJPanel {
+public final class ContractorDialogPanel extends DefaultJPanel {
 
     public final JLabel nameLabel, detailsLabel;
     public final JTextField nameInput;

@@ -20,7 +20,7 @@ import java.awt.*;
  *
  * @author Jacek Pawelski
  */
-public final class DefaultJScrollPane extends JScrollPane {
+public class DefaultJScrollPane extends JScrollPane {
 
     private final int paneWidth, paneHeight;
 

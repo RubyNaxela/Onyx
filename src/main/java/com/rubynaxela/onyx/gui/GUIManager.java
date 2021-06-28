@@ -38,7 +38,7 @@ import java.util.Objects;
 import static com.rubynaxela.onyx.util.OsCheck.OSType.MAC_OS;
 
 @SuppressWarnings("FieldCanBeLocal")
-public class GUIManager {
+public final class GUIManager {
 
     private final MessageDialogsHandler messageDialogsHandler;
     private final IOHandler ioHandler;

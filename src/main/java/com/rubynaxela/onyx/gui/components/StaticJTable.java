@@ -21,7 +21,7 @@ import javax.swing.table.TableColumnModel;
  *
  * @author Jacek Pawelski
  */
-public final class StaticJTable extends JTable {
+public class StaticJTable extends JTable {
 
     private final boolean cellsEditable;
 

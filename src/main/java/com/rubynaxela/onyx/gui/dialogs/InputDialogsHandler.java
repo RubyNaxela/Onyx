@@ -24,7 +24,7 @@ import javax.swing.*;
 import java.util.Objects;
 import java.util.UUID;
 
-public class InputDialogsHandler {
+public final class InputDialogsHandler {
 
     private final JFrame anchor;
     private final DatabaseAccessor databaseAccessor;

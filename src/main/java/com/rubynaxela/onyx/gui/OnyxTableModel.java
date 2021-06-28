@@ -22,7 +22,7 @@ import com.rubynaxela.onyx.gui.components.StaticJTable;
 import javax.swing.table.DefaultTableModel;
 import java.util.Vector;
 
-public class OnyxTableModel extends DefaultTableModel {
+public final class OnyxTableModel extends DefaultTableModel {
 
     private final DatabaseAccessor databaseAccessor;
     private final StaticJTable ownerTable;

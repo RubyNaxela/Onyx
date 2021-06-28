@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.Arrays;
 import java.util.Vector;
 
-public class InvoiceTableModel extends DefaultTableModel {
+public final class InvoiceTableModel extends DefaultTableModel {
 
     public static Vector<String> invoiceItemsTableHeaders = new Vector<>(
             Arrays.asList(Reference.getString("label.invoice_item.date"),
