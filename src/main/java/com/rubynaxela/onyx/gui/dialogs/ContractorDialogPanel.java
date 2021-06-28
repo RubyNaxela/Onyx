@@ -37,11 +37,12 @@ public class ContractorDialogPanel extends DefaultJPanel {
         register(nameLabel, Utils.gridElementSettings(0, 0));
         register(nameInput, Utils.gridElementSettings(0, 1));
         register(detailsLabel, Utils.gridElementSettings(1, 0, 2, 1));
-        detailsInput.setLineWrap(true);
-        detailsInput.setWrapStyleWord(true);
         register(detailsInput, Utils.gridElementSettings(2, 0, 2, 1));
 
         nameInput.setText(editedObject != null ? editedObject.getName() : "");
+
+        detailsInput.setLineWrap(true);
+        detailsInput.setWrapStyleWord(true);
         detailsInput.setText(editedObject != null ? editedObject.getDetails() : "");
 
         final DocumentListener textFieldListener = createInputValidator();
