@@ -42,14 +42,17 @@ public final class MainWindow extends DefaultJFrame {
                                                ObjectType.CONTRIBUTION),
             paymentsLabel = new LeafLabel(Reference.getString("navigation.operations.considerations.payments"),
                                           ObjectType.PAYMENT);
+
+    public final MenuBar menuBar = new MenuBar();
+    ;
     public final DefaultJTree navigation;
-
-    public final DefaultJButton
-            addButton = new DefaultJButton(Reference.getString("button.add")),
-            editButton = new DefaultJButton(Reference.getString("button.edit")),
-            removeButton = new DefaultJButton(Reference.getString("button.remove")),
-            documentButton = new DefaultJButton(Reference.getString("button.associate_document"));
-
+    public final ActionController
+            addAction = new ActionController(new DefaultJButton(Reference.getString("button.add")), menuBar.addEntry),
+            editAction = new ActionController(new DefaultJButton(Reference.getString("button.edit")), menuBar.editEntry),
+            removeAction = new ActionController(
+                    new DefaultJButton(Reference.getString("button.remove")), menuBar.removeEntry),
+            documentAction = new ActionController(
+                    new DefaultJButton(Reference.getString("button.associate_document")), menuBar.associateDocument);
     public final StaticJTable dataTable;
     public final OnyxTableModel dataTableModel;
 
@@ -57,8 +60,10 @@ public final class MainWindow extends DefaultJFrame {
         super(true);
         setTitle(title);
 
+        setJMenuBar(menuBar);
+
         dataTable = new StaticJTable();
-        dataTableModel = new OnyxTableModel(databaseAccessor, dataTable, addButton, editButton, removeButton, documentButton);
+        dataTableModel = new OnyxTableModel(databaseAccessor, dataTable, addAction, editAction, removeAction, documentAction);
         dataTableModel.addTableModelListener(e -> dataTable.resizeColumnWidth(15, 300));
 
         navigation = new DefaultJTree(new DefaultMutableTreeNode(databaseAccessor.getCompanyName()));
@@ -130,14 +135,14 @@ public final class MainWindow extends DefaultJFrame {
                 final DefaultJPanel editorButtonsPanel = new DefaultJPanel();
                 viewPanelWrapper.add(editorButtonsPanel);
                 {
-                    addButton.setEnabled(false);
-                    editorButtonsPanel.register(addButton, Utils.gridElementSettings(0, 0));
-                    editButton.setEnabled(false);
-                    editorButtonsPanel.register(editButton, Utils.gridElementSettings(0, 1));
-                    removeButton.setEnabled(false);
-                    editorButtonsPanel.register(removeButton, Utils.gridElementSettings(0, 2));
-                    documentButton.setVisible(false);
-                    editorButtonsPanel.register(documentButton, Utils.gridElementSettings(0, 3, 2, 1));
+                    addAction.setEnabled(false);
+                    editorButtonsPanel.register(addAction.button, Utils.gridElementSettings(0, 0));
+                    editAction.setEnabled(false);
+                    editorButtonsPanel.register(editAction.button, Utils.gridElementSettings(0, 1));
+                    removeAction.setEnabled(false);
+                    editorButtonsPanel.register(removeAction.button, Utils.gridElementSettings(0, 2));
+                    documentAction.setVisible(false);
+                    editorButtonsPanel.register(documentAction.button, Utils.gridElementSettings(0, 3, 2, 1));
                 }
             }
             viewPanel.register(new DefaultJScrollPane(dataTable, 600, 350),

@@ -12,14 +12,15 @@
 package com.rubynaxela.onyx.data;
 
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.Identifiable;
-import org.jetbrains.annotations.Contract;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeSet;
 
 public final class OnyxDatabase {
 
-    private final LinkedList<? super Identifiable> objects = new LinkedList<>();
+    private final TreeSet<? super Identifiable> objects = new TreeSet<>(Comparator.comparing(Identifiable::getUuid));
     private String companyName;
 
     @SuppressWarnings("unchecked")
@@ -32,20 +33,24 @@ public final class OnyxDatabase {
         return companyName;
     }
 
-    public LinkedList<? super Identifiable> getObjects() {
+    public TreeSet<? super Identifiable> getAll() {
         return objects;
     }
 
     @SuppressWarnings("unchecked")
-    @Contract(value = "!null -> new", pure = true)
-    public <T> LinkedList<T> getObjects(Class<T> type) {
-        LinkedList<T> list = new LinkedList<>();
-        for (Object object : getObjects()) if (object.getClass().equals(type)) list.add((T) object);
+    public <T> LinkedList<T> getAllOfType(Class<T> type) {
+        final LinkedList<T> list = new LinkedList<>();
+        for (Object object : getAll()) if (type.isAssignableFrom(object.getClass())) list.add((T) object);
         return list;
     }
 
-    public Identifiable getObject(String uuid) {
-        return (Identifiable) getObjects().stream().filter(
-                c -> ((Identifiable) c).getUuid().equals(uuid)).findFirst().orElse(null);
+    public Identifiable get(String uuid) {
+        return (Identifiable) getAll().stream()
+                                      .filter(o -> ((Identifiable) o).getUuid().equals(uuid)).findFirst()
+                                      .orElse(null);
+    }
+
+    public boolean contains(String uuid) {
+        return objects.contains((Identifiable) () -> uuid);
     }
 }

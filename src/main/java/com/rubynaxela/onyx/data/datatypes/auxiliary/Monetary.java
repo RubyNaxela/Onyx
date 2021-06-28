@@ -44,29 +44,26 @@ public class Monetary {
         this(Double.parseDouble(amount.replace(",", ".")));
     }
 
-    public void add(@NotNull Monetary other) {
-        this.wholePart += other.wholePart + (this.hundredthsPart + other.hundredthsPart) / 100;
-        this.hundredthsPart = (this.hundredthsPart + other.hundredthsPart) % 100;
-    }
-
     @Contract(value = "_ -> new", pure = true)
     public Monetary plus(@NotNull Monetary other) {
-        final Monetary sum = new Monetary(wholePart, hundredthsPart);
-        sum.add(other);
-        return sum;
+        return new Monetary(this.toDouble() + other.toDouble());
     }
 
-    public void multiply(double factor) {
-        final Monetary result = new Monetary(factor * (wholePart + hundredthsPart / 100.0));
+    public void add(@NotNull Monetary other) {
+        final Monetary result = this.plus(other);
         this.wholePart = result.wholePart;
         this.hundredthsPart = result.hundredthsPart;
     }
 
     @Contract(value = "_ -> new", pure = true)
     public Monetary times(double factor) {
-        final Monetary product = new Monetary(wholePart, hundredthsPart);
-        product.multiply(factor);
-        return product;
+        return new Monetary(this.toDouble() * factor);
+    }
+
+    public void multiply(double factor) {
+        final Monetary result = this.times(factor);
+        this.wholePart = result.wholePart;
+        this.hundredthsPart = result.hundredthsPart;
     }
 
     public double toDouble() {

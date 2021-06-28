@@ -60,7 +60,7 @@ public final class DatabaseAccessor {
 
     @Contract(value = "-> new", pure = true)
     public Vector<ObjectRow> getContractorsTableVector() {
-        final List<Contractor> contractors = database.getObjects(Contractor.class);
+        final List<Contractor> contractors = database.getAllOfType(Contractor.class);
         contractors.sort(Comparator.comparing(Contractor::getName));
         final Vector<ObjectRow> table = new Vector<>();
         for (Contractor contractor : contractors) {
@@ -74,19 +74,19 @@ public final class DatabaseAccessor {
 
     @Contract(value = "-> new", pure = true)
     public Vector<Contractor> getContractorsVector() {
-        return new Vector<>(database.getObjects(Contractor.class));
+        return new Vector<>(database.getAllOfType(Contractor.class));
     }
 
     @Contract(value = "-> new", pure = true)
     public Vector<ObjectRow> getOpenInvoicesTableVector() {
-        final List<OpenInvoice> invoices = database.getObjects(OpenInvoice.class);
+        final List<OpenInvoice> invoices = database.getAllOfType(OpenInvoice.class);
         invoices.sort(Comparator.comparing(Invoice::getDate).thenComparing(Invoice::getId));
         final Vector<ObjectRow> table = new Vector<>();
         for (OpenInvoice invoice : invoices) {
             ObjectRow invoiceData = new ObjectRow(invoice);
             invoiceData.add(invoice.getId());
             invoiceData.add(invoice.getDate());
-            invoiceData.add(database.getObject(invoice.getContractorUuid()).toString());
+            invoiceData.add(database.get(invoice.getContractorUuid()).toString());
             invoiceData.add(invoice.calculateAmount() + " PLN");
             table.add(invoiceData);
         }
@@ -95,14 +95,14 @@ public final class DatabaseAccessor {
 
     @Contract(value = "-> new", pure = true)
     public Vector<ObjectRow> getClosedInvoicesTableVector() {
-        final List<ClosedInvoice> invoices = database.getObjects(ClosedInvoice.class);
+        final List<ClosedInvoice> invoices = database.getAllOfType(ClosedInvoice.class);
         invoices.sort(Comparator.comparing(Invoice::getDate).thenComparing(Invoice::getId));
         final Vector<ObjectRow> table = new Vector<>();
         for (ClosedInvoice invoice : invoices) {
             ObjectRow invoiceData = new ObjectRow(invoice);
             invoiceData.add(invoice.getId());
             invoiceData.add(invoice.getDate());
-            invoiceData.add(database.getObject(invoice.getContractorUuid()).toString());
+            invoiceData.add(database.get(invoice.getContractorUuid()).toString());
             invoiceData.add(invoice.calculateAmount() + " PLN");
             final Consideration consideration = (Consideration) getObject(invoice.getConsiderationUuid());
             invoiceData.add(consideration != null ? consideration.getDescription() : "-");
@@ -117,7 +117,7 @@ public final class DatabaseAccessor {
         for (Transaction transaction : transactions) {
             ObjectRow operationData = new ObjectRow(transaction);
             operationData.add(transaction.getDate());
-            operationData.add(database.getObject(transaction.getContractorUuid()).toString());
+            operationData.add(database.get(transaction.getContractorUuid()).toString());
             operationData.add(transaction.getDescription());
             operationData.add(new Monetary(transaction.getAmount()) + " PLN");
             table.add(operationData);
@@ -131,7 +131,7 @@ public final class DatabaseAccessor {
         for (Consideration consideration : considerations) {
             ObjectRow operationData = new ObjectRow(consideration);
             operationData.add(consideration.getDate());
-            operationData.add(database.getObject(consideration.getContractorUuid()).toString());
+            operationData.add(database.get(consideration.getContractorUuid()).toString());
             operationData.add(consideration.getDescription());
             operationData.add(new Monetary(consideration.getAmount()) + " PLN");
             operationData.add(PaymentMethod.get(((ClosedInvoice) getObject(
@@ -143,26 +143,26 @@ public final class DatabaseAccessor {
 
     @Contract(value = "-> new", pure = true)
     public Vector<ObjectRow> getClaimsTableVector() {
-        return getTransactionsTableVector(database.getObjects(Claim.class));
+        return getTransactionsTableVector(database.getAllOfType(Claim.class));
     }
 
     @Contract(value = "-> new", pure = true)
     public Vector<ObjectRow> getLiabilitiesTableVector() {
-        return getTransactionsTableVector(database.getObjects(Liability.class));
+        return getTransactionsTableVector(database.getAllOfType(Liability.class));
     }
 
     @Contract(value = "-> new", pure = true)
     public Vector<ObjectRow> getContributionsTableVector() {
-        return getConsiderationsTableVector(database.getObjects(Contribution.class));
+        return getConsiderationsTableVector(database.getAllOfType(Contribution.class));
     }
 
     @Contract(value = "-> new", pure = true)
     public Vector<ObjectRow> getPaymentsTableVector() {
-        return getConsiderationsTableVector(database.getObjects(Payment.class));
+        return getConsiderationsTableVector(database.getAllOfType(Payment.class));
     }
 
     public Identifiable getObject(@Nullable String uuid) {
-        return (Identifiable) database.getObjects().stream().filter(
+        return (Identifiable) database.getAll().stream().filter(
                 c -> ((Identifiable) c).getUuid().equals(uuid)).findFirst().orElse(null);
     }
 

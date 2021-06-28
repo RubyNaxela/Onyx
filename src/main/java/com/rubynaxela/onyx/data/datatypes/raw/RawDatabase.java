@@ -32,13 +32,13 @@ public class RawDatabase {
 
     public RawDatabase(OnyxDatabase database) {
         this.companyName = database.getCompanyName();
-        this.contractors = database.getObjects(Contractor.class).toArray(new Contractor[0]);
-        this.openInvoices = database.getObjects(OpenInvoice.class).toArray(new OpenInvoice[0]);
-        this.closedInvoices = database.getObjects(ClosedInvoice.class).toArray(new ClosedInvoice[0]);
-        this.claims = database.getObjects(Claim.class).toArray(new Claim[0]);
-        this.liabilities = database.getObjects(Liability.class).toArray(new Liability[0]);
-        this.contributions = database.getObjects(Contribution.class).toArray(new Contribution[0]);
-        this.payments = database.getObjects(Payment.class).toArray(new Payment[0]);
+        this.contractors = database.getAllOfType(Contractor.class).toArray(new Contractor[0]);
+        this.openInvoices = database.getAllOfType(OpenInvoice.class).toArray(new OpenInvoice[0]);
+        this.closedInvoices = database.getAllOfType(ClosedInvoice.class).toArray(new ClosedInvoice[0]);
+        this.claims = database.getAllOfType(Claim.class).toArray(new Claim[0]);
+        this.liabilities = database.getAllOfType(Liability.class).toArray(new Liability[0]);
+        this.contributions = database.getAllOfType(Contribution.class).toArray(new Contribution[0]);
+        this.payments = database.getAllOfType(Payment.class).toArray(new Payment[0]);
     }
 
     @Contract(value = "-> new", pure = true)

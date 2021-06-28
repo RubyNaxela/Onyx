@@ -13,10 +13,13 @@ package com.rubynaxela.onyx.data;
 
 import com.rubynaxela.onyx.Onyx;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.Identifiable;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Referring;
 import com.rubynaxela.onyx.data.datatypes.raw.RawDatabase;
 import com.rubynaxela.onyx.io.IOHandler;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 public final class DatabaseController {
@@ -47,18 +50,26 @@ public final class DatabaseController {
     }
 
     public void addEntry(Identifiable entry) {
-        database.getObjects().add(entry);
-        saveChanges();
-    }
-
-    public void removeEntry(Identifiable entry) {
-        database.getObjects().remove(Objects.requireNonNull(database.getObject(entry.getUuid())));
+        database.getAll().add(entry);
         saveChanges();
     }
 
     public void editEntry(Identifiable entry, Identifiable newValue) {
-        database.getObjects().remove(Objects.requireNonNull(database.getObject(entry.getUuid())));
-        database.getObjects().add(newValue);
+        database.getAll().remove(Objects.requireNonNull(database.get(entry.getUuid())));
+        database.getAll().add(newValue);
         saveChanges();
+    }
+
+    public void removeEntry(Identifiable entry) {
+        database.getAll().remove(Objects.requireNonNull(database.get(entry.getUuid())));
+        removeEmptyReferences();
+        saveChanges();
+    }
+
+    private void removeEmptyReferences() {
+        final List<Identifiable> databaseObjects = database.getAllOfType(Identifiable.class);
+        databaseObjects.sort(Comparator.comparing(Identifiable::getUuid));
+        for (Referring object : database.getAllOfType(Referring.class))
+            if (object.getReference() != null && !database.contains(object.getReference())) object.removeReference();
     }
 }

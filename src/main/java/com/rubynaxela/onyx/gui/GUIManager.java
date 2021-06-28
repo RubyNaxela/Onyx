@@ -131,7 +131,7 @@ public final class GUIManager {
             if (selectedNode instanceof LeafLabel)
                 window.dataTableModel.display(((LeafLabel) selectedNode).getAssociatedGroup());
         });
-        window.addButton.addActionListener(e -> {
+        window.addAction.setListener(e -> {
             final Identifiable newObject = inputDialogsHandler.showObjectDialog(
                     window.dataTableModel.getCurrentObjectsType(), null);
             if (newObject != null) {
@@ -139,7 +139,7 @@ public final class GUIManager {
                 window.dataTableModel.refresh();
             }
         });
-        window.editButton.addActionListener(e -> {
+        window.editAction.setListener(e -> {
             final Identifiable currentObject = window.dataTableModel.getCurrentObject();
             final Identifiable newValue = inputDialogsHandler.showObjectDialog(
                     window.dataTableModel.getCurrentObjectsType(), currentObject);
@@ -148,14 +148,14 @@ public final class GUIManager {
                 window.dataTableModel.refresh();
             }
         });
-        window.removeButton.addActionListener(e -> {
+        window.removeAction.setListener(e -> {
             if (messageDialogsHandler.askYesNoQuestion(
                     Reference.getString("message.action.confirm_remove"), false)) {
                 databaseController.removeEntry(window.dataTableModel.getCurrentObject());
                 window.dataTableModel.refresh();
             }
         });
-        window.documentButton.addActionListener(e -> {
+        window.documentAction.setListener(e -> {
             final Identifiable currentObject = window.dataTableModel.getCurrentObject();
             if (currentObject instanceof Invoice) {
                 final Operation operation;
@@ -183,7 +183,7 @@ public final class GUIManager {
         });
         window.dataTable.addMouseListener((MousePressListener) event -> {
             if (event.getClickCount() == 2 && ((JTable) event.getSource()).getSelectedRow() != -1)
-                window.editButton.doClick();
+                window.editAction.perform();
         });
     }
 }

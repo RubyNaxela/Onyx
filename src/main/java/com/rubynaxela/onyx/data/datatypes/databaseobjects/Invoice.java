@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Contract;
 import java.util.Vector;
 
 @SuppressWarnings("unused")
-@JsonIgnoreProperties("itemsTableVector")
+@JsonIgnoreProperties({"itemsTableVector", "reference"})
 public abstract class Invoice implements Identifiable {
 
     protected String uuid, id, date, contractorUuid;

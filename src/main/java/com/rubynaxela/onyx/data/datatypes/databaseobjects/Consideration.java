@@ -11,7 +11,10 @@
 
 package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
-public abstract class Consideration extends Operation {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties("reference")
+public abstract class Consideration extends Operation implements Referring {
 
     protected String invoiceUuid;
 
@@ -21,5 +24,15 @@ public abstract class Consideration extends Operation {
 
     public void setInvoiceUuid(String invoiceUuid) {
         this.invoiceUuid = invoiceUuid;
+    }
+
+    @Override
+    public String getReference() {
+        return invoiceUuid;
+    }
+
+    @Override
+    public void removeReference() {
+        invoiceUuid = null;
     }
 }

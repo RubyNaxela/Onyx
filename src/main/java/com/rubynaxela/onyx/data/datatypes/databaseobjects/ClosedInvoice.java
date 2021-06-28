@@ -16,7 +16,7 @@ import com.rubynaxela.onyx.data.datatypes.raw.ImportedInvoice;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public class ClosedInvoice extends Invoice {
+public class ClosedInvoice extends Invoice implements Referring {
 
     protected String paymentMethodUuid, considerationUuid;
 
@@ -58,5 +58,15 @@ public class ClosedInvoice extends Invoice {
 
     public void setConsiderationUuid(String considerationUuid) {
         this.considerationUuid = considerationUuid;
+    }
+
+    @Override
+    public String getReference() {
+        return considerationUuid;
+    }
+
+    @Override
+    public void removeReference() {
+        considerationUuid = null;
     }
 }

@@ -16,7 +16,6 @@ import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectType;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.Identifiable;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.Invoice;
-import com.rubynaxela.onyx.gui.components.DefaultJButton;
 import com.rubynaxela.onyx.gui.components.StaticJTable;
 
 import javax.swing.table.DefaultTableModel;
@@ -26,14 +25,14 @@ public final class OnyxTableModel extends DefaultTableModel {
 
     private final DatabaseAccessor databaseAccessor;
     private final StaticJTable ownerTable;
-    private final DefaultJButton addButton, editButton, removeButton, documentButton;
+    private final ActionController addButton, editButton, removeButton, documentButton;
 
     private Vector<ObjectRow> dataVector;
     private ObjectType currentObjectsType;
     private Identifiable currentObject;
 
-    public OnyxTableModel(DatabaseAccessor databaseAccessor, StaticJTable ownerTable, DefaultJButton addButton,
-                          DefaultJButton editButton, DefaultJButton removeButton, DefaultJButton documentButton) {
+    public OnyxTableModel(DatabaseAccessor databaseAccessor, StaticJTable ownerTable, ActionController addButton,
+                          ActionController editButton, ActionController removeButton, ActionController documentButton) {
         super();
         this.databaseAccessor = databaseAccessor;
         this.ownerTable = ownerTable;
@@ -69,7 +68,13 @@ public final class OnyxTableModel extends DefaultTableModel {
     }
 
     public void refresh() {
+        final int rowIndex = ownerTable.getSelectedRow();
         display(currentObjectsType);
+        try {
+            ownerTable.setRowSelectionInterval(rowIndex, rowIndex);
+        } catch (IllegalArgumentException e) {
+            ownerTable.setRowSelectionInterval(rowIndex - 1, rowIndex - 1);
+        }
     }
 
     public ObjectType getCurrentObjectsType() {
