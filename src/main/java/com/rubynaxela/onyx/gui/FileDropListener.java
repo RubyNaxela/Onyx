@@ -12,7 +12,6 @@
 package com.rubynaxela.onyx.gui;
 
 import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 
@@ -33,7 +32,4 @@ public interface FileDropListener extends DropTargetListener {
     @Override
     default void dragExit(DropTargetEvent e) {
     }
-
-    @Override
-    void drop(DropTargetDropEvent e);
 }

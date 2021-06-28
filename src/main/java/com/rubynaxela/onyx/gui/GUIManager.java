@@ -32,6 +32,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
@@ -97,7 +98,7 @@ public class GUIManager {
 
     @SuppressWarnings("unchecked")
     private void setupListeners() {
-        window.setFileDropListener(event -> {
+        new DropTarget(window, (FileDropListener) event -> {
             try {
                 if (event.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                     event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
@@ -156,8 +157,8 @@ public class GUIManager {
                 window.dataTableModel.refresh();
             }
         });
-        window.dataTable.addMouseListener((MousePressListener) mouseEvent -> {
-            if (mouseEvent.getClickCount() == 2 && ((JTable) mouseEvent.getSource()).getSelectedRow() != -1)
+        window.dataTable.addMouseListener((MousePressListener) event -> {
+            if (event.getClickCount() == 2 && ((JTable) event.getSource()).getSelectedRow() != -1)
                 window.editButton.doClick();
         });
     }

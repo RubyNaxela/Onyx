@@ -21,14 +21,11 @@ import com.rubynaxela.onyx.util.Utils;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDropEvent;
 
 /**
  * This class holds the application main window
  */
-public final class MainWindow extends DefaultJFrame implements FileDropListener {
+public final class MainWindow extends DefaultJFrame {
 
     public static final LeafLabel
             contractorsLabel = new LeafLabel(Reference.getString("navigation.contractors"),
@@ -55,8 +52,6 @@ public final class MainWindow extends DefaultJFrame implements FileDropListener 
     public final StaticJTable dataTable;
     public final OnyxTableModel dataTableModel;
 
-    private FileDropListener fileDropListener;
-
     public MainWindow(String title, DatabaseAccessor databaseAccessor) {
         super(true);
         setTitle(title);
@@ -72,7 +67,6 @@ public final class MainWindow extends DefaultJFrame implements FileDropListener 
         setupViewPanel(viewPanel);
 
         pack();
-        new DropTarget(this, DnDConstants.ACTION_COPY, this);
     }
 
     private void setupNavigation() {
@@ -147,14 +141,5 @@ public final class MainWindow extends DefaultJFrame implements FileDropListener 
                                Utils.gridElementSettings(1, 0));
             dataTableModel.setupTable();
         }
-    }
-
-    public void setFileDropListener(FileDropListener listener) {
-        this.fileDropListener = listener;
-    }
-
-    @Override
-    public void drop(DropTargetDropEvent e) {
-        fileDropListener.drop(e);
     }
 }
