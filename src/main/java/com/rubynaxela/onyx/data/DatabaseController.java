@@ -18,8 +18,6 @@ import com.rubynaxela.onyx.data.datatypes.raw.RawDatabase;
 import com.rubynaxela.onyx.io.IOHandler;
 
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
 
 public final class DatabaseController {
@@ -67,8 +65,6 @@ public final class DatabaseController {
     }
 
     private void removeEmptyReferences() {
-        final List<Identifiable> databaseObjects = database.getAllOfType(Identifiable.class);
-        databaseObjects.sort(Comparator.comparing(Identifiable::getUuid));
         for (Referring object : database.getAllOfType(Referring.class))
             if (object.getReference() != null && !database.contains(object.getReference())) object.removeReference();
     }
