@@ -27,10 +27,6 @@ public class Monetary {
         this.hundredthsPart = hundredthsPart;
     }
 
-    public Monetary(long wholePart, long hundredthsPart, boolean negative) {
-        this(negative ? -wholePart : wholePart, negative ? -hundredthsPart : hundredthsPart);
-    }
-
     public Monetary(double amount) {
         final double absAmount = Math.abs(amount);
         long _wholePart = Math.round(Math.floor(absAmount));
