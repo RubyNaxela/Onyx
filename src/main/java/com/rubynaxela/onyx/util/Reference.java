@@ -14,6 +14,7 @@ package com.rubynaxela.onyx.util;
 import com.formdev.flatlaf.icons.*;
 import com.rubynaxela.onyx.gui.dialogs.MessageDialogsHandler;
 import com.rubynaxela.onyx.io.IOHandler;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,7 +50,7 @@ public class Reference {
         return properties.containsKey(key) ? properties.getProperty(key) : "property." + key;
     }
 
-    public static void initDictionary(IOHandler ioHandler, MessageDialogsHandler messageDialogsHandler) {
+    public static void loadDictionary(IOHandler ioHandler, MessageDialogsHandler messageDialogsHandler) {
         final Map<String, String> _primaryDictionary = ioHandler.parseLanguageFile(getProperty("language"));
         final Map<String, String> _backupDictionary = ioHandler.parseLanguageFile("en_US");
         if (_primaryDictionary == null && _backupDictionary == null)
@@ -108,6 +109,12 @@ public class Reference {
     @NotNull
     public static String getString(@NotNull String key, @NotNull String fallbackValue) {
         return (primaryDictionary.containsKey(key) || backupDictionary.containsKey(key)) ? getString(key) : fallbackValue;
+    }
+
+    @Contract(pure = true)
+    @NotNull
+    public static Font getGlobalFont(int size, int style) {
+        return new Font("Verdana", style, size);
     }
 
     @Nullable

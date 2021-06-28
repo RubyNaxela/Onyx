@@ -19,7 +19,7 @@ import com.rubynaxela.onyx.gui.dialogs.MessageDialogsHandler;
 import com.rubynaxela.onyx.io.IOHandler;
 import com.rubynaxela.onyx.util.Reference;
 
-@SuppressWarnings({"FieldCanBeLocal", "unused"})
+@SuppressWarnings("FieldCanBeLocal")
 public final class Onyx {
 
     private final OnyxDatabase database;
@@ -35,11 +35,12 @@ public final class Onyx {
 
         messageDialogsHandler = new MessageDialogsHandler(null);
         ioHandler = new IOHandler();
+        Reference.loadProperties(messageDialogsHandler);
+        Reference.loadDictionary(ioHandler, messageDialogsHandler);
         databaseAccessor = new DatabaseAccessor(this);
         databaseController = new DatabaseController(this);
         guiManager = new GUIManager(this);
 
-        Reference.loadProperties(messageDialogsHandler);
         databaseController.loadDatabase();
         guiManager.initMainWindow();
     }
@@ -71,9 +72,5 @@ public final class Onyx {
 
     public DatabaseAccessor getDatabaseAccessor() {
         return databaseAccessor;
-    }
-
-    public GUIManager getGuiManager() {
-        return guiManager;
     }
 }

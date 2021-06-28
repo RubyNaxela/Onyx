@@ -39,9 +39,9 @@ public class InvoiceDialogPanel extends DefaultJPanel {
     public final InvoiceTableModel itemsTableModel;
     public final JButton okButton;
 
-    public InvoiceDialogPanel(Invoice editedElement, DatabaseAccessor databaseAccessor) {
+    public InvoiceDialogPanel(Invoice editedObject, DatabaseAccessor databaseAccessor) {
 
-        final boolean clearedInvoice = editedElement instanceof ClosedInvoice;
+        final boolean clearedInvoice = editedObject instanceof ClosedInvoice;
 
         idLabel = new JLabel(Reference.getString("label.invoice.id"));
         dateLabel = new JLabel(Reference.getString("label.invoice.date"));
@@ -55,7 +55,7 @@ public class InvoiceDialogPanel extends DefaultJPanel {
         clearedCheckBox = new JCheckBox();
         paymentMethodInput = new JComboBox<>(PaymentMethod.values());
         itemsTable = new StaticJTable();
-        itemsTableModel = new InvoiceTableModel(editedElement);
+        itemsTableModel = new InvoiceTableModel(editedObject);
         itemsTableModel.addTableModelListener(e -> itemsTable.resizeColumnWidth(15, 300));
         okButton = new JButton(Reference.getString("button.ok"));
 
@@ -73,15 +73,15 @@ public class InvoiceDialogPanel extends DefaultJPanel {
         register(new DefaultJScrollPane(itemsTable, 900, 350),
                  Utils.gridElementSettings(3, 0, 7, 1));
 
-        idInput.setText(editedElement != null ? editedElement.getId() : "");
-        dateInput.setText(editedElement != null ? editedElement.getDate() : "");
-        contractorInput.setSelectedItem(editedElement != null ?
-                                        databaseAccessor.getObject(editedElement.getContractorUuid()) : null);
+        idInput.setText(editedObject != null ? editedObject.getId() : "");
+        dateInput.setText(editedObject != null ? editedObject.getDate() : "");
+        contractorInput.setSelectedItem(editedObject != null ?
+                                        databaseAccessor.getObject(editedObject.getContractorUuid()) : null);
         clearedCheckBox.setSelected(clearedInvoice);
         paymentMethodLabel.setEnabled(clearedInvoice);
         if (clearedInvoice)
             paymentMethodInput.setSelectedItem(PaymentMethod.get(
-                    ((ClosedInvoice) editedElement).getPaymentMethodUuid()));
+                    ((ClosedInvoice) editedObject).getPaymentMethodUuid()));
         paymentMethodInput.setEnabled(clearedInvoice);
         itemsTable.setModel(itemsTableModel);
         itemsTable.resizeColumnWidth(15, 300);
@@ -103,7 +103,7 @@ public class InvoiceDialogPanel extends DefaultJPanel {
             paymentMethodInput.setEnabled(clearedCheckBox.isSelected());
         });
 
-        okButton.setEnabled(editedElement != null);
+        okButton.setEnabled(editedObject != null);
         okButton.addActionListener(e -> Utils.getOptionPane((JComponent) e.getSource()).setValue(okButton));
     }
 

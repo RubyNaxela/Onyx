@@ -11,7 +11,7 @@
 
 package com.rubynaxela.onyx.gui.components;
 
-import com.rubynaxela.onyx.gui.GUIManager;
+import com.rubynaxela.onyx.util.Reference;
 import org.intellij.lang.annotations.MagicConstant;
 
 import javax.swing.*;
@@ -43,7 +43,7 @@ public class DefaultJButton extends JButton {
     }
 
     private void updateFont() {
-        setFont(GUIManager.getGlobalFont(fontSize, fontStyle));
+        setFont(Reference.getGlobalFont(fontSize, fontStyle));
     }
 
     /**

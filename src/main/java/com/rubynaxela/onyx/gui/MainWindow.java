@@ -13,7 +13,7 @@ package com.rubynaxela.onyx.gui;
 
 import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.LeafLabel;
-import com.rubynaxela.onyx.data.datatypes.auxiliary.OnyxObjectsGroup;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectType;
 import com.rubynaxela.onyx.gui.components.*;
 import com.rubynaxela.onyx.util.Reference;
 import com.rubynaxela.onyx.util.Utils;
@@ -21,29 +21,31 @@ import com.rubynaxela.onyx.util.Utils;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
-import java.awt.dnd.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDropEvent;
 
 /**
- * This class represents the structure of the application main window GUI
+ * This class holds the application main window
  */
-public final class MainWindow extends DefaultJFrame implements DropTargetListener {
+public final class MainWindow extends DefaultJFrame implements FileDropListener {
 
     public static final LeafLabel
             contractorsLabel = new LeafLabel(Reference.getString("navigation.contractors"),
-                                             OnyxObjectsGroup.CONTRACTORS),
+                                             ObjectType.CONTRACTOR),
             openInvoicesLabel = new LeafLabel(Reference.getString("navigation.invoices.unaccounted"),
-                                              OnyxObjectsGroup.OPEN_INVOICES),
+                                              ObjectType.OPEN_INVOICE),
             closedInvoicesLabel = new LeafLabel(Reference.getString("navigation.invoices.cleared"),
-                                                OnyxObjectsGroup.CLOSED_INVOICES),
+                                                ObjectType.CLOSED_INVOICE),
             claimsLabel = new LeafLabel(Reference.getString("navigation.operations.transactions.claims"),
-                                        OnyxObjectsGroup.CLAIMS),
+                                        ObjectType.CLAIM),
             liabilitiesLabel = new LeafLabel(Reference.getString("navigation.operations.transactions.liabilities"),
-                                             OnyxObjectsGroup.LIABILITIES),
+                                             ObjectType.LIABILITY),
             contributionsLabel = new LeafLabel(Reference.getString("navigation.operations.considerations.contributions"),
-                                               OnyxObjectsGroup.CONTRIBUTIONS),
+                                               ObjectType.CONTRIBUTION),
             paymentsLabel = new LeafLabel(Reference.getString("navigation.operations.considerations.payments"),
-                                          OnyxObjectsGroup.PAYMENTS);
-    public final JTree navigation;
+                                          ObjectType.PAYMENT);
+    public final DefaultJTree navigation;
 
     public final DefaultJButton
             addButton = new DefaultJButton(Reference.getString("button.add")),
@@ -63,14 +65,24 @@ public final class MainWindow extends DefaultJFrame implements DropTargetListene
         dataTableModel = new OnyxTableModel(databaseAccessor, dataTable, addButton, editButton, removeButton);
         dataTableModel.addTableModelListener(e -> dataTable.resizeColumnWidth(15, 300));
 
+        navigation = new DefaultJTree(new DefaultMutableTreeNode(databaseAccessor.getCompanyName()));
+        setupNavigation();
+
+        final DefaultJPanel viewPanel = new DefaultJPanel();
+        setupViewPanel(viewPanel);
+
+        pack();
+        new DropTarget(this, DnDConstants.ACTION_COPY, this);
+    }
+
+    private void setupNavigation() {
         final JPanel navigationButtonsPanelWrapper = new JPanel();
         register(navigationButtonsPanelWrapper, Utils.gridElementSettings(0, 0));
         {
             final DefaultJPanel navigationButtonsPanel = new DefaultJPanel();
             navigationButtonsPanelWrapper.add(navigationButtonsPanel);
             {
-                final DefaultMutableTreeNode root = new DefaultMutableTreeNode(databaseAccessor.getCompanyName());
-                navigation = new JTree(root);
+                final DefaultMutableTreeNode root = navigation.getRoot();
                 navigation.setShowsRootHandles(true);
                 {
                     final DefaultMutableTreeNode contractors = new DefaultMutableTreeNode(contractorsLabel);
@@ -112,8 +124,9 @@ public final class MainWindow extends DefaultJFrame implements DropTargetListene
                                                 Utils.gridElementSettings(0, 0));
             }
         }
+    }
 
-        final DefaultJPanel viewPanel = new DefaultJPanel();
+    private void setupViewPanel(DefaultJPanel viewPanel) {
         register(viewPanel, Utils.gridElementSettings(0, 1));
         {
             final JPanel viewPanelWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -134,9 +147,6 @@ public final class MainWindow extends DefaultJFrame implements DropTargetListene
                                Utils.gridElementSettings(1, 0));
             dataTableModel.setupTable();
         }
-        pack();
-
-        new DropTarget(this, DnDConstants.ACTION_COPY, this);
     }
 
     public void setFileDropListener(FileDropListener listener) {
@@ -144,23 +154,7 @@ public final class MainWindow extends DefaultJFrame implements DropTargetListene
     }
 
     @Override
-    public void dragEnter(DropTargetDragEvent e) {
-    }
-
-    @Override
-    public void dragOver(DropTargetDragEvent e) {
-    }
-
-    @Override
-    public void dropActionChanged(DropTargetDragEvent e) {
-    }
-
-    @Override
-    public void dragExit(DropTargetEvent e) {
-    }
-
-    @Override
     public void drop(DropTargetDropEvent e) {
-        fileDropListener.handleDropEvent(e);
+        fileDropListener.drop(e);
     }
 }

@@ -20,15 +20,15 @@ public class LeafLabel implements Identifiable {
     private final String uuid;
     private final String value;
 
-    private final OnyxObjectsGroup associatedGroup;
+    private final ObjectType associatedGroup;
 
-    public LeafLabel(String value, OnyxObjectsGroup associatedGroup) {
+    public LeafLabel(String value, ObjectType associatedGroup) {
         this.value = value;
         this.associatedGroup = associatedGroup;
         uuid = UUID.randomUUID().toString();
     }
 
-    public OnyxObjectsGroup getAssociatedGroup() {
+    public ObjectType getAssociatedGroup() {
         return associatedGroup;
     }
 

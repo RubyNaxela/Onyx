@@ -26,7 +26,7 @@ public class ContractorDialogPanel extends DefaultJPanel {
     public final JTextArea detailsInput;
     public final JButton okButton;
 
-    public ContractorDialogPanel(Contractor editedElement) {
+    public ContractorDialogPanel(Contractor editedObject) {
 
         nameLabel = new JLabel(Reference.getString("label.contractor.name"));
         detailsLabel = new JLabel(Reference.getString("label.contractor.details"));
@@ -41,14 +41,14 @@ public class ContractorDialogPanel extends DefaultJPanel {
         detailsInput.setWrapStyleWord(true);
         register(detailsInput, Utils.gridElementSettings(2, 0, 2, 1));
 
-        nameInput.setText(editedElement != null ? editedElement.getName() : "");
-        detailsInput.setText(editedElement != null ? editedElement.getDetails() : "");
+        nameInput.setText(editedObject != null ? editedObject.getName() : "");
+        detailsInput.setText(editedObject != null ? editedObject.getDetails() : "");
 
         final DocumentListener textFieldListener = createInputValidator();
         nameInput.getDocument().addDocumentListener(textFieldListener);
         detailsInput.getDocument().addDocumentListener(textFieldListener);
 
-        okButton.setEnabled(editedElement != null);
+        okButton.setEnabled(editedObject != null);
         okButton.addActionListener(e -> Utils.getOptionPane((JComponent) e.getSource()).setValue(okButton));
     }
 

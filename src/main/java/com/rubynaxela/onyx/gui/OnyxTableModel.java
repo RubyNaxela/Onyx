@@ -12,37 +12,23 @@
 package com.rubynaxela.onyx.gui;
 
 import com.rubynaxela.onyx.data.DatabaseAccessor;
-import com.rubynaxela.onyx.data.datatypes.databaseobjects.Identifiable;
-import com.rubynaxela.onyx.data.datatypes.auxiliary.OnyxObjectsGroup;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectType;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Identifiable;
 import com.rubynaxela.onyx.gui.components.DefaultJButton;
 import com.rubynaxela.onyx.gui.components.StaticJTable;
-import com.rubynaxela.onyx.util.Reference;
 
 import javax.swing.table.DefaultTableModel;
-import java.util.Arrays;
 import java.util.Vector;
 
 public class OnyxTableModel extends DefaultTableModel {
-
-    public static Vector<String>
-            contractorsTableHeaders = new Vector<>(Arrays.asList(Reference.getString("label.contractor.name"),
-                                                                 Reference.getString("label.contractor.details"))),
-            invoicesTableHeaders = new Vector<>(Arrays.asList(Reference.getString("label.invoice.id"),
-                                                              Reference.getString("label.invoice.date"),
-                                                              Reference.getString("label.invoice.contractor"),
-                                                              Reference.getString("label.invoice.total"))),
-            operationsTableHeaders = new Vector<>(Arrays.asList(Reference.getString("label.operation.date"),
-                                                                Reference.getString("label.operation.contractor"),
-                                                                Reference.getString("label.operation.description"),
-                                                                Reference.getString("label.operation.amount")));
 
     private final DatabaseAccessor databaseAccessor;
     private final StaticJTable ownerTable;
     private final DefaultJButton addButton, editButton, removeButton;
 
     private Vector<ObjectRow> dataVector;
-    private OnyxObjectsGroup currentObjects;
+    private ObjectType currentObjectsType;
     private Identifiable currentObject;
 
     public OnyxTableModel(DatabaseAccessor databaseAccessor, StaticJTable ownerTable,
@@ -59,7 +45,7 @@ public class OnyxTableModel extends DefaultTableModel {
         ownerTable.setModel(this);
         ownerTable.getSelectionModel().addListSelectionListener(e -> {
             int rowIndex = ownerTable.getSelectedRow();
-            if (rowIndex >= 0 && this.getCurrentObjects() != null) {
+            if (rowIndex >= 0 && this.getCurrentObjectsType() != null) {
                 currentObject = databaseAccessor.getObject(this.getRow(rowIndex).getObjectUuid());
                 editButton.setEnabled(true);
                 removeButton.setEnabled(true);
@@ -71,31 +57,19 @@ public class OnyxTableModel extends DefaultTableModel {
         });
     }
 
-    public void display(OnyxObjectsGroup table) {
-        currentObjects = table;
-        if (table == OnyxObjectsGroup.CONTRACTORS)
-            setDataVector(dataVector = databaseAccessor.getContractorsTableVector(), contractorsTableHeaders);
-        else if (table == OnyxObjectsGroup.OPEN_INVOICES)
-            setDataVector(dataVector = databaseAccessor.getOpenInvoicesTableVector(), invoicesTableHeaders);
-        else if (table == OnyxObjectsGroup.CLOSED_INVOICES)
-            setDataVector(dataVector = databaseAccessor.getClosedInvoicesTableVector(), invoicesTableHeaders);
-        else if (table == OnyxObjectsGroup.CLAIMS)
-            setDataVector(dataVector = databaseAccessor.getClaimsTableVector(), operationsTableHeaders);
-        else if (table == OnyxObjectsGroup.LIABILITIES)
-            setDataVector(dataVector = databaseAccessor.getLiabilitiesTableVector(), operationsTableHeaders);
-        else if (table == OnyxObjectsGroup.CONTRIBUTIONS)
-            setDataVector(dataVector = databaseAccessor.getContributionsTableVector(), operationsTableHeaders);
-        else if (table == OnyxObjectsGroup.PAYMENTS)
-            setDataVector(dataVector = databaseAccessor.getPaymentsTableVector(), operationsTableHeaders);
+    public void display(ObjectType type) {
+        currentObjectsType = type;
+        final Table table = databaseAccessor.getTable(type);
+        setDataVector(dataVector = table.data, table.headers);
         addButton.setEnabled(true);
     }
 
     public void refresh() {
-        display(currentObjects);
+        display(currentObjectsType);
     }
 
-    public OnyxObjectsGroup getCurrentObjects() {
-        return currentObjects;
+    public ObjectType getCurrentObjectsType() {
+        return currentObjectsType;
     }
 
     public Identifiable getCurrentObject() {

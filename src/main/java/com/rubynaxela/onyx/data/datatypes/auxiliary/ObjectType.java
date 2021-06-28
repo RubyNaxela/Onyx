@@ -11,6 +11,6 @@
 
 package com.rubynaxela.onyx.data.datatypes.auxiliary;
 
-public enum OnyxObjectsGroup {
-    CONTRACTORS, OPEN_INVOICES, CLOSED_INVOICES, CLAIMS, LIABILITIES, CONTRIBUTIONS, PAYMENTS
+public enum ObjectType {
+    CONTRACTOR, OPEN_INVOICE, CLOSED_INVOICE, CLAIM, LIABILITY, CONTRIBUTION, PAYMENT
 }

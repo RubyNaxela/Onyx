@@ -11,9 +11,29 @@
 
 package com.rubynaxela.onyx.gui;
 
+import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 
-public interface FileDropListener {
+public interface FileDropListener extends DropTargetListener {
 
-    void handleDropEvent(DropTargetDropEvent e);
+    @Override
+    default void dragEnter(DropTargetDragEvent e) {
+    }
+
+    @Override
+    default void dragOver(DropTargetDragEvent e) {
+    }
+
+    @Override
+    default void dropActionChanged(DropTargetDragEvent e) {
+    }
+
+    @Override
+    default void dragExit(DropTargetEvent e) {
+    }
+
+    @Override
+    void drop(DropTargetDropEvent e);
 }

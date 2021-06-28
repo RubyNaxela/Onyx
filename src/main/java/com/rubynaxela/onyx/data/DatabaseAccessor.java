@@ -13,16 +13,28 @@ package com.rubynaxela.onyx.data;
 
 import com.rubynaxela.onyx.Onyx;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectType;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.*;
+import com.rubynaxela.onyx.gui.Table;
+import com.rubynaxela.onyx.util.Reference;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 public final class DatabaseAccessor {
+
+    private static final Vector<String>
+            contractorsHeaders = new Vector<>(Arrays.asList(Reference.getString("label.contractor.name"),
+                                                            Reference.getString("label.contractor.details"))),
+            invoicesHeaders = new Vector<>(Arrays.asList(Reference.getString("label.invoice.id"),
+                                                         Reference.getString("label.invoice.date"),
+                                                         Reference.getString("label.invoice.contractor"),
+                                                         Reference.getString("label.invoice.total"))),
+            operationsHeaders = new Vector<>(Arrays.asList(Reference.getString("label.operation.date"),
+                                                           Reference.getString("label.operation.contractor"),
+                                                           Reference.getString("label.operation.description"),
+                                                           Reference.getString("label.operation.amount")));
 
     private final OnyxDatabase database;
 
@@ -114,5 +126,17 @@ public final class DatabaseAccessor {
     public Identifiable getObject(@Nullable String uuid) {
         return (Identifiable) database.getObjects().stream().filter(
                 c -> ((Identifiable) c).getUuid().equals(uuid)).findFirst().orElse(null);
+    }
+
+    @Contract(value = "!null -> new", pure = true)
+    public Table getTable(ObjectType type) {
+        if (type == ObjectType.CONTRACTOR) return new Table(contractorsHeaders, getContractorsTableVector());
+        else if (type == ObjectType.OPEN_INVOICE) return new Table(invoicesHeaders, getOpenInvoicesTableVector());
+        else if (type == ObjectType.CLOSED_INVOICE) return new Table(invoicesHeaders, getClosedInvoicesTableVector());
+        else if (type == ObjectType.CLAIM) return new Table(operationsHeaders, getClaimsTableVector());
+        else if (type == ObjectType.LIABILITY) return new Table(operationsHeaders, getLiabilitiesTableVector());
+        else if (type == ObjectType.CONTRIBUTION) return new Table(operationsHeaders, getContributionsTableVector());
+        else if (type == ObjectType.PAYMENT) return new Table(operationsHeaders, getPaymentsTableVector());
+        else return null;
     }
 }
