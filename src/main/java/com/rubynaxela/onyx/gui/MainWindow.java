@@ -13,6 +13,7 @@ package com.rubynaxela.onyx.gui;
 
 import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.LeafLabel;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.OnyxObjectsGroup;
 import com.rubynaxela.onyx.gui.components.*;
 import com.rubynaxela.onyx.util.Reference;
 import com.rubynaxela.onyx.util.Utils;
@@ -28,13 +29,20 @@ import java.awt.dnd.*;
 public final class MainWindow extends DefaultJFrame implements DropTargetListener {
 
     public static final LeafLabel
-            contractorsLabel = new LeafLabel(Reference.getString("navigation.contractors")),
-            openInvoicesLabel = new LeafLabel(Reference.getString("navigation.invoices.unaccounted")),
-            closedInvoicesLabel = new LeafLabel(Reference.getString("navigation.invoices.cleared")),
-            claimsLabel = new LeafLabel(Reference.getString("navigation.operations.transactions.claims")),
-            liabilitiesLabel = new LeafLabel(Reference.getString("navigation.operations.transactions.liabilities")),
-            contributionsLabel = new LeafLabel(Reference.getString("navigation.operations.considerations.contributions")),
-            paymentsLabel = new LeafLabel(Reference.getString("navigation.operations.considerations.payments"));
+            contractorsLabel = new LeafLabel(Reference.getString("navigation.contractors"),
+                                             OnyxObjectsGroup.CONTRACTORS),
+            openInvoicesLabel = new LeafLabel(Reference.getString("navigation.invoices.unaccounted"),
+                                              OnyxObjectsGroup.OPEN_INVOICES),
+            closedInvoicesLabel = new LeafLabel(Reference.getString("navigation.invoices.cleared"),
+                                                OnyxObjectsGroup.CLOSED_INVOICES),
+            claimsLabel = new LeafLabel(Reference.getString("navigation.operations.transactions.claims"),
+                                        OnyxObjectsGroup.CLAIMS),
+            liabilitiesLabel = new LeafLabel(Reference.getString("navigation.operations.transactions.liabilities"),
+                                             OnyxObjectsGroup.LIABILITIES),
+            contributionsLabel = new LeafLabel(Reference.getString("navigation.operations.considerations.contributions"),
+                                               OnyxObjectsGroup.CONTRIBUTIONS),
+            paymentsLabel = new LeafLabel(Reference.getString("navigation.operations.considerations.payments"),
+                                          OnyxObjectsGroup.PAYMENTS);
     public final JTree navigation;
 
     public final DefaultJButton

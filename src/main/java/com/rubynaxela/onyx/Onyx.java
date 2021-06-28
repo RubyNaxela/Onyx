@@ -35,7 +35,7 @@ public final class Onyx {
 
         messageDialogsHandler = new MessageDialogsHandler(null);
         ioHandler = new IOHandler();
-        databaseAccessor = new DatabaseAccessor(database);
+        databaseAccessor = new DatabaseAccessor(this);
         databaseController = new DatabaseController(this);
         guiManager = new GUIManager(this);
 

@@ -18,11 +18,18 @@ import java.util.UUID;
 public class LeafLabel implements Identifiable {
 
     private final String uuid;
-    public String value;
+    private final String value;
 
-    public LeafLabel(String value) {
+    private final OnyxObjectsGroup associatedGroup;
+
+    public LeafLabel(String value, OnyxObjectsGroup associatedGroup) {
         this.value = value;
+        this.associatedGroup = associatedGroup;
         uuid = UUID.randomUUID().toString();
+    }
+
+    public OnyxObjectsGroup getAssociatedGroup() {
+        return associatedGroup;
     }
 
     @Override

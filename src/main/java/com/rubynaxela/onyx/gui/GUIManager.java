@@ -37,8 +37,6 @@ import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
@@ -169,33 +167,13 @@ public class GUIManager {
         window.navigation.addTreeSelectionListener(e -> {
             final Object selectedNode = (
                     (DefaultMutableTreeNode) window.navigation.getLastSelectedPathComponent()).getUserObject();
-            if (selectedNode instanceof LeafLabel) {
-
-                final LeafLabel selectedNodeLabel = (LeafLabel) selectedNode;
-
-                if (selectedNodeLabel.equals(MainWindow.contractorsLabel))
-                    window.dataTableModel.display(OnyxObjectsGroup.CONTRACTORS);
-                else if (selectedNodeLabel.equals(MainWindow.openInvoicesLabel))
-                    window.dataTableModel.display(OnyxObjectsGroup.OPEN_INVOICES);
-                else if (selectedNodeLabel.equals(MainWindow.closedInvoicesLabel))
-                    window.dataTableModel.display(OnyxObjectsGroup.CLOSED_INVOICES);
-                else if (selectedNodeLabel.equals(MainWindow.claimsLabel))
-                    window.dataTableModel.display(OnyxObjectsGroup.CLAIMS);
-                else if (selectedNodeLabel.equals(MainWindow.liabilitiesLabel))
-                    window.dataTableModel.display(OnyxObjectsGroup.LIABILITIES);
-                else if (selectedNodeLabel.equals(MainWindow.contributionsLabel))
-                    window.dataTableModel.display(OnyxObjectsGroup.CONTRIBUTIONS);
-                else if (selectedNodeLabel.equals(MainWindow.paymentsLabel))
-                    window.dataTableModel.display(OnyxObjectsGroup.PAYMENTS);
-            }
+            if (selectedNode instanceof LeafLabel)
+                window.dataTableModel.display(((LeafLabel) selectedNode).getAssociatedGroup());
         });
 
-        window.dataTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent mouseEvent) {
-                if (mouseEvent.getClickCount() == 2 && ((JTable) mouseEvent.getSource()).getSelectedRow() != -1)
-                    editButtonAction.actionPerformed(null);
-            }
+        window.dataTable.addMouseListener((MousePressListener) mouseEvent -> {
+            if (mouseEvent.getClickCount() == 2 && ((JTable) mouseEvent.getSource()).getSelectedRow() != -1)
+                editButtonAction.actionPerformed(null);
         });
         window.addButton.addActionListener(addButtonAction);
         window.editButton.addActionListener(editButtonAction);

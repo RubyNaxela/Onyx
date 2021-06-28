@@ -11,6 +11,7 @@
 
 package com.rubynaxela.onyx.data;
 
+import com.rubynaxela.onyx.Onyx;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.*;
 import org.jetbrains.annotations.Contract;
@@ -25,8 +26,8 @@ public final class DatabaseAccessor {
 
     private final OnyxDatabase database;
 
-    public DatabaseAccessor(OnyxDatabase database) {
-        this.database = database;
+    public DatabaseAccessor(Onyx instance) {
+        this.database = instance.getDatabase();
     }
 
     public String getCompanyName() {
