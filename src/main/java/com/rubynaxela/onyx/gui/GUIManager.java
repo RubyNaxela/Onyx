@@ -36,6 +36,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
+import static com.rubynaxela.onyx.util.OsCheck.OSType.MAC_OS;
+
 @SuppressWarnings("FieldCanBeLocal")
 public class GUIManager {
 
@@ -66,8 +68,9 @@ public class GUIManager {
 
     private void initialSettings() {
 
-        // Platform-dependent utilization of the application top bar
-        switch (OsCheck.getOperatingSystemType()) {
+        final OsCheck.OSType os = OsCheck.getOperatingSystemType();
+
+        switch (os) {
             case MAC_OS:
                 System.setProperty("apple.awt.application.name", "Onyx");
                 System.setProperty("apple.laf.useScreenMenuBar", "true");
@@ -78,11 +81,12 @@ public class GUIManager {
                 break;
         }
 
-        // Look and feel settings
         try {
             if (!Reference.getProperty("theme").equals("dark")) {
+                if (os == MAC_OS) System.setProperty("apple.awt.application.appearance", "NSAppearanceNameAqua");
                 UIManager.setLookAndFeel(new FlatIntelliJLaf());
             } else {
+                if (os == MAC_OS) System.setProperty("apple.awt.application.appearance", "NSAppearanceNameDarkAqua");
                 UIManager.setLookAndFeel(new FlatDarculaLaf());
             }
         } catch (Exception e) {
