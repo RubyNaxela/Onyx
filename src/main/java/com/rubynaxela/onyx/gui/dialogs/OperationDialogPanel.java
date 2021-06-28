@@ -59,19 +59,20 @@ public class OperationDialogPanel extends DefaultJPanel {
         descriptionInput.setText(editedObject != null ? editedObject.getDescription() : "");
         amountInput.setText(editedObject != null ? new Monetary(editedObject.getAmount()).toString() : "");
 
-        final DocumentListener textFieldListener = createInputValidator();
+        final AbstractValidInputListener textFieldListener = createInputValidator();
         dateInput.getDocument().addDocumentListener(textFieldListener);
         descriptionInput.getDocument().addDocumentListener(textFieldListener);
         amountInput.getDocument().addDocumentListener(textFieldListener);
 
         okButton.setEnabled(editedObject != null);
         okButton.addActionListener(e -> Utils.getOptionPane((JComponent) e.getSource()).setValue(okButton));
+        okButton.setEnabled(textFieldListener.dataValid());
     }
 
     private AbstractValidInputListener createInputValidator() {
         return new AbstractValidInputListener(okButton) {
             @Override
-            protected boolean dataValid() {
+            public boolean dataValid() {
                 boolean amountValid = true;
                 try {
                     Double.parseDouble(amountInput.getText().replace(",", "."));

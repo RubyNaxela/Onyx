@@ -17,7 +17,6 @@ import com.rubynaxela.onyx.util.Reference;
 import com.rubynaxela.onyx.util.Utils;
 
 import javax.swing.*;
-import javax.swing.event.DocumentListener;
 
 public class ContractorDialogPanel extends DefaultJPanel {
 
@@ -45,18 +44,19 @@ public class ContractorDialogPanel extends DefaultJPanel {
         detailsInput.setWrapStyleWord(true);
         detailsInput.setText(editedObject != null ? editedObject.getDetails() : "");
 
-        final DocumentListener textFieldListener = createInputValidator();
+        final AbstractValidInputListener textFieldListener = createInputValidator();
         nameInput.getDocument().addDocumentListener(textFieldListener);
         detailsInput.getDocument().addDocumentListener(textFieldListener);
 
         okButton.setEnabled(editedObject != null);
         okButton.addActionListener(e -> Utils.getOptionPane((JComponent) e.getSource()).setValue(okButton));
+        okButton.setEnabled(textFieldListener.dataValid());
     }
 
     private AbstractValidInputListener createInputValidator() {
         return new AbstractValidInputListener(okButton) {
             @Override
-            protected boolean dataValid() {
+            public boolean dataValid() {
                 return !nameInput.getText().equals("")
                        && !detailsInput.getText().equals("");
             }

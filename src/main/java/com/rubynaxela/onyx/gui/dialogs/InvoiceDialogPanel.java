@@ -94,7 +94,7 @@ public class InvoiceDialogPanel extends DefaultJPanel {
         itemsTable.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
         itemsTable.getColumnModel().getColumn(7).setCellRenderer(rightRenderer);
 
-        final DocumentListener textFieldListener = createInputValidator();
+        final AbstractValidInputListener textFieldListener = createInputValidator();
         idInput.getDocument().addDocumentListener(textFieldListener);
         dateInput.getDocument().addDocumentListener(textFieldListener);
 
@@ -105,13 +105,14 @@ public class InvoiceDialogPanel extends DefaultJPanel {
 
         okButton.setEnabled(editedObject != null);
         okButton.addActionListener(e -> Utils.getOptionPane((JComponent) e.getSource()).setValue(okButton));
+        okButton.setEnabled(textFieldListener.dataValid());
     }
 
     private AbstractValidInputListener createInputValidator() {
         return new AbstractValidInputListener(okButton) {
             @Override
-            protected boolean dataValid() {
-                return !idInput.getText().equals("") &&
+            public boolean dataValid() {
+                return idInput.getText().matches("^RK/\\d{6}$") &&
                        !dateInput.getText().equals("");
             }
         };

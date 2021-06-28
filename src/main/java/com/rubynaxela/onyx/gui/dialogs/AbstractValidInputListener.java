@@ -98,5 +98,5 @@ abstract class AbstractValidInputListener implements DocumentListener {
      *
      * @return whether input data is valid. Will be used to manage the state of passed button
      */
-    protected abstract boolean dataValid();
+    public abstract boolean dataValid();
 }
