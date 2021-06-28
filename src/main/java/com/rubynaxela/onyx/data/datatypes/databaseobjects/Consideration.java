@@ -13,4 +13,13 @@ package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
 public abstract class Consideration extends Operation {
 
+    protected String invoiceUuid;
+
+    public String getInvoiceUuid() {
+        return invoiceUuid;
+    }
+
+    public void setInvoiceUuid(String invoiceUuid) {
+        this.invoiceUuid = invoiceUuid;
+    }
 }

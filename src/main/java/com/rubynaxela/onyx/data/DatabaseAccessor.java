@@ -15,6 +15,7 @@ import com.rubynaxela.onyx.Onyx;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.Monetary;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectType;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.PaymentMethod;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.*;
 import com.rubynaxela.onyx.gui.Table;
 import com.rubynaxela.onyx.util.Reference;
@@ -28,14 +29,24 @@ public final class DatabaseAccessor {
     private static final Vector<String>
             contractorsHeaders = new Vector<>(Arrays.asList(Reference.getString("label.contractor.name"),
                                                             Reference.getString("label.contractor.details"))),
-            invoicesHeaders = new Vector<>(Arrays.asList(Reference.getString("label.invoice.id"),
-                                                         Reference.getString("label.invoice.date"),
-                                                         Reference.getString("label.invoice.contractor"),
-                                                         Reference.getString("label.invoice.total"))),
-            operationsHeaders = new Vector<>(Arrays.asList(Reference.getString("label.operation.date"),
-                                                           Reference.getString("label.operation.contractor"),
-                                                           Reference.getString("label.operation.description"),
-                                                           Reference.getString("label.operation.amount")));
+            openInvoicesHeaders = new Vector<>(Arrays.asList(Reference.getString("label.invoice.id"),
+                                                             Reference.getString("label.invoice.date"),
+                                                             Reference.getString("label.invoice.contractor"),
+                                                             Reference.getString("label.invoice.total"))),
+            closedInvoicesHeaders = new Vector<>(Arrays.asList(Reference.getString("label.invoice.id"),
+                                                               Reference.getString("label.invoice.date"),
+                                                               Reference.getString("label.invoice.contractor"),
+                                                               Reference.getString("label.invoice.total"),
+                                                               Reference.getString("label.invoice.operation"))),
+            transactionsHeaders = new Vector<>(Arrays.asList(Reference.getString("label.operation.date"),
+                                                             Reference.getString("label.operation.contractor"),
+                                                             Reference.getString("label.operation.description"),
+                                                             Reference.getString("label.operation.amount"))),
+            considerationsHeaders = new Vector<>(Arrays.asList(Reference.getString("label.operation.date"),
+                                                               Reference.getString("label.operation.contractor"),
+                                                               Reference.getString("label.operation.description"),
+                                                               Reference.getString("label.operation.amount"),
+                                                               Reference.getString("label.operation.payment_method")));
 
     private final OnyxDatabase database;
 
@@ -66,10 +77,12 @@ public final class DatabaseAccessor {
         return new Vector<>(database.getObjects(Contractor.class));
     }
 
-    private Vector<ObjectRow> getInvoicesTableVector(LinkedList<? extends Invoice> invoices) {
+    @Contract(value = "-> new", pure = true)
+    public Vector<ObjectRow> getOpenInvoicesTableVector() {
+        final List<OpenInvoice> invoices = database.getObjects(OpenInvoice.class);
         invoices.sort(Comparator.comparing(Invoice::getDate).thenComparing(Invoice::getId));
         final Vector<ObjectRow> table = new Vector<>();
-        for (Invoice invoice : invoices) {
+        for (OpenInvoice invoice : invoices) {
             ObjectRow invoiceData = new ObjectRow(invoice);
             invoiceData.add(invoice.getId());
             invoiceData.add(invoice.getDate());
@@ -81,24 +94,48 @@ public final class DatabaseAccessor {
     }
 
     @Contract(value = "-> new", pure = true)
-    public Vector<ObjectRow> getOpenInvoicesTableVector() {
-        return getInvoicesTableVector(database.getObjects(OpenInvoice.class));
-    }
-
-    @Contract(value = "-> new", pure = true)
     public Vector<ObjectRow> getClosedInvoicesTableVector() {
-        return getInvoicesTableVector(database.getObjects(ClosedInvoice.class));
+        final List<ClosedInvoice> invoices = database.getObjects(ClosedInvoice.class);
+        invoices.sort(Comparator.comparing(Invoice::getDate).thenComparing(Invoice::getId));
+        final Vector<ObjectRow> table = new Vector<>();
+        for (ClosedInvoice invoice : invoices) {
+            ObjectRow invoiceData = new ObjectRow(invoice);
+            invoiceData.add(invoice.getId());
+            invoiceData.add(invoice.getDate());
+            invoiceData.add(database.getObject(invoice.getContractorUuid()).toString());
+            invoiceData.add(invoice.calculateAmount() + " PLN");
+            final Consideration consideration = (Consideration) getObject(invoice.getConsiderationUuid());
+            invoiceData.add(consideration != null ? consideration.getDescription() : "-");
+            table.add(invoiceData);
+        }
+        return table;
     }
 
-    private Vector<ObjectRow> getOperationsTableVector(LinkedList<? extends Operation> operations) {
-        operations.sort(Comparator.comparing(Operation::getDate));
+    private Vector<ObjectRow> getTransactionsTableVector(LinkedList<? extends Transaction> transactions) {
+        transactions.sort(Comparator.comparing(Transaction::getDate).thenComparing(Transaction::getDescription));
         final Vector<ObjectRow> table = new Vector<>();
-        for (Operation operation : operations) {
-            ObjectRow operationData = new ObjectRow(operation);
-            operationData.add(operation.getDate());
-            operationData.add(database.getObject(operation.getContractorUuid()).toString());
-            operationData.add(operation.getDescription());
-            operationData.add(new Monetary(operation.getAmount()) + " PLN");
+        for (Transaction transaction : transactions) {
+            ObjectRow operationData = new ObjectRow(transaction);
+            operationData.add(transaction.getDate());
+            operationData.add(database.getObject(transaction.getContractorUuid()).toString());
+            operationData.add(transaction.getDescription());
+            operationData.add(new Monetary(transaction.getAmount()) + " PLN");
+            table.add(operationData);
+        }
+        return table;
+    }
+
+    private Vector<ObjectRow> getConsiderationsTableVector(LinkedList<? extends Consideration> considerations) {
+        considerations.sort(Comparator.comparing(Consideration::getDate).thenComparing(Consideration::getDescription));
+        final Vector<ObjectRow> table = new Vector<>();
+        for (Consideration consideration : considerations) {
+            ObjectRow operationData = new ObjectRow(consideration);
+            operationData.add(consideration.getDate());
+            operationData.add(database.getObject(consideration.getContractorUuid()).toString());
+            operationData.add(consideration.getDescription());
+            operationData.add(new Monetary(consideration.getAmount()) + " PLN");
+            operationData.add(PaymentMethod.get(((ClosedInvoice) getObject(
+                    consideration.getInvoiceUuid())).getPaymentMethodUuid()).toString());
             table.add(operationData);
         }
         return table;
@@ -106,22 +143,22 @@ public final class DatabaseAccessor {
 
     @Contract(value = "-> new", pure = true)
     public Vector<ObjectRow> getClaimsTableVector() {
-        return getOperationsTableVector(database.getObjects(Claim.class));
+        return getTransactionsTableVector(database.getObjects(Claim.class));
     }
 
     @Contract(value = "-> new", pure = true)
     public Vector<ObjectRow> getLiabilitiesTableVector() {
-        return getOperationsTableVector(database.getObjects(Liability.class));
+        return getTransactionsTableVector(database.getObjects(Liability.class));
     }
 
     @Contract(value = "-> new", pure = true)
     public Vector<ObjectRow> getContributionsTableVector() {
-        return getOperationsTableVector(database.getObjects(Contribution.class));
+        return getConsiderationsTableVector(database.getObjects(Contribution.class));
     }
 
     @Contract(value = "-> new", pure = true)
     public Vector<ObjectRow> getPaymentsTableVector() {
-        return getOperationsTableVector(database.getObjects(Payment.class));
+        return getConsiderationsTableVector(database.getObjects(Payment.class));
     }
 
     public Identifiable getObject(@Nullable String uuid) {
@@ -132,12 +169,12 @@ public final class DatabaseAccessor {
     @Contract(value = "!null -> new", pure = true)
     public Table getTable(ObjectType type) {
         if (type == ObjectType.CONTRACTOR) return new Table(contractorsHeaders, getContractorsTableVector());
-        else if (type == ObjectType.OPEN_INVOICE) return new Table(invoicesHeaders, getOpenInvoicesTableVector());
-        else if (type == ObjectType.CLOSED_INVOICE) return new Table(invoicesHeaders, getClosedInvoicesTableVector());
-        else if (type == ObjectType.CLAIM) return new Table(operationsHeaders, getClaimsTableVector());
-        else if (type == ObjectType.LIABILITY) return new Table(operationsHeaders, getLiabilitiesTableVector());
-        else if (type == ObjectType.CONTRIBUTION) return new Table(operationsHeaders, getContributionsTableVector());
-        else if (type == ObjectType.PAYMENT) return new Table(operationsHeaders, getPaymentsTableVector());
+        else if (type == ObjectType.OPEN_INVOICE) return new Table(openInvoicesHeaders, getOpenInvoicesTableVector());
+        else if (type == ObjectType.CLOSED_INVOICE) return new Table(closedInvoicesHeaders, getClosedInvoicesTableVector());
+        else if (type == ObjectType.CLAIM) return new Table(transactionsHeaders, getClaimsTableVector());
+        else if (type == ObjectType.LIABILITY) return new Table(transactionsHeaders, getLiabilitiesTableVector());
+        else if (type == ObjectType.CONTRIBUTION) return new Table(considerationsHeaders, getContributionsTableVector());
+        else if (type == ObjectType.PAYMENT) return new Table(considerationsHeaders, getPaymentsTableVector());
         else return null;
     }
 }

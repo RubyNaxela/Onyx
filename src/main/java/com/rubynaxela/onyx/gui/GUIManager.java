@@ -18,9 +18,7 @@ import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.DatabaseController;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.LeafLabel;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectType;
-import com.rubynaxela.onyx.data.datatypes.databaseobjects.Identifiable;
-import com.rubynaxela.onyx.data.datatypes.databaseobjects.Invoice;
-import com.rubynaxela.onyx.data.datatypes.databaseobjects.OpenInvoice;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.*;
 import com.rubynaxela.onyx.data.datatypes.raw.ImportedInvoice;
 import com.rubynaxela.onyx.gui.dialogs.InputDialogsHandler;
 import com.rubynaxela.onyx.gui.dialogs.MessageDialogsHandler;
@@ -155,6 +153,32 @@ public class GUIManager {
                     Reference.getString("message.action.confirm_remove"), false)) {
                 databaseController.removeEntry(window.dataTableModel.getCurrentObject());
                 window.dataTableModel.refresh();
+            }
+        });
+        window.documentButton.addActionListener(e -> {
+            final Identifiable currentObject = window.dataTableModel.getCurrentObject();
+            if (currentObject instanceof Invoice) {
+                final Operation operation;
+                final double amount = ((Invoice) currentObject).calculateAmount().toDouble();
+                if (currentObject instanceof OpenInvoice) {
+                    if (amount > 0)
+                        operation = inputDialogsHandler.showClaimDialog(new Claim((OpenInvoice) currentObject));
+                    else if (amount < 0)
+                        operation = inputDialogsHandler.showLiabilityDialog(new Liability((OpenInvoice) currentObject));
+                    else operation = null;
+                } else {
+                    if (amount > 0)
+                        operation = inputDialogsHandler.showContributionDialog(new Contribution((ClosedInvoice) currentObject));
+                    else if (amount < 0)
+                        operation = inputDialogsHandler.showPaymentDialog(new Payment((ClosedInvoice) currentObject));
+                    else operation = null;
+                }
+                if (operation != null) {
+                    databaseController.addEntry(operation);
+                    if (currentObject instanceof ClosedInvoice)
+                        ((ClosedInvoice) currentObject).setConsiderationUuid(operation.getUuid());
+                    window.dataTableModel.refresh();
+                }
             }
         });
         window.dataTable.addMouseListener((MousePressListener) event -> {

@@ -1,5 +1,6 @@
 {
   "button.add": "Add",
+  "button.associate_document": "Associate a document",
   "button.cancel": "Cancel",
   "button.edit": "Edit",
   "button.no": "No",
@@ -13,6 +14,7 @@
   "label.invoice.id": "ID",
   "label.invoice.cleared": "Cleared",
   "label.invoice.items": "Items",
+  "label.invoice.operation": "Operation",
   "label.invoice.payment_method": "Payment method",
   "label.invoice.total": "Total",
   "label.invoice_item.date": "Date",
@@ -27,6 +29,7 @@
   "label.operation.contractor": "Contractor",
   "label.operation.date": "Date",
   "label.operation.description": "Description",
+  "label.operation.payment_method": "Payment method",
   "message.action.confirm_remove": "Do you want to remove this object?",
   "message.error.unrecognized_file": "Could not read file %s as a Onyx system object",
   "navigation.contractors": "Contractors",

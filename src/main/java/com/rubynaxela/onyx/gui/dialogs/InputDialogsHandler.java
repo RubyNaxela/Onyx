@@ -72,6 +72,7 @@ public class InputDialogsHandler {
                                                   dialogPanel.contractorInput.getSelectedItem())).getUuid(),
                                           ((PaymentMethod) Objects.requireNonNull(
                                                   dialogPanel.paymentMethodInput.getSelectedItem())).getUuid(),
+                                          editedObject != null ? ((ClosedInvoice) editedObject).getConsiderationUuid() : null,
                                           dialogPanel.getInvoiceItems());
 
         else return null;
@@ -125,7 +126,8 @@ public class InputDialogsHandler {
                                     ((Contractor) Objects.requireNonNull(
                                             dialogPanel.contractorInput.getSelectedItem())).getUuid(),
                                     dialogPanel.descriptionInput.getText(),
-                                    new Monetary(dialogPanel.amountInput.getText()).toDouble());
+                                    new Monetary(dialogPanel.amountInput.getText()).toDouble(),
+                                    editedObject != null ? editedObject.getInvoiceUuid() : null);
         else return null;
     }
 
@@ -142,7 +144,8 @@ public class InputDialogsHandler {
                                dialogPanel.dateInput.getText(),
                                ((Contractor) Objects.requireNonNull(dialogPanel.contractorInput.getSelectedItem())).getUuid(),
                                dialogPanel.descriptionInput.getText(),
-                               new Monetary(dialogPanel.amountInput.getText()).toDouble());
+                               new Monetary(dialogPanel.amountInput.getText()).toDouble(),
+                               editedObject != null ? editedObject.getInvoiceUuid() : null);
         else return null;
     }
 

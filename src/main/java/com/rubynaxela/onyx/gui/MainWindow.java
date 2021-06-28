@@ -47,7 +47,8 @@ public final class MainWindow extends DefaultJFrame {
     public final DefaultJButton
             addButton = new DefaultJButton(Reference.getString("button.add")),
             editButton = new DefaultJButton(Reference.getString("button.edit")),
-            removeButton = new DefaultJButton(Reference.getString("button.remove"));
+            removeButton = new DefaultJButton(Reference.getString("button.remove")),
+            documentButton = new DefaultJButton(Reference.getString("button.associate_document"));
 
     public final StaticJTable dataTable;
     public final OnyxTableModel dataTableModel;
@@ -57,7 +58,7 @@ public final class MainWindow extends DefaultJFrame {
         setTitle(title);
 
         dataTable = new StaticJTable();
-        dataTableModel = new OnyxTableModel(databaseAccessor, dataTable, addButton, editButton, removeButton);
+        dataTableModel = new OnyxTableModel(databaseAccessor, dataTable, addButton, editButton, removeButton, documentButton);
         dataTableModel.addTableModelListener(e -> dataTable.resizeColumnWidth(15, 300));
 
         navigation = new DefaultJTree(new DefaultMutableTreeNode(databaseAccessor.getCompanyName()));
@@ -135,6 +136,8 @@ public final class MainWindow extends DefaultJFrame {
                     editorButtonsPanel.register(editButton, Utils.gridElementSettings(0, 1));
                     removeButton.setEnabled(false);
                     editorButtonsPanel.register(removeButton, Utils.gridElementSettings(0, 2));
+                    documentButton.setVisible(false);
+                    editorButtonsPanel.register(documentButton, Utils.gridElementSettings(0, 3, 2, 1));
                 }
             }
             viewPanel.register(new DefaultJScrollPane(dataTable, 600, 350),

@@ -18,7 +18,7 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public class ClosedInvoice extends Invoice {
 
-    private String paymentMethodUuid;
+    protected String paymentMethodUuid, considerationUuid;
 
     public ClosedInvoice() {
     }
@@ -27,18 +27,20 @@ public class ClosedInvoice extends Invoice {
         this.uuid = UUID.randomUUID().toString();
         this.id = data.getId();
         this.date = data.getDate();
-        this.contractorUuid = "?";
+        this.contractorUuid = null;
         this.paymentMethodUuid = null;
+        this.considerationUuid = null;
         this.items = data.getItems();
     }
 
     public ClosedInvoice(String uuid, String id, String date, String contractorUuid,
-                         String paymentMethodUuid, InvoiceItem[] items) {
+                         String paymentMethodUuid, String considerationUuid, InvoiceItem[] items) {
         this.uuid = uuid;
         this.id = id;
         this.date = date;
         this.contractorUuid = contractorUuid;
         this.paymentMethodUuid = paymentMethodUuid;
+        this.considerationUuid = considerationUuid;
         this.items = items;
     }
 
@@ -48,5 +50,13 @@ public class ClosedInvoice extends Invoice {
 
     public void setPaymentMethodUuid(String paymentMethodUuid) {
         this.paymentMethodUuid = paymentMethodUuid;
+    }
+
+    public String getConsiderationUuid() {
+        return considerationUuid;
+    }
+
+    public void setConsiderationUuid(String considerationUuid) {
+        this.considerationUuid = considerationUuid;
     }
 }
