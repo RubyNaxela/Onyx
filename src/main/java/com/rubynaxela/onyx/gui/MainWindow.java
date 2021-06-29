@@ -51,7 +51,7 @@ public final class MainWindow extends DefaultJFrame {
             removeAction = new ActionController(
                     new DefaultJButton(Reference.getString("button.remove")), menuBar.removeEntry),
             documentAction = new ActionController(
-                    new DefaultJButton(Reference.getString("button.associate_document")), menuBar.associateDocument),
+                    new DefaultJButton(Reference.getString("button.add_document")), menuBar.addDocument),
             companyNameAcion = new ActionController(null, menuBar.companyName),
             languageAction = new ActionController(null, menuBar.language),
             themeAction = new ActionController(null, menuBar.theme);
@@ -122,7 +122,7 @@ public final class MainWindow extends DefaultJFrame {
                         }
                     }
                 }
-                navigationButtonsPanel.register(new DefaultJScrollPane(navigation, 180, 407),
+                navigationButtonsPanel.register(new DefaultJScrollPane(navigation, 200, 507),
                                                 Utils.gridElementSettings(0, 0));
             }
         }
@@ -147,7 +147,7 @@ public final class MainWindow extends DefaultJFrame {
                     editorButtonsPanel.register(documentAction.button, Utils.gridElementSettings(0, 3, 2, 1));
                 }
             }
-            viewPanel.register(new DefaultJScrollPane(dataTable, 600, 350),
+            viewPanel.register(new DefaultJScrollPane(dataTable, 800, 450),
                                Utils.gridElementSettings(1, 0));
             dataTableModel.setupTable();
         }
