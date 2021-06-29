@@ -11,9 +11,10 @@
 
 package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
-import java.util.UUID;
+import com.rubynaxela.onyx.util.Uuid;
 
 public interface Identifiable {
 
+    @Uuid
     String getUuid();
 }
