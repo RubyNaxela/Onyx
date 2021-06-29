@@ -18,8 +18,6 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public class ClosedInvoice extends Invoice {
 
-    protected String paymentMethodUuid;
-
     public ClosedInvoice() {
     }
 
@@ -28,21 +26,14 @@ public class ClosedInvoice extends Invoice {
         this.id = data.getId();
         this.date = data.getDate();
         this.contractorUuid = null;
-        this.paymentMethodUuid = null;
         this.items = data.getItems();
     }
 
-    public ClosedInvoice(String uuid, String id, String date, String contractorUuid,
-                         String paymentMethodUuid, InvoiceItem[] items) {
+    public ClosedInvoice(String uuid, String id, String date, String contractorUuid, InvoiceItem[] items) {
         this.uuid = uuid;
         this.id = id;
         this.date = date;
         this.contractorUuid = contractorUuid;
-        this.paymentMethodUuid = paymentMethodUuid;
         this.items = items;
-    }
-
-    public String getPaymentMethodUuid() {
-        return paymentMethodUuid;
     }
 }

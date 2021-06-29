@@ -19,12 +19,14 @@ public class Payment extends Consideration {
     public Payment() {
     }
 
-    public Payment(String uuid, String date, String contractorUuid, String description, double amount, String invoiceUuid) {
+    public Payment(String uuid, String date, String contractorUuid, String description,
+                   double amount, String paymentMethodUuid, String invoiceUuid) {
         this.uuid = uuid;
         this.date = date;
         this.contractorUuid = contractorUuid;
         this.description = description;
         this.amount = amount;
+        this.paymentMethodUuid = paymentMethodUuid;
         this.invoiceUuid = invoiceUuid;
     }
 

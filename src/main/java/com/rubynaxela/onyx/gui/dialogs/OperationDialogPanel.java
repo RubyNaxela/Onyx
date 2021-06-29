@@ -13,6 +13,8 @@ package com.rubynaxela.onyx.gui.dialogs;
 
 import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.Monetary;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.PaymentMethod;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Consideration;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.Contractor;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.Operation;
 import com.rubynaxela.onyx.gui.components.DefaultJPanel;
@@ -23,9 +25,10 @@ import javax.swing.*;
 
 public final class OperationDialogPanel extends DefaultJPanel {
 
-    public final JLabel dateLabel, contractorLabel, descriptionLabel, amountLabel, amountPostfixLabel;
+    public final JLabel dateLabel, contractorLabel, descriptionLabel, amountLabel, amountPostfixLabel, paymentMethodLabel;
     public final JTextField dateInput, descriptionInput, amountInput;
     public final JComboBox<Contractor> contractorInput;
+    public final JComboBox<PaymentMethod> paymentMethodInput;
     public final JButton okButton;
 
     public OperationDialogPanel(Operation editedObject, DatabaseAccessor databaseAccessor) {
@@ -35,12 +38,14 @@ public final class OperationDialogPanel extends DefaultJPanel {
         descriptionLabel = new JLabel(Reference.getString("label.operation.description"));
         amountLabel = new JLabel(Reference.getString("label.operation.amount"));
         amountPostfixLabel = new JLabel("PLN");
+        paymentMethodLabel = new JLabel(Reference.getString("label.operation.payment_method"));
         okButton = new JButton(Reference.getString("button.ok"));
 
         dateInput = new JTextField();
         contractorInput = new JComboBox<>(databaseAccessor.getContractorsVector());
         descriptionInput = new JTextField(20);
         amountInput = new JTextField();
+        paymentMethodInput = new JComboBox<>(PaymentMethod.values());
 
         register(dateLabel, Utils.gridElementSettings(0, 0));
         register(dateInput, Utils.gridElementSettings(0, 1));
@@ -51,6 +56,10 @@ public final class OperationDialogPanel extends DefaultJPanel {
         register(amountLabel, Utils.gridElementSettings(3, 0));
         register(amountInput, Utils.gridElementSettings(3, 1));
         register(amountPostfixLabel, Utils.gridElementSettings(3, 2));
+        if (editedObject instanceof Consideration) {
+            register(paymentMethodLabel, Utils.gridElementSettings(4, 0));
+            register(paymentMethodInput, Utils.gridElementSettings(4, 1));
+        }
 
         dateInput.setText(editedObject != null ? editedObject.getDate() : "");
         contractorInput.setSelectedItem(editedObject != null ?
@@ -62,6 +71,8 @@ public final class OperationDialogPanel extends DefaultJPanel {
         dateInput.getDocument().addDocumentListener(textFieldListener);
         descriptionInput.getDocument().addDocumentListener(textFieldListener);
         amountInput.getDocument().addDocumentListener(textFieldListener);
+        if (editedObject instanceof Consideration)
+            paymentMethodInput.setSelectedItem(PaymentMethod.get(((Consideration) editedObject).getPaymentMethodUuid()));
 
         okButton.setEnabled(editedObject != null);
         okButton.addActionListener(e -> Utils.getOptionPane((JComponent) e.getSource()).setValue(okButton));

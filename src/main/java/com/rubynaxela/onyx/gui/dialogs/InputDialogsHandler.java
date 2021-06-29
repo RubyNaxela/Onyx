@@ -70,8 +70,6 @@ public final class InputDialogsHandler {
                                           dialogPanel.dateInput.getText(),
                                           ((Contractor) Objects.requireNonNull(
                                                   dialogPanel.contractorInput.getSelectedItem())).getUuid(),
-                                          ((PaymentMethod) Objects.requireNonNull(
-                                                  dialogPanel.paymentMethodInput.getSelectedItem())).getUuid(),
                                           dialogPanel.getInvoiceItems());
 
         else return null;
@@ -126,6 +124,8 @@ public final class InputDialogsHandler {
                                             dialogPanel.contractorInput.getSelectedItem())).getUuid(),
                                     dialogPanel.descriptionInput.getText(),
                                     new Monetary(dialogPanel.amountInput.getText()).toDouble(),
+                                    ((PaymentMethod) Objects.requireNonNull(
+                                            dialogPanel.paymentMethodInput.getSelectedItem())).getUuid(),
                                     editedObject != null ? editedObject.getInvoiceUuid() : null);
         else return null;
     }
@@ -144,20 +144,22 @@ public final class InputDialogsHandler {
                                ((Contractor) Objects.requireNonNull(dialogPanel.contractorInput.getSelectedItem())).getUuid(),
                                dialogPanel.descriptionInput.getText(),
                                new Monetary(dialogPanel.amountInput.getText()).toDouble(),
+                               ((PaymentMethod) Objects.requireNonNull(
+                                       dialogPanel.paymentMethodInput.getSelectedItem())).getUuid(),
                                editedObject != null ? editedObject.getInvoiceUuid() : null);
         else return null;
     }
 
     @Nullable
-    public Identifiable showObjectDialog(@NotNull ObjectType group, @Nullable Identifiable editedObject) {
+    public Identifiable showObjectDialog(@NotNull ObjectType type, @Nullable Identifiable editedObject) {
         final Identifiable object;
-        if (group == ObjectType.CONTRACTOR) object = showContractorDialog((Contractor) editedObject);
-        else if (group == ObjectType.OPEN_INVOICE ||
-                 group == ObjectType.CLOSED_INVOICE) object = showInvoiceDialog((Invoice) editedObject);
-        else if (group == ObjectType.CLAIM) object = showClaimDialog((Claim) editedObject);
-        else if (group == ObjectType.LIABILITY) object = showLiabilityDialog((Liability) editedObject);
-        else if (group == ObjectType.CONTRIBUTION) object = showContributionDialog((Contribution) editedObject);
-        else if (group == ObjectType.PAYMENT) object = showPaymentDialog((Payment) editedObject);
+        if (type == ObjectType.CONTRACTOR) object = showContractorDialog((Contractor) editedObject);
+        else if (type == ObjectType.OPEN_INVOICE ||
+                 type == ObjectType.CLOSED_INVOICE) object = showInvoiceDialog((Invoice) editedObject);
+        else if (type == ObjectType.CLAIM) object = showClaimDialog((Claim) editedObject);
+        else if (type == ObjectType.LIABILITY) object = showLiabilityDialog((Liability) editedObject);
+        else if (type == ObjectType.CONTRIBUTION) object = showContributionDialog((Contribution) editedObject);
+        else if (type == ObjectType.PAYMENT) object = showPaymentDialog((Payment) editedObject);
         else object = null;
         return object;
     }

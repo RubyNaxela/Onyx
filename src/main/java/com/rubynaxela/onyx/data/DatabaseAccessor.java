@@ -118,13 +118,12 @@ public final class DatabaseAccessor {
                                       .thenComparing(Consideration::getDescription).reversed());
         final Vector<ObjectRow> table = new Vector<>();
         for (Consideration consideration : considerations) {
-            final ClosedInvoice invoice = (ClosedInvoice) getObject(consideration.getInvoiceUuid());
             table.add(new ObjectRow(consideration.getUuid(),
                                     consideration.getDate(),
                                     database.get(consideration.getContractorUuid()).toString(),
                                     consideration.getDescription(),
                                     new Monetary(consideration.getAmount()) + " PLN",
-                                    PaymentMethod.get(invoice.getPaymentMethodUuid()).toString()));
+                                    PaymentMethod.get(consideration.getPaymentMethodUuid()).toString()));
         }
         return table;
     }

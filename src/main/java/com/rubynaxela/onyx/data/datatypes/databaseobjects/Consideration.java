@@ -16,14 +16,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties("reference")
 public abstract class Consideration extends Operation implements Referring {
 
+    protected String paymentMethodUuid;
     protected String invoiceUuid;
 
     public String getInvoiceUuid() {
         return invoiceUuid;
     }
 
-    public void setInvoiceUuid(String invoiceUuid) {
-        this.invoiceUuid = invoiceUuid;
+    public String getPaymentMethodUuid() {
+        return paymentMethodUuid;
     }
 
     @Override
