@@ -16,9 +16,9 @@ import com.rubynaxela.onyx.data.datatypes.raw.ImportedInvoice;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public class ClosedInvoice extends Invoice implements Referring {
+public class ClosedInvoice extends Invoice {
 
-    protected String paymentMethodUuid, considerationUuid;
+    protected String paymentMethodUuid;
 
     public ClosedInvoice() {
     }
@@ -29,44 +29,20 @@ public class ClosedInvoice extends Invoice implements Referring {
         this.date = data.getDate();
         this.contractorUuid = null;
         this.paymentMethodUuid = null;
-        this.considerationUuid = null;
         this.items = data.getItems();
     }
 
     public ClosedInvoice(String uuid, String id, String date, String contractorUuid,
-                         String paymentMethodUuid, String considerationUuid, InvoiceItem[] items) {
+                         String paymentMethodUuid, InvoiceItem[] items) {
         this.uuid = uuid;
         this.id = id;
         this.date = date;
         this.contractorUuid = contractorUuid;
         this.paymentMethodUuid = paymentMethodUuid;
-        this.considerationUuid = considerationUuid;
         this.items = items;
     }
 
     public String getPaymentMethodUuid() {
         return paymentMethodUuid;
-    }
-
-    public void setPaymentMethodUuid(String paymentMethodUuid) {
-        this.paymentMethodUuid = paymentMethodUuid;
-    }
-
-    public String getConsiderationUuid() {
-        return considerationUuid;
-    }
-
-    public void setConsiderationUuid(String considerationUuid) {
-        this.considerationUuid = considerationUuid;
-    }
-
-    @Override
-    public String getReference() {
-        return considerationUuid;
-    }
-
-    @Override
-    public void removeReference() {
-        considerationUuid = null;
     }
 }

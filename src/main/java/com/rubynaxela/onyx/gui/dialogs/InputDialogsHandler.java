@@ -72,8 +72,6 @@ public final class InputDialogsHandler {
                                                   dialogPanel.contractorInput.getSelectedItem())).getUuid(),
                                           ((PaymentMethod) Objects.requireNonNull(
                                                   dialogPanel.paymentMethodInput.getSelectedItem())).getUuid(),
-                                          editedObject instanceof ClosedInvoice ?
-                                          ((ClosedInvoice) editedObject).getConsiderationUuid() : null,
                                           dialogPanel.getInvoiceItems());
 
         else return null;

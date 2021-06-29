@@ -29,15 +29,10 @@ public final class DatabaseAccessor {
     private static final Vector<String>
             contractorsHeaders = new Vector<>(Arrays.asList(Reference.getString("label.contractor.name"),
                                                             Reference.getString("label.contractor.details"))),
-            openInvoicesHeaders = new Vector<>(Arrays.asList(Reference.getString("label.invoice.id"),
-                                                             Reference.getString("label.invoice.date"),
-                                                             Reference.getString("label.invoice.contractor"),
-                                                             Reference.getString("label.invoice.total"))),
-            closedInvoicesHeaders = new Vector<>(Arrays.asList(Reference.getString("label.invoice.id"),
-                                                               Reference.getString("label.invoice.date"),
-                                                               Reference.getString("label.invoice.contractor"),
-                                                               Reference.getString("label.invoice.total"),
-                                                               Reference.getString("label.invoice.operation"))),
+            invoicesHeaders = new Vector<>(Arrays.asList(Reference.getString("label.invoice.id"),
+                                                         Reference.getString("label.invoice.date"),
+                                                         Reference.getString("label.invoice.contractor"),
+                                                         Reference.getString("label.invoice.total"))),
             transactionsHeaders = new Vector<>(Arrays.asList(Reference.getString("label.operation.date"),
                                                              Reference.getString("label.operation.contractor"),
                                                              Reference.getString("label.operation.description"),
@@ -96,15 +91,12 @@ public final class DatabaseAccessor {
         invoices.sort(Comparator.comparing(Invoice::getDate)
                                 .thenComparing(Invoice::getId).reversed());
         final Vector<ObjectRow> table = new Vector<>();
-        for (ClosedInvoice invoice : invoices) {
-            final Consideration consideration = (Consideration) getObject(invoice.getConsiderationUuid());
+        for (ClosedInvoice invoice : invoices)
             table.add(new ObjectRow(invoice.getUuid(),
                                     invoice.getId(),
                                     invoice.getDate(),
                                     database.get(invoice.getContractorUuid()).toString(),
-                                    invoice.calculateAmount() + " PLN",
-                                    consideration != null ? consideration.getDescription() : "-"));
-        }
+                                    invoice.calculateAmount() + " PLN"));
         return table;
     }
 
@@ -165,8 +157,8 @@ public final class DatabaseAccessor {
     @Contract(value = "!null -> new", pure = true)
     public Table getTable(ObjectType type) {
         if (type == ObjectType.CONTRACTOR) return new Table(contractorsHeaders, getContractorsTableVector());
-        else if (type == ObjectType.OPEN_INVOICE) return new Table(openInvoicesHeaders, getOpenInvoicesTableVector());
-        else if (type == ObjectType.CLOSED_INVOICE) return new Table(closedInvoicesHeaders, getClosedInvoicesTableVector());
+        else if (type == ObjectType.OPEN_INVOICE) return new Table(invoicesHeaders, getOpenInvoicesTableVector());
+        else if (type == ObjectType.CLOSED_INVOICE) return new Table(invoicesHeaders, getClosedInvoicesTableVector());
         else if (type == ObjectType.CLAIM) return new Table(transactionsHeaders, getClaimsTableVector());
         else if (type == ObjectType.LIABILITY) return new Table(transactionsHeaders, getLiabilitiesTableVector());
         else if (type == ObjectType.CONTRIBUTION) return new Table(considerationsHeaders, getContributionsTableVector());

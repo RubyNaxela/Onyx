@@ -175,8 +175,6 @@ public final class GUIManager {
                 }
                 if (operation != null) {
                     databaseController.addEntry(operation);
-                    if (currentObject instanceof ClosedInvoice)
-                        ((ClosedInvoice) currentObject).setConsiderationUuid(operation.getUuid());
                     window.dataTableModel.refresh();
                 }
             }
