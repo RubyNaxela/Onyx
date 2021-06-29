@@ -70,16 +70,15 @@ public abstract class Invoice implements Identifiable {
         for (InvoiceItem item : items) {
             final double taxRate = TaxRate.get(item.getTax()).rate / (1 + TaxRate.get(item.getTax()).rate);
             final Monetary itemAmount = item.calculateAmount();
-            ObjectRow itemData = new ObjectRow(item);
-            itemData.add(item.getDate());
-            itemData.add(item.getSource());
-            itemData.add(item.getDescription());
-            itemData.add(taxRate != 0 ? (new Monetary(item.getRate()).times(1 - taxRate) + " PLN") : "");
-            itemData.add(item.getQuantity() != 0 ? new Quantity(item.getQuantity()).toString() : "");
-            itemData.add(taxRate != 0 ? (itemAmount.times(1 - taxRate) + " PLN") : "");
-            itemData.add(taxRate != 0 ? (itemAmount.times(taxRate) + " PLN") : "");
-            itemData.add(item.calculateAmount() + " PLN");
-            table.add(itemData);
+            table.add(new ObjectRow(item.getUuid(),
+                                    item.getDate(),
+                                    item.getSource(),
+                                    item.getDescription(),
+                                    taxRate != 0 ? (new Monetary(item.getRate()).times(1 - taxRate) + " PLN") : "",
+                                    item.getQuantity() != 0 ? new Quantity(item.getQuantity()).toString() : "",
+                                    taxRate != 0 ? (itemAmount.times(1 - taxRate) + " PLN") : "",
+                                    taxRate != 0 ? (itemAmount.times(taxRate) + " PLN") : "",
+                                    item.calculateAmount() + " PLN"));
         }
         return table;
     }

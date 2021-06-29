@@ -11,17 +11,19 @@
 
 package com.rubynaxela.onyx.data.datatypes.auxiliary;
 
-import com.rubynaxela.onyx.data.datatypes.databaseobjects.Identifiable;
+import com.rubynaxela.onyx.util.Uuid;
 
+import java.util.Arrays;
 import java.util.Vector;
 
 public class ObjectRow extends Vector<String> {
 
     private final String uuid;
 
-    public ObjectRow(Identifiable object) {
+    public ObjectRow(@Uuid String uuid, String... data) {
         super();
-        this.uuid = object.getUuid();
+        this.uuid = uuid;
+        this.addAll(Arrays.asList(data));
     }
 
     public String getObjectUuid() {
