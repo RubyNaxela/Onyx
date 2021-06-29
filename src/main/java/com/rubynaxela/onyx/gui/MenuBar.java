@@ -18,12 +18,13 @@ import javax.swing.*;
 @SuppressWarnings("FieldCanBeLocal")
 public class MenuBar extends JMenuBar {
 
-    public final JMenuItem addEntry, editEntry, removeEntry, associateDocument, close, exit;
+    public final JMenuItem close, exit, addEntry, editEntry, removeEntry, associateDocument, companyName, language, theme;
 
     public MenuBar() {
 
         JMenu fileMenu = new JMenu(Reference.getString("menu.file")),
-                editMenu = new JMenu(Reference.getString("menu.edit"));
+                editMenu = new JMenu(Reference.getString("menu.edit")),
+                optionsMenu = new JMenu(Reference.getString("menu.options"));
 
         addEntry = new JMenuItem(Reference.getString("menu.entry.add"));
         addEntry.setAccelerator(Reference.Shortcuts.NEW_STROKE);
@@ -53,7 +54,17 @@ public class MenuBar extends JMenuBar {
         exit.setAccelerator(Reference.Shortcuts.EXIT_STROKE);
         fileMenu.add(exit);
 
+        companyName = new JMenuItem(Reference.getString("menu.company_name"));
+        optionsMenu.add(companyName);
+
+        language = new JMenuItem(Reference.getString("menu.language"));
+        optionsMenu.add(language);
+
+        theme = new JMenuItem(Reference.getString("menu.theme"));
+        optionsMenu.add(theme);
+
         this.add(fileMenu);
         this.add(editMenu);
+        this.add(optionsMenu);
     }
 }

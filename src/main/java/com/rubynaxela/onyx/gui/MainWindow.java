@@ -51,7 +51,10 @@ public final class MainWindow extends DefaultJFrame {
             removeAction = new ActionController(
                     new DefaultJButton(Reference.getString("button.remove")), menuBar.removeEntry),
             documentAction = new ActionController(
-                    new DefaultJButton(Reference.getString("button.associate_document")), menuBar.associateDocument);
+                    new DefaultJButton(Reference.getString("button.associate_document")), menuBar.associateDocument),
+            companyNameAcion = new ActionController(null, menuBar.companyName),
+            languageAction = new ActionController(null, menuBar.language),
+            themeAction = new ActionController(null, menuBar.theme);
     public final StaticJTable dataTable;
     public final OnyxTableModel dataTableModel;
 
