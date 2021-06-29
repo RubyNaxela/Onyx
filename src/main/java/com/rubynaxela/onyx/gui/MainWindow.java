@@ -44,7 +44,6 @@ public final class MainWindow extends DefaultJFrame {
                                           ObjectType.PAYMENT);
 
     public final MenuBar menuBar = new MenuBar();
-    ;
     public final DefaultJTree navigation;
     public final ActionController
             addAction = new ActionController(new DefaultJButton(Reference.getString("button.add")), menuBar.addEntry),

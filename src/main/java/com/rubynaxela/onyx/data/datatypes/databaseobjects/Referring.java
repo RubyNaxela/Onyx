@@ -11,7 +11,7 @@
 
 package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
-public interface Referring {
+public interface Referring extends Identifiable {
 
     String getReference();
 

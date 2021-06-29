@@ -34,7 +34,6 @@ import java.util.Properties;
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 import static java.awt.event.InputEvent.META_DOWN_MASK;
 import static java.awt.event.KeyEvent.*;
-import static javax.swing.KeyStroke.getKeyStroke;
 
 public final class Reference {
 
@@ -157,11 +156,11 @@ public final class Reference {
 
         private static final boolean isMacOS = OsCheck.getOperatingSystemType() == OsCheck.OSType.MAC_OS;
         public static final KeyStroke
-                CLOSE_STROKE = getKeyStroke(VK_W, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK),
-                EXIT_STROKE = getKeyStroke(VK_Q, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK),
-                NEW_STROKE = getKeyStroke(VK_N, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK),
-                EDIT_STROKE = getKeyStroke(VK_ENTER, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK),
-                REMOVE_STROKE = getKeyStroke(VK_BACK_SPACE, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK),
-                DOCUMENT_STROKE = getKeyStroke(VK_D, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK);
+                NEW_STROKE = KeyStroke.getKeyStroke(VK_N, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK),
+                EDIT_STROKE = KeyStroke.getKeyStroke(VK_ENTER, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK),
+                REMOVE_STROKE = KeyStroke.getKeyStroke(VK_BACK_SPACE, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK),
+                DOCUMENT_STROKE = KeyStroke.getKeyStroke(VK_D, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK),
+                CLOSE_STROKE = KeyStroke.getKeyStroke(VK_W, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK),
+                EXIT_STROKE = KeyStroke.getKeyStroke(VK_Q, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK);
     }
 }
