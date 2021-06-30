@@ -16,6 +16,7 @@ import com.rubynaxela.onyx.data.datatypes.databaseobjects.ClosedInvoice;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.Contractor;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.Invoice;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.InvoiceItem;
+import com.rubynaxela.onyx.gui.ActionController;
 import com.rubynaxela.onyx.gui.InvoiceTableModel;
 import com.rubynaxela.onyx.gui.components.DefaultJPanel;
 import com.rubynaxela.onyx.gui.components.DefaultJScrollPane;
@@ -34,6 +35,7 @@ public final class InvoiceDialogPanel extends DefaultJPanel {
     public final JCheckBox clearedCheckBox;
     public final StaticJTable itemsTable;
     public final InvoiceTableModel itemsTableModel;
+    public final ActionController addButton, editButton, removeButton;
     public final JButton okButton;
 
     public InvoiceDialogPanel(Invoice editedObject, DatabaseAccessor databaseAccessor,
@@ -52,8 +54,12 @@ public final class InvoiceDialogPanel extends DefaultJPanel {
         dateInput = new JTextField();
         contractorInput = new JComboBox<>(databaseAccessor.getContractorsVector());
         clearedCheckBox = new JCheckBox();
+        addButton = new ActionController(new JButton(Reference.getString("button.add")), null);
+        editButton = new ActionController(new JButton(Reference.getString("button.edit")), null);
+        removeButton = new ActionController(new JButton(Reference.getString("button.remove")), null);
         itemsTable = new StaticJTable();
-        itemsTableModel = new InvoiceTableModel(editedObject);
+        itemsTableModel = new InvoiceTableModel(editedObject, itemsTable,
+                                                addButton, editButton, removeButton, inputDialogsHandler, imported);
         itemsTableModel.addTableModelListener(e -> itemsTable.resizeColumnWidth(15, 300));
         okButton = new JButton(Reference.getString("button.ok"));
 
@@ -68,14 +74,19 @@ public final class InvoiceDialogPanel extends DefaultJPanel {
         register(itemsLabel, Utils.gridPosition(2, 0, 6, 1));
         register(new DefaultJScrollPane(itemsTable, 900, 350),
                  Utils.gridPosition(3, 0, 7, 1));
+        DefaultJPanel buttonsPanel = new DefaultJPanel();
+        {
+            buttonsPanel.register(addButton.button, Utils.gridPosition(0, 0));
+            buttonsPanel.register(editButton.button, Utils.gridPosition(0, 1));
+            buttonsPanel.register(removeButton.button, Utils.gridPosition(0, 2));
+        }
+        register(buttonsPanel, Utils.gridPosition(4, 0, 4, 0));
 
         idInput.setText(invoiceId);
         dateInput.setText(editedObject != null ? editedObject.getDate() : "");
         contractorInput.setSelectedItem(editedObject != null ?
                                         databaseAccessor.getObject(editedObject.getContractorUuid()) : null);
         clearedCheckBox.setSelected(editedObject instanceof ClosedInvoice);
-        itemsTable.setModel(itemsTableModel);
-        itemsTable.resizeColumnWidth(15, 300);
 
         idInput.setEnabled(editsEnabled);
         dateInput.setEnabled(editsEnabled);
