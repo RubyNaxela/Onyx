@@ -45,7 +45,7 @@ public final class OnyxTableModel extends DefaultTableModel {
     public void setupTable() {
         ownerTable.setModel(this);
         ownerTable.getSelectionModel().addListSelectionListener(e -> {
-            int rowIndex = ownerTable.getSelectedRow();
+            final int rowIndex = ownerTable.getSelectedRow();
             if (rowIndex >= 0 && this.getCurrentObjectsType() != null) {
                 currentObject = databaseAccessor.getObject(this.getRow(rowIndex).getObjectUuid());
                 editButton.setEnabled(true);
