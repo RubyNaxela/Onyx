@@ -105,8 +105,15 @@ public final class GUIManager {
                             final Invoice invoice = inputDialogsHandler.showInvoiceDialog(Invoice.imported(imported));
                             if (invoice != null) {
                                 databaseController.addEntry(invoice);
-                                if (invoice instanceof OpenInvoice) window.dataTableModel.display(ObjectType.OPEN_INVOICE);
-                                else window.dataTableModel.display(ObjectType.CLOSED_INVOICE);
+                                if (invoice instanceof OpenInvoice) {
+                                    window.dataTableModel.display(ObjectType.OPEN_INVOICE);
+                                    window.navigation.getSelectionModel().setSelectionPath(
+                                            window.navigation.getPath("root.invoices.openInvoices"));
+                                } else {
+                                    window.dataTableModel.display(ObjectType.CLOSED_INVOICE);
+                                    window.navigation.getSelectionModel().setSelectionPath(
+                                            window.navigation.getPath("root.invoices.closedInvoices"));
+                                }
                             }
                         } catch (Exception ex) {
                             messageDialogsHandler.showError(Reference.getFormatString("message.error.unrecognized_file",

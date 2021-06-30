@@ -20,6 +20,7 @@ import com.rubynaxela.onyx.util.Utils;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 
 public final class MainWindow extends DefaultJFrame {
@@ -96,8 +97,10 @@ public final class MainWindow extends DefaultJFrame {
                     {
                         final DefaultMutableTreeNode openInvoices = new DefaultMutableTreeNode(openInvoicesLabel);
                         invoices.add(openInvoices);
+                        navigation.registerPath("root.invoices.openInvoices", new TreePath(openInvoices.getPath()));
                         final DefaultMutableTreeNode closedInvoices = new DefaultMutableTreeNode(closedInvoicesLabel);
                         invoices.add(closedInvoices);
+                        navigation.registerPath("root.invoices.closedInvoices", new TreePath(closedInvoices.getPath()));
                     }
                     final DefaultMutableTreeNode allOperations = new DefaultMutableTreeNode(
                             Reference.getString("navigation.operations"));
