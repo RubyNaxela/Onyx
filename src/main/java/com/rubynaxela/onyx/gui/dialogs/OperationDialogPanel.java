@@ -115,7 +115,7 @@ public final class OperationDialogPanel extends DefaultJPanel {
                     displayError(invoiceIdInput, Reference.getString("input.invalid.invoice_id"));
                 else cancelError(invoiceIdInput);
 
-                return dateValid && descriptionValid && amountValid && invoiceIdValid;
+                return dateValid && descriptionValid && amountValid && (invoiceIdValid || invoiceIdInput.getText().equals(""));
             }
         };
     }
