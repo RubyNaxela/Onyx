@@ -102,7 +102,8 @@ public final class GUIManager {
                     for (File file : droppedFiles) {
                         try {
                             final ImportedInvoice imported = Objects.requireNonNull(ioHandler.parseInvoice(file));
-                            final Invoice invoice = inputDialogsHandler.showInvoiceDialog(Invoice.imported(imported));
+                            final Invoice invoice = inputDialogsHandler.showInvoiceDialog(
+                                    Invoice.imported(imported), true);
                             if (invoice != null) {
                                 databaseController.addEntry(invoice);
                                 if (invoice instanceof OpenInvoice) {

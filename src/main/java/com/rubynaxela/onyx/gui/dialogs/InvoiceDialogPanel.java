@@ -36,8 +36,10 @@ public final class InvoiceDialogPanel extends DefaultJPanel {
     public final InvoiceTableModel itemsTableModel;
     public final JButton okButton;
 
-    public InvoiceDialogPanel(Invoice editedObject, DatabaseAccessor databaseAccessor) {
+    public InvoiceDialogPanel(Invoice editedObject, DatabaseAccessor databaseAccessor,
+                              InputDialogsHandler inputDialogsHandler, boolean imported) {
 
+        final boolean editsEnabled = !(editedObject instanceof ClosedInvoice) || imported;
         String invoiceId = editedObject != null ? editedObject.getId() : "";
         if (!invoiceId.startsWith("RK/")) invoiceId = "RK/" + invoiceId;
 
@@ -75,11 +77,12 @@ public final class InvoiceDialogPanel extends DefaultJPanel {
         itemsTable.setModel(itemsTableModel);
         itemsTable.resizeColumnWidth(15, 300);
 
-        itemsTable.alignColumn(3, JLabel.RIGHT);
-        itemsTable.alignColumn(4, JLabel.RIGHT);
-        itemsTable.alignColumn(5, JLabel.RIGHT);
-        itemsTable.alignColumn(6, JLabel.RIGHT);
-        itemsTable.alignColumn(7, JLabel.RIGHT);
+        idInput.setEnabled(editsEnabled);
+        dateInput.setEnabled(editsEnabled);
+        contractorInput.setEnabled(editsEnabled);
+        addButton.setEnabled(editsEnabled);
+        editButton.setEnabled(false);
+        removeButton.setEnabled(false);
 
         final AbstractValidInputListener textFieldListener = createTextInputValidator();
         idInput.getDocument().addDocumentListener(textFieldListener);
