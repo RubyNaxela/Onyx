@@ -67,7 +67,9 @@ public final class DatabaseAccessor {
 
     @Contract(value = "-> new", pure = true)
     public Vector<Contractor> getContractorsVector() {
-        return new Vector<>(database.getAllOfType(Contractor.class));
+        final Vector<Contractor> contractors = new Vector<>(database.getAllOfType(Contractor.class));
+        contractors.sort(Comparator.comparing(Contractor::getName));
+        return contractors;
     }
 
     @Contract(value = "-> new", pure = true)
