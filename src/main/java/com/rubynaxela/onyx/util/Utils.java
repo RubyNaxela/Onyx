@@ -11,12 +11,9 @@
 
 package com.rubynaxela.onyx.util;
 
-import com.rubynaxela.onyx.gui.components.StaticJTable;
 import org.jetbrains.annotations.Contract;
 
 import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import java.awt.*;
 
 public final class Utils {
@@ -32,14 +29,14 @@ public final class Utils {
     }
 
     @Contract(pure = true)
-    public static GridBagConstraints gridElementSettings(int row, int column, int width, int height, int alignment) {
-        return gridElementSettings(row, column, width, height, alignment,
-                                   new Insets(5, 5, 5, 5), GridBagConstraints.BOTH);
+    public static GridBagConstraints gridPosition(int row, int column, int width, int height, int alignment) {
+        return gridPosition(row, column, width, height, alignment,
+                            new Insets(5, 5, 5, 5), GridBagConstraints.BOTH);
     }
 
     @Contract(pure = true)
-    public static GridBagConstraints gridElementSettings(int row, int column, int width, int height, int alignment,
-                                                         Insets insets, int fill) {
+    public static GridBagConstraints gridPosition(int row, int column, int width, int height, int alignment,
+                                                  Insets insets, int fill) {
         final GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = column;
         gbc.gridy = row;
@@ -68,15 +65,15 @@ public final class Utils {
      * @return a {@link java.awt.GridBagConstraints} instance
      */
     @Contract(pure = true)
-    public static GridBagConstraints gridElementSettings(int row, int column, int width, int height) {
-        return gridElementSettings(row, column, width, height, GridBagConstraints.CENTER,
-                                   new Insets(5, 5, 5, 5), GridBagConstraints.BOTH);
+    public static GridBagConstraints gridPosition(int row, int column, int width, int height) {
+        return gridPosition(row, column, width, height, GridBagConstraints.CENTER,
+                            new Insets(5, 5, 5, 5), GridBagConstraints.BOTH);
     }
 
     @Contract(pure = true)
-    public static GridBagConstraints gridElementSettings(int row, int column, int alignment) {
-        return gridElementSettings(row, column, 1, 1, alignment,
-                                   new Insets(5, 5, 5, 5), GridBagConstraints.BOTH);
+    public static GridBagConstraints gridPosition(int row, int column, int alignment) {
+        return gridPosition(row, column, 1, 1, alignment,
+                            new Insets(5, 5, 5, 5), GridBagConstraints.BOTH);
     }
 
     /**
@@ -88,8 +85,8 @@ public final class Utils {
      * @return a {@code GridBagConstraints} instance
      */
     @Contract(pure = true)
-    public static GridBagConstraints gridElementSettings(int row, int column) {
-        return gridElementSettings(row, column, 1, 1, GridBagConstraints.CENTER,
-                                   new Insets(5, 5, 5, 5), GridBagConstraints.BOTH);
+    public static GridBagConstraints gridPosition(int row, int column) {
+        return gridPosition(row, column, 1, 1, GridBagConstraints.CENTER,
+                            new Insets(5, 5, 5, 5), GridBagConstraints.BOTH);
     }
 }

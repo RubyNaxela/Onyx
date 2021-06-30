@@ -33,10 +33,10 @@ public final class ContractorDialogPanel extends DefaultJPanel {
         detailsInput = new JTextArea(5, 30);
         okButton = new JButton(Reference.getString("button.ok"));
 
-        register(nameLabel, Utils.gridElementSettings(0, 0));
-        register(nameInput, Utils.gridElementSettings(0, 1));
-        register(detailsLabel, Utils.gridElementSettings(1, 0, 2, 1));
-        register(detailsInput, Utils.gridElementSettings(2, 0, 2, 1));
+        register(nameLabel, Utils.gridPosition(0, 0));
+        register(nameInput, Utils.gridPosition(0, 1));
+        register(detailsLabel, Utils.gridPosition(1, 0, 2, 1));
+        register(detailsInput, Utils.gridPosition(2, 0, 2, 1));
 
         nameInput.setText(editedObject != null ? editedObject.getName() : "");
 
@@ -44,7 +44,7 @@ public final class ContractorDialogPanel extends DefaultJPanel {
         detailsInput.setWrapStyleWord(true);
         detailsInput.setText(editedObject != null ? editedObject.getDetails() : "");
 
-        final AbstractValidInputListener textFieldListener = createInputValidator();
+        final AbstractValidInputListener textFieldListener = createTextInputValidator();
         nameInput.getDocument().addDocumentListener(textFieldListener);
         detailsInput.getDocument().addDocumentListener(textFieldListener);
 
@@ -53,7 +53,7 @@ public final class ContractorDialogPanel extends DefaultJPanel {
         okButton.setEnabled(textFieldListener.dataValid());
     }
 
-    private AbstractValidInputListener createInputValidator() {
+    private AbstractValidInputListener createTextInputValidator() {
         return new AbstractValidInputListener(okButton) {
             @Override
             public boolean dataValid() {

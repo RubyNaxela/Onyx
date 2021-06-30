@@ -79,7 +79,7 @@ public final class MainWindow extends DefaultJFrame {
 
     private void setupNavigation() {
         final JPanel navigationButtonsPanelWrapper = new JPanel();
-        register(navigationButtonsPanelWrapper, Utils.gridElementSettings(0, 0));
+        register(navigationButtonsPanelWrapper, Utils.gridPosition(0, 0));
         {
             final DefaultJPanel navigationButtonsPanel = new DefaultJPanel();
             navigationButtonsPanelWrapper.add(navigationButtonsPanel);
@@ -123,32 +123,32 @@ public final class MainWindow extends DefaultJFrame {
                     }
                 }
                 navigationButtonsPanel.register(new DefaultJScrollPane(navigation, 200, 507),
-                                                Utils.gridElementSettings(0, 0));
+                                                Utils.gridPosition(0, 0));
             }
         }
     }
 
     private void setupViewPanel(DefaultJPanel viewPanel) {
-        register(viewPanel, Utils.gridElementSettings(0, 1));
+        register(viewPanel, Utils.gridPosition(0, 1));
         {
             final JPanel viewPanelWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            viewPanel.register(viewPanelWrapper, Utils.gridElementSettings(0, 0));
+            viewPanel.register(viewPanelWrapper, Utils.gridPosition(0, 0));
             {
                 final DefaultJPanel editorButtonsPanel = new DefaultJPanel();
                 viewPanelWrapper.add(editorButtonsPanel);
                 {
                     addAction.setEnabled(false);
-                    editorButtonsPanel.register(addAction.button, Utils.gridElementSettings(0, 0));
+                    editorButtonsPanel.register(addAction.button, Utils.gridPosition(0, 0));
                     editAction.setEnabled(false);
-                    editorButtonsPanel.register(editAction.button, Utils.gridElementSettings(0, 1));
+                    editorButtonsPanel.register(editAction.button, Utils.gridPosition(0, 1));
                     removeAction.setEnabled(false);
-                    editorButtonsPanel.register(removeAction.button, Utils.gridElementSettings(0, 2));
+                    editorButtonsPanel.register(removeAction.button, Utils.gridPosition(0, 2));
                     documentAction.setVisible(false);
-                    editorButtonsPanel.register(documentAction.button, Utils.gridElementSettings(0, 3, 2, 1));
+                    editorButtonsPanel.register(documentAction.button, Utils.gridPosition(0, 3, 2, 1));
                 }
             }
             viewPanel.register(new DefaultJScrollPane(dataTable, 800, 450),
-                               Utils.gridElementSettings(1, 0));
+                               Utils.gridPosition(1, 0));
             dataTableModel.setupTable();
         }
     }

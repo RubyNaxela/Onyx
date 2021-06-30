@@ -158,19 +158,16 @@ public final class GUIManager {
         window.documentAction.setListener(e -> {
             final Identifiable currentObject = window.dataTableModel.getCurrentObject();
             if (currentObject instanceof Invoice) {
+                final Invoice invoice = (Invoice) currentObject;
                 final Operation operation;
                 final double amount = ((Invoice) currentObject).calculateAmount().toDouble();
                 if (currentObject instanceof OpenInvoice) {
-                    if (amount > 0)
-                        operation = inputDialogsHandler.showClaimDialog(new Claim((OpenInvoice) currentObject));
-                    else if (amount < 0)
-                        operation = inputDialogsHandler.showLiabilityDialog(new Liability((OpenInvoice) currentObject));
+                    if (amount > 0) operation = inputDialogsHandler.showClaimDialog(new Claim(invoice));
+                    else if (amount < 0) operation = inputDialogsHandler.showLiabilityDialog(new Liability(invoice));
                     else operation = null;
                 } else {
-                    if (amount > 0)
-                        operation = inputDialogsHandler.showContributionDialog(new Contribution((ClosedInvoice) currentObject));
-                    else if (amount < 0)
-                        operation = inputDialogsHandler.showPaymentDialog(new Payment((ClosedInvoice) currentObject));
+                    if (amount > 0) operation = inputDialogsHandler.showContributionDialog(new Contribution(invoice));
+                    else if (amount < 0) operation = inputDialogsHandler.showPaymentDialog(new Payment(invoice));
                     else operation = null;
                 }
                 if (operation != null) {
