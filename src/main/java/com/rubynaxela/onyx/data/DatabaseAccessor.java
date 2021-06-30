@@ -86,6 +86,11 @@ public final class DatabaseAccessor {
     }
 
     @Contract(value = "-> new", pure = true)
+    public Vector<Invoice> getInvoicesVector() {
+        return new Vector<>(database.getAllOfType(Invoice.class));
+    }
+
+    @Contract(value = "-> new", pure = true)
     public Vector<ObjectRow> getClosedInvoicesTableVector() {
         final List<ClosedInvoice> invoices = database.getAllOfType(ClosedInvoice.class);
         invoices.sort(Comparator.comparing(Invoice::getDate)
@@ -150,7 +155,7 @@ public final class DatabaseAccessor {
 
     public Identifiable getObject(@Nullable String uuid) {
         return (Identifiable) database.getAll().stream().filter(
-                c -> ((Identifiable) c).getUuid().equals(uuid)).findFirst().orElse(null);
+                o -> ((Identifiable) o).getUuid().equals(uuid)).findFirst().orElse(null);
     }
 
     @Contract(value = "!null -> new", pure = true)
@@ -163,5 +168,9 @@ public final class DatabaseAccessor {
         else if (type == ObjectType.CONTRIBUTION) return new Table(considerationsHeaders, getContributionsTableVector());
         else if (type == ObjectType.PAYMENT) return new Table(considerationsHeaders, getPaymentsTableVector());
         else return null;
+    }
+
+    public Invoice getInvoiceById(String id) {
+        return database.getAllOfType(Invoice.class).stream().filter(i -> i.getId().equals(id)).findFirst().orElse(null);
     }
 }

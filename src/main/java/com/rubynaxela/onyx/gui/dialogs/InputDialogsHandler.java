@@ -88,7 +88,8 @@ public final class InputDialogsHandler {
                              dialogPanel.dateInput.getText(),
                              ((Contractor) Objects.requireNonNull(dialogPanel.contractorInput.getSelectedItem())).getUuid(),
                              dialogPanel.descriptionInput.getText(),
-                             new Monetary(dialogPanel.amountInput.getText()).toDouble());
+                             new Monetary(dialogPanel.amountInput.getText()).toDouble(),
+                             databaseAccessor.getInvoiceById(dialogPanel.invoiceIdInput.getText()).getUuid());
         else return null;
     }
 
@@ -105,7 +106,8 @@ public final class InputDialogsHandler {
                                  dialogPanel.dateInput.getText(),
                                  ((Contractor) Objects.requireNonNull(dialogPanel.contractorInput.getSelectedItem())).getUuid(),
                                  dialogPanel.descriptionInput.getText(),
-                                 new Monetary(dialogPanel.amountInput.getText()).toDouble());
+                                 new Monetary(dialogPanel.amountInput.getText()).toDouble(),
+                                 databaseAccessor.getInvoiceById(dialogPanel.invoiceIdInput.getText()).getUuid());
         else return null;
     }
 
@@ -126,7 +128,7 @@ public final class InputDialogsHandler {
                                     new Monetary(dialogPanel.amountInput.getText()).toDouble(),
                                     ((PaymentMethod) Objects.requireNonNull(
                                             dialogPanel.paymentMethodInput.getSelectedItem())).getUuid(),
-                                    editedObject != null ? editedObject.getInvoiceUuid() : null);
+                                    databaseAccessor.getInvoiceById(dialogPanel.invoiceIdInput.getText()).getUuid());
         else return null;
     }
 
@@ -146,7 +148,7 @@ public final class InputDialogsHandler {
                                new Monetary(dialogPanel.amountInput.getText()).toDouble(),
                                ((PaymentMethod) Objects.requireNonNull(
                                        dialogPanel.paymentMethodInput.getSelectedItem())).getUuid(),
-                               editedObject != null ? editedObject.getInvoiceUuid() : null);
+                               databaseAccessor.getInvoiceById(dialogPanel.invoiceIdInput.getText()).getUuid());
         else return null;
     }
 

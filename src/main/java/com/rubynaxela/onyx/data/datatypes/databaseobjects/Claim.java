@@ -11,27 +11,22 @@
 
 package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
-import java.util.UUID;
-
 @SuppressWarnings("unused")
 public class Claim extends Transaction {
 
     public Claim() {
     }
 
-    public Claim(String uuid, String date, String contractorUuid, String description, double amount) {
+    public Claim(String uuid, String date, String contractorUuid, String description, double amount, String invoiceUuid) {
         this.uuid = uuid;
         this.date = date;
         this.contractorUuid = contractorUuid;
         this.description = description;
         this.amount = amount;
+        this.invoiceUuid = invoiceUuid;
     }
 
-    public Claim(OpenInvoice invoice) {
-        this.uuid = UUID.randomUUID().toString();
-        this.date = invoice.getDate();
-        this.contractorUuid = invoice.getContractorUuid();
-        this.description = "N/" + invoice.getId().replace("RK/", "");
-        this.amount = invoice.calculateAmount().toDouble();
+    public Claim(Invoice invoice) {
+        super(invoice, "N/");
     }
 }

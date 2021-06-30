@@ -11,8 +11,6 @@
 
 package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
-import java.util.UUID;
-
 @SuppressWarnings("unused")
 public class Payment extends Consideration {
 
@@ -30,12 +28,7 @@ public class Payment extends Consideration {
         this.invoiceUuid = invoiceUuid;
     }
 
-    public Payment(ClosedInvoice invoice) {
-        this.uuid = UUID.randomUUID().toString();
-        this.date = invoice.getDate();
-        this.contractorUuid = invoice.getContractorUuid();
-        this.description = "KW/" + invoice.getId().replace("RK/", "");
-        this.amount = -invoice.calculateAmount().toDouble();
-        this.invoiceUuid = invoice.getUuid();
+    public Payment(Invoice invoice) {
+        super(invoice, "KW/");
     }
 }

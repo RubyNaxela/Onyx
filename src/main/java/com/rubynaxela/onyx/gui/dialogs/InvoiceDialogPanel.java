@@ -38,6 +38,9 @@ public final class InvoiceDialogPanel extends DefaultJPanel {
 
     public InvoiceDialogPanel(Invoice editedObject, DatabaseAccessor databaseAccessor) {
 
+        String invoiceId = editedObject != null ? editedObject.getId() : "";
+        if (!invoiceId.startsWith("RK/")) invoiceId = "RK/" + invoiceId;
+
         idLabel = new JLabel(Reference.getString("label.invoice.id"));
         dateLabel = new JLabel(Reference.getString("label.invoice.date"));
         contractorLabel = new JLabel(Reference.getString("label.invoice.contractor"));
@@ -52,19 +55,19 @@ public final class InvoiceDialogPanel extends DefaultJPanel {
         itemsTableModel.addTableModelListener(e -> itemsTable.resizeColumnWidth(15, 300));
         okButton = new JButton(Reference.getString("button.ok"));
 
-        register(idLabel, Utils.gridElementSettings(0, 0));
-        register(idInput, Utils.gridElementSettings(0, 1));
-        register(dateLabel, Utils.gridElementSettings(1, 0));
-        register(dateInput, Utils.gridElementSettings(1, 1));
-        register(contractorLabel, Utils.gridElementSettings(0, 2));
-        register(contractorInput, Utils.gridElementSettings(0, 3, 3, 1));
-        register(clearedLabel, Utils.gridElementSettings(1, 2));
-        register(clearedCheckBox, Utils.gridElementSettings(1, 3));
-        register(itemsLabel, Utils.gridElementSettings(2, 0, 6, 1));
+        register(idLabel, Utils.gridPosition(0, 0));
+        register(idInput, Utils.gridPosition(0, 1));
+        register(dateLabel, Utils.gridPosition(1, 0));
+        register(dateInput, Utils.gridPosition(1, 1));
+        register(contractorLabel, Utils.gridPosition(0, 2));
+        register(contractorInput, Utils.gridPosition(0, 3, 3, 1));
+        register(clearedLabel, Utils.gridPosition(1, 2));
+        register(clearedCheckBox, Utils.gridPosition(1, 3));
+        register(itemsLabel, Utils.gridPosition(2, 0, 6, 1));
         register(new DefaultJScrollPane(itemsTable, 900, 350),
-                 Utils.gridElementSettings(3, 0, 7, 1));
+                 Utils.gridPosition(3, 0, 7, 1));
 
-        idInput.setText(editedObject != null ? editedObject.getId() : "");
+        idInput.setText(invoiceId);
         dateInput.setText(editedObject != null ? editedObject.getDate() : "");
         contractorInput.setSelectedItem(editedObject != null ?
                                         databaseAccessor.getObject(editedObject.getContractorUuid()) : null);
@@ -80,7 +83,7 @@ public final class InvoiceDialogPanel extends DefaultJPanel {
         itemsTable.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
         itemsTable.getColumnModel().getColumn(7).setCellRenderer(rightRenderer);
 
-        final AbstractValidInputListener textFieldListener = createInputValidator();
+        final AbstractValidInputListener textFieldListener = createTextInputValidator();
         idInput.getDocument().addDocumentListener(textFieldListener);
         dateInput.getDocument().addDocumentListener(textFieldListener);
 
@@ -89,7 +92,11 @@ public final class InvoiceDialogPanel extends DefaultJPanel {
         okButton.setEnabled(textFieldListener.dataValid());
     }
 
-    private AbstractValidInputListener createInputValidator() {
+    public InvoiceItem[] getInvoiceItems() {
+        return itemsTableModel.getInvoice().getItems();
+    }
+
+    private AbstractValidInputListener createTextInputValidator() {
         return new AbstractValidInputListener(okButton) {
             @Override
             public boolean dataValid() {
@@ -97,9 +104,5 @@ public final class InvoiceDialogPanel extends DefaultJPanel {
                        !dateInput.getText().equals("");
             }
         };
-    }
-
-    public InvoiceItem[] getInvoiceItems() {
-        return itemsTableModel.getInvoice().getItems();
     }
 }

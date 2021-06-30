@@ -13,4 +13,10 @@ package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
 public abstract class Transaction extends Operation {
 
+    public Transaction() {
+    }
+
+    public Transaction(Invoice invoice, String idPrefix) {
+        super(invoice, idPrefix);
+    }
 }

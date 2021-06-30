@@ -11,10 +11,27 @@
 
 package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
-public abstract class Operation implements Identifiable {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-    protected String uuid, date, contractorUuid, description;
+import java.util.UUID;
+
+@JsonIgnoreProperties("reference")
+public abstract class Operation implements Identifiable, Referring {
+
+    protected String uuid, date, contractorUuid, description, invoiceUuid;
     protected double amount;
+
+    public Operation() {
+    }
+
+    public Operation(Invoice invoice, String idPrefix) {
+        this.uuid = UUID.randomUUID().toString();
+        this.date = invoice.getDate();
+        this.contractorUuid = invoice.getContractorUuid();
+        this.description = idPrefix + invoice.getId().replace("RK/", "");
+        this.amount = invoice.calculateAmount().toDouble();
+        this.invoiceUuid = invoice.getUuid();
+    }
 
     public String getDate() {
         return date;
@@ -28,6 +45,10 @@ public abstract class Operation implements Identifiable {
         return description;
     }
 
+    public String getInvoiceUuid() {
+        return invoiceUuid;
+    }
+
     public double getAmount() {
         return amount;
     }
@@ -35,5 +56,15 @@ public abstract class Operation implements Identifiable {
     @Override
     public String getUuid() {
         return uuid;
+    }
+
+    @Override
+    public String getReference() {
+        return invoiceUuid;
+    }
+
+    @Override
+    public void removeReference() {
+        invoiceUuid = null;
     }
 }
