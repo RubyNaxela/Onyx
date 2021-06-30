@@ -18,12 +18,6 @@ public class DefaultJTree extends JTree {
 
     private final DefaultMutableTreeNode root;
 
-    /**
-     * Returns a {@link JTree} with the specified {@link DefaultMutableTreeNode} as its root, which displays the root node.
-     * By default, the tree defines a leaf node as any node without children
-     *
-     * @param root a {@link DefaultMutableTreeNode} object, the tree root
-     */
     public DefaultJTree(DefaultMutableTreeNode root) {
         super(root);
         this.root = root;

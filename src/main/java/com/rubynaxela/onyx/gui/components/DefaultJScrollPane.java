@@ -14,12 +14,6 @@ package com.rubynaxela.onyx.gui.components;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * The {@code DefaultScrollPane} constructor serves as a shortened syntax for creating
- * a new {@link JScrollPane} with fixed dimensions
- *
- * @author Jacek Pawelski
- */
 public class DefaultJScrollPane extends JScrollPane {
 
     private final int paneWidth, paneHeight;

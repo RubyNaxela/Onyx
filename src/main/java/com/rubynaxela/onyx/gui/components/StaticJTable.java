@@ -18,12 +18,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-/**
- * The {@code StaticTable} class is an implementation of {@link JTable}, configured
- * in a way that enables only selection of a single row and disables any edits
- *
- * @author Jacek Pawelski
- */
 public class StaticJTable extends JTable {
 
     private final boolean cellsEditable;
