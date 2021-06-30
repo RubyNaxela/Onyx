@@ -45,11 +45,6 @@ public final class Onyx {
         guiManager.initMainWindow();
     }
 
-    /**
-     * Application entry point
-     *
-     * @param args unused
-     */
     public static void main(String[] args) {
         new Onyx();
     }

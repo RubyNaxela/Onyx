@@ -62,14 +62,6 @@ public final class Reference {
         if (_backupDictionary != null) backupDictionary.putAll(_backupDictionary);
     }
 
-    /**
-     * Returns a localized string from a given key. If not found in primary dictionary (that is, by default, the
-     * currently used language file), then searches in the backup dictionary (that is, by default, English (US)). If
-     * nothing is found in both, returns the key itself
-     *
-     * @param key dictionary key of the string
-     * @return localized string
-     */
     @NotNull
     public static String getString(@NotNull String key) {
         if (primaryDictionary.containsKey(key))
@@ -80,16 +72,6 @@ public final class Reference {
             return key;
     }
 
-    /**
-     * Returns a localized and formatted string using the specified format string from a given key and arguments. If the key
-     * is not found in primary dictionary (that is, by default, the currently used language file), then searches in the backup
-     * dictionary (that is, by default, English (US)). If the key is not found in both dictionaries, returns the key itself
-     *
-     * @param key  dictionary key of the string
-     * @param args arguments referenced by the format specifiers in the format string
-     * @return localized string
-     * @see java.lang.String#format(String, Object...)
-     */
     @NotNull
     public static String getFormatString(@NotNull String key, Object... args) {
         if (primaryDictionary.containsKey(key))
@@ -100,15 +82,6 @@ public final class Reference {
             return key;
     }
 
-    /**
-     * Returns a localized string from a given key. If not found in primary dictionary (that is, by default, the
-     * currently used language file), then searches in the backup dictionary (that is, by default, English (US)). If
-     * nothing is found in both, returns the fallback value
-     *
-     * @param key           dictionary key of the string
-     * @param fallbackValue the fallback value
-     * @return localized string or the fallback value
-     */
     @NotNull
     public static String getString(@NotNull String key, @NotNull String fallbackValue) {
         return (primaryDictionary.containsKey(key) || backupDictionary.containsKey(key)) ? getString(key) : fallbackValue;

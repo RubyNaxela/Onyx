@@ -20,13 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * The {@code FileIOHandler} class is responsible for handling JSON files - reading
- * from a file, deserialization and writing to directly from the database stored
- * by the program and serialization of data from the database and writing to a file
- *
- * @author Jacek Pawelski
- */
 public final class IOHandler {
 
     private static final File DATA_FILE = new File("database.json");

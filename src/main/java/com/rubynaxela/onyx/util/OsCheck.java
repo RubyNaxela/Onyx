@@ -13,12 +13,6 @@ package com.rubynaxela.onyx.util;
 
 import java.util.Locale;
 
-/**
- * The {@code OsCheck} class is a tool for checking the operating system on which
- * the program is running. Uses the {@code os.name} Java property to determine the system
- *
- * @author Jacek Pawelski
- */
 public final class OsCheck {
 
     public static OSType getOperatingSystemType() {

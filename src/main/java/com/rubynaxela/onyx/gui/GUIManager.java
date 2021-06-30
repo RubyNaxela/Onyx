@@ -54,10 +54,6 @@ public final class GUIManager {
         this.databaseController = instance.getDatabaseController();
     }
 
-    /**
-     * Initial GUI settings. Sets the location of the navigation bar and other top bar options,
-     * as well as the theme of the interface, then creates and initializes the main application window
-     */
     public void initMainWindow() {
         initialSettings();
         window = new MainWindow("Onyx", databaseAccessor);

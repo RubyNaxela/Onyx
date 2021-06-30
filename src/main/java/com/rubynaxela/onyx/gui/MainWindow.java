@@ -22,9 +22,6 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 
-/**
- * This class holds the application main window
- */
 public final class MainWindow extends DefaultJFrame {
 
     public static final LeafLabel
