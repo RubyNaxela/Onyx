@@ -58,8 +58,9 @@ public final class InputDialogsHandler {
     }
 
     @Nullable
-    public Invoice showInvoiceDialog(@Nullable Invoice editedObject) {
-        final InvoiceDialogPanel dialogPanel = new InvoiceDialogPanel(editedObject, databaseAccessor);
+    public Invoice showInvoiceDialog(@Nullable Invoice editedObject, boolean imported) {
+        final InvoiceDialogPanel dialogPanel = new InvoiceDialogPanel(editedObject, databaseAccessor,
+                                                                      this, imported);
         final String title = editedObject == null ? Reference.getString("title.dialog.invoice.new")
                                                   : Reference.getString("title.dialog.invoice.edit");
         if (JOptionPane.showOptionDialog(anchor, dialogPanel, title, JOptionPane.YES_NO_OPTION,
@@ -81,6 +82,11 @@ public final class InputDialogsHandler {
                                           dialogPanel.getInvoiceItems());
 
         else return null;
+    }
+
+    @Nullable
+    public Invoice showInvoiceDialog(@Nullable Invoice editedObject) {
+        return showInvoiceDialog(editedObject, false);
     }
 
     @Nullable
