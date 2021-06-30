@@ -91,7 +91,7 @@ public final class InvoiceDialogPanel extends DefaultJPanel {
     }
 
     public InvoiceItem[] getInvoiceItems() {
-        return itemsTableModel.getInvoice().getItems();
+        return itemsTableModel.getItems().toArray(new InvoiceItem[0]);
     }
 
     private AbstractValidInputListener createTextInputValidator() {
@@ -105,7 +105,7 @@ public final class InvoiceDialogPanel extends DefaultJPanel {
                 if (!dateValid && !dateInput.getText().equals(""))
                     displayError(dateInput, Reference.getString("input.invalid.date"));
                 else cancelError(dateInput);
-                if (!idValid && !idInput.getText().equals(""))
+                if (!idValid && !idInput.getText().equals("") && !idInput.getText().equals("RK/"))
                     displayError(idInput, Reference.getString("input.invalid.invoice_id"));
                 else cancelError(idInput);
 

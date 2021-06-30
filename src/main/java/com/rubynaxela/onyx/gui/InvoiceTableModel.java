@@ -11,12 +11,15 @@
 
 package com.rubynaxela.onyx.gui;
 
-import com.rubynaxela.onyx.data.datatypes.databaseobjects.Invoice;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.Invoice;
+import com.rubynaxela.onyx.data.datatypes.databaseobjects.InvoiceItem;
 import com.rubynaxela.onyx.util.Reference;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Vector;
 
 public final class InvoiceTableModel extends DefaultTableModel {
@@ -31,24 +34,23 @@ public final class InvoiceTableModel extends DefaultTableModel {
                           Reference.getString("label.invoice_item.tax"),
                           Reference.getString("label.invoice_item.total")));
 
-    private final Invoice invoice;
+    private final List<InvoiceItem> items;
     private Vector<ObjectRow> dataVector;
-
     public InvoiceTableModel(Invoice invoice) {
         super();
-        this.invoice = invoice;
+        items = invoice != null ? new LinkedList<>(Arrays.asList(invoice.getItems())) : new LinkedList<>();
         refresh();
     }
 
     public void refresh() {
-        setDataVector(dataVector = invoice.getItemsTableVector(), invoiceItemsTableHeaders);
+        setDataVector(dataVector = Invoice.getItemsTableVector(items), invoiceItemsTableHeaders);
+    }
+
+    public List<InvoiceItem> getItems() {
+        return items;
     }
 
     public ObjectRow getRow(int index) {
         return dataVector.get(index);
-    }
-
-    public Invoice getInvoice() {
-        return invoice;
     }
 }

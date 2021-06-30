@@ -19,6 +19,7 @@ import com.rubynaxela.onyx.data.datatypes.auxiliary.TaxRate;
 import com.rubynaxela.onyx.data.datatypes.raw.ImportedInvoice;
 import org.jetbrains.annotations.Contract;
 
+import java.util.List;
 import java.util.Vector;
 
 @SuppressWarnings("unused")
@@ -34,6 +35,15 @@ public abstract class Invoice implements Identifiable {
     @Contract(value = "_ -> new", pure = true)
     public static Invoice imported(ImportedInvoice data) {
         return data.isOpen() ? new OpenInvoice(data) : new ClosedInvoice(data);
+    }
+
+    public static Vector<ObjectRow> getItemsTableVector(List<InvoiceItem> itemsList) {
+        return new Invoice() {
+            @Override
+            public InvoiceItem[] getItems() {
+                return itemsList.toArray(new InvoiceItem[0]);
+            }
+        }.getItemsTableVector();
     }
 
     public String getId() {
@@ -67,7 +77,7 @@ public abstract class Invoice implements Identifiable {
     @Contract(value = " -> new", pure = true)
     public Vector<ObjectRow> getItemsTableVector() {
         final Vector<ObjectRow> table = new Vector<>();
-        for (InvoiceItem item : items) {
+        for (InvoiceItem item : getItems()) {
             final double taxRate = TaxRate.get(item.getTax()).rate / (1 + TaxRate.get(item.getTax()).rate);
             final Monetary itemAmount = item.calculateAmount();
             table.add(new ObjectRow(item.getUuid(),
