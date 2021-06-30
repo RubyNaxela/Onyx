@@ -34,6 +34,14 @@ public final class InputDialogsHandler {
         this.databaseAccessor = databaseAccessor;
     }
 
+    public boolean askYesNoQuestion(String msg, boolean defaultAnswer) {
+        return JOptionPane.showOptionDialog(anchor, msg, "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                                            Reference.getIcon("dialog.question"), new String[]{
+                        Reference.getString("button.yes", "Yes"),
+                        Reference.getString("button.no", "No")
+                }, defaultAnswer ? "Tak" : "Nie") == 0;
+    }
+
     @Nullable
     public Contractor showContractorDialog(@Nullable Contractor editedObject) {
         final ContractorDialogPanel dialogPanel = new ContractorDialogPanel(editedObject);

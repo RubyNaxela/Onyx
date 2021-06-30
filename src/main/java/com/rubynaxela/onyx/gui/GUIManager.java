@@ -145,7 +145,7 @@ public final class GUIManager {
             }
         });
         window.removeAction.setListener(e -> {
-            if (messageDialogsHandler.askYesNoQuestion(
+            if (inputDialogsHandler.askYesNoQuestion(
                     Reference.getString("message.action.confirm_remove"), false)) {
                 databaseController.removeEntry(window.dataTableModel.getCurrentObject());
                 window.dataTableModel.refresh();
