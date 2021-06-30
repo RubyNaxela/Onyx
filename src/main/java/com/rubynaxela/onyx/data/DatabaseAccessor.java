@@ -173,6 +173,13 @@ public final class DatabaseAccessor {
     }
 
     public Invoice getInvoiceById(String id) {
-        return database.getAllOfType(Invoice.class).stream().filter(i -> i.getId().equals(id)).findFirst().orElse(null);
+        return database.getAllOfType(Invoice.class).stream()
+                       .filter(i -> i.getId().equals(id)).findFirst()
+                       .orElse(new Invoice() {
+                           @Override
+                           public String getUuid() {
+                               return null;
+                           }
+                       });
     }
 }
