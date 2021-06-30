@@ -66,7 +66,11 @@ public final class MainWindow extends DefaultJFrame {
 
         dataTable = new StaticJTable();
         dataTableModel = new OnyxTableModel(databaseAccessor, dataTable, addAction, editAction, removeAction, documentAction);
-        dataTableModel.addTableModelListener(e -> dataTable.resizeColumnWidth(15, 300));
+        dataTableModel.addTableModelListener(e -> {
+            dataTable.resizeColumnWidth(15, 300);
+            if (((OnyxTableModel) dataTable.getModel()).getCurrentObjectsType() != ObjectType.CONTRACTOR)
+                dataTable.alignColumn(3, JLabel.RIGHT);
+        });
 
         navigation = new DefaultJTree(new DefaultMutableTreeNode(databaseAccessor.getCompanyName()));
         setupNavigation();
@@ -147,7 +151,7 @@ public final class MainWindow extends DefaultJFrame {
                     editorButtonsPanel.register(documentAction.button, Utils.gridPosition(0, 3, 2, 1));
                 }
             }
-            viewPanel.register(new DefaultJScrollPane(dataTable, 800, 450),
+            viewPanel.register(new DefaultJScrollPane(dataTable, 700, 450),
                                Utils.gridPosition(1, 0));
             dataTableModel.setupTable();
         }
