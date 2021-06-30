@@ -41,7 +41,11 @@ public class InputValidator {
         }
     }
 
-    public static boolean isValidInvoiceId(String id, DatabaseAccessor databaseAccessor) {
+    public static boolean isValidInvoiceId(String id) {
+        return id.matches("^RK/\\d{6}$");
+    }
+
+    public static boolean isExistingInvoiceId(String id, DatabaseAccessor databaseAccessor) {
         return databaseAccessor.getInvoicesVector().stream().anyMatch(i -> i.getId().equals(id));
     }
 }

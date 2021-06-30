@@ -20,11 +20,11 @@ import com.rubynaxela.onyx.gui.InvoiceTableModel;
 import com.rubynaxela.onyx.gui.components.DefaultJPanel;
 import com.rubynaxela.onyx.gui.components.DefaultJScrollPane;
 import com.rubynaxela.onyx.gui.components.StaticJTable;
+import com.rubynaxela.onyx.util.InputValidator;
 import com.rubynaxela.onyx.util.Reference;
 import com.rubynaxela.onyx.util.Utils;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 
 public final class InvoiceDialogPanel extends DefaultJPanel {
 
@@ -98,8 +98,18 @@ public final class InvoiceDialogPanel extends DefaultJPanel {
         return new AbstractValidInputListener(okButton) {
             @Override
             public boolean dataValid() {
-                return idInput.getText().matches("^RK/\\d{6}$") &&
-                       !dateInput.getText().equals("");
+
+                final boolean dateValid = InputValidator.isValidDate(dateInput.getText()),
+                        idValid = InputValidator.isValidInvoiceId(idInput.getText());
+
+                if (!dateValid && !dateInput.getText().equals(""))
+                    displayError(dateInput, Reference.getString("input.invalid.date"));
+                else cancelError(dateInput);
+                if (!idValid && !idInput.getText().equals(""))
+                    displayError(idInput, Reference.getString("input.invalid.invoice_id"));
+                else cancelError(idInput);
+
+                return dateValid && idValid;
             }
         };
     }
