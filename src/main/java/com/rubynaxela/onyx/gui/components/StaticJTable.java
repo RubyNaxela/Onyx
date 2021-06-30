@@ -11,7 +11,10 @@
 
 package com.rubynaxela.onyx.gui.components;
 
+import org.intellij.lang.annotations.MagicConstant;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
@@ -35,6 +38,12 @@ public class StaticJTable extends JTable {
         this.setSelectionModel(brandsListModel);
         this.getTableHeader().setReorderingAllowed(false);
         this.cellsEditable = cellsEditable;
+    }
+
+    public void alignColumn(int index, @MagicConstant(intValues = {JLabel.LEFT, JLabel.CENTER, JLabel.RIGHT}) int alignment) {
+        final DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(alignment);
+        this.getColumnModel().getColumn(index).setCellRenderer(renderer);
     }
 
     @SuppressWarnings("SameParameterValue")

@@ -103,7 +103,7 @@ public final class OperationDialogPanel extends DefaultJPanel {
                 final boolean dateValid = InputValidator.isValidDate(dateInput.getText()),
                         descriptionValid = !descriptionInput.getText().equals(""),
                         amountValid = InputValidator.isValidNumber(amountInput.getText()),
-                        invoiceIdValid = InputValidator.isValidInvoiceId(invoiceIdInput.getText(), databaseAccessor);
+                        invoiceIdValid = InputValidator.isExistingInvoiceId(invoiceIdInput.getText(), databaseAccessor);
 
                 if (!dateValid && !dateInput.getText().equals(""))
                     displayError(dateInput, Reference.getString("input.invalid.date"));

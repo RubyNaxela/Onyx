@@ -75,13 +75,11 @@ public final class InvoiceDialogPanel extends DefaultJPanel {
         itemsTable.setModel(itemsTableModel);
         itemsTable.resizeColumnWidth(15, 300);
 
-        final DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
-        itemsTable.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
-        itemsTable.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
-        itemsTable.getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
-        itemsTable.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
-        itemsTable.getColumnModel().getColumn(7).setCellRenderer(rightRenderer);
+        itemsTable.alignColumn(3, JLabel.RIGHT);
+        itemsTable.alignColumn(4, JLabel.RIGHT);
+        itemsTable.alignColumn(5, JLabel.RIGHT);
+        itemsTable.alignColumn(6, JLabel.RIGHT);
+        itemsTable.alignColumn(7, JLabel.RIGHT);
 
         final AbstractValidInputListener textFieldListener = createTextInputValidator();
         idInput.getDocument().addDocumentListener(textFieldListener);
