@@ -23,6 +23,13 @@ public final class MessageDialogsHandler {
         this.anchor = anchor;
     }
 
+    public void showInfo(String message) {
+        JOptionPane.showOptionDialog(anchor, message, Reference.getString("title.dialog.info"),
+                                     JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                                     Reference.getIcon("dialog.info"), new String[]{Reference.getString("button.ok")},
+                                     Reference.getString("button.ok"));
+    }
+
     public void showError(String msg, boolean critical) {
         final String okButtonText = Reference.getString("button.ok", "OK");
         Object okButton;
