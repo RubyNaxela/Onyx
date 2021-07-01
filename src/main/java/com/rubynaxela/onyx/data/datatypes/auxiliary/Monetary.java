@@ -18,15 +18,6 @@ public class Monetary {
 
     private long wholePart, hundredthsPart;
 
-    public Monetary(long wholePart, long hundredthsPart) {
-        if (wholePart < 0 != hundredthsPart < 0 && wholePart != 0 && hundredthsPart != 0)
-            throw new IllegalArgumentException("The whole part and the hundredths part cannot have different signs");
-        if (hundredthsPart <= -100 || hundredthsPart >= 100)
-            throw new IllegalArgumentException("The hundredths part must be greater than -100 and less than 100");
-        this.wholePart = wholePart;
-        this.hundredthsPart = hundredthsPart;
-    }
-
     public Monetary(double amount) {
         final double absAmount = Math.abs(amount);
         long _wholePart = Math.round(Math.floor(absAmount));
@@ -58,12 +49,6 @@ public class Monetary {
     @Contract(value = "_ -> new", pure = true)
     public Monetary times(double factor) {
         return new Monetary(this.toDouble() * factor);
-    }
-
-    public void multiply(double factor) {
-        final Monetary result = this.times(factor);
-        this.wholePart = result.wholePart;
-        this.hundredthsPart = result.hundredthsPart;
     }
 
     public double toDouble() {

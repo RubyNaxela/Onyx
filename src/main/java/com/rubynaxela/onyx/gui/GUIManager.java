@@ -67,14 +67,14 @@ public final class GUIManager {
         final OsCheck.OSType os = OsCheck.getOperatingSystemType();
 
         switch (os) {
-            case MAC_OS:
+            case MAC_OS -> {
                 System.setProperty("apple.awt.application.name", "Onyx");
                 System.setProperty("apple.laf.useScreenMenuBar", "true");
-                break;
-            case WINDOWS:
+            }
+            case WINDOWS -> {
                 JFrame.setDefaultLookAndFeelDecorated(true);
                 JDialog.setDefaultLookAndFeelDecorated(true);
-                break;
+            }
         }
 
         try {

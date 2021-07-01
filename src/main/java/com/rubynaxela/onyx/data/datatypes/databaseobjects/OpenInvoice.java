@@ -15,6 +15,7 @@ import com.rubynaxela.onyx.data.datatypes.raw.ImportedInvoice;
 
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class OpenInvoice extends Invoice {
 
     public OpenInvoice() {

@@ -13,7 +13,7 @@ package com.rubynaxela.onyx.data.datatypes.auxiliary;
 
 public class Quantity {
 
-    private long wholePart, thousandthsPart;
+    private final long wholePart, thousandthsPart;
 
     public Quantity(double quantity) {
         final double absQuantity = Math.abs(quantity);

@@ -39,19 +39,16 @@ public final class InvoiceTableModel extends DefaultTableModel {
                           Reference.getString("label.invoice_item.total")));
     private final ActionController addButton, editButton, removeButton;
 
-    private final Invoice invoice;
-    private final List<InvoiceItem> items;
     private final StaticJTable ownerTable;
     private final InputDialogsHandler inputDialogsHandler;
     private final boolean editsEnabled;
 
-    private Vector<ObjectRow> dataVector;
+    private final List<InvoiceItem> items;
     private InvoiceItem currentItem;
 
     public InvoiceTableModel(Invoice invoice, StaticJTable ownerTable, ActionController addButton, ActionController editButton,
                              ActionController removeButton, InputDialogsHandler inputDialogsHandler, boolean imported) {
         super();
-        this.invoice = invoice;
         this.items = invoice != null ? new LinkedList<>(Arrays.asList(invoice.getItems())) : new LinkedList<>();
         this.ownerTable = ownerTable;
         this.addButton = addButton;
@@ -78,7 +75,7 @@ public final class InvoiceTableModel extends DefaultTableModel {
     }
 
     public void refresh() {
-        setDataVector(dataVector = Invoice.getItemsTableVector(items), invoiceItemsTableHeaders);
+        setDataVector(Invoice.getItemsTableVector(items), invoiceItemsTableHeaders);
         ownerTable.alignColumn(3, JLabel.RIGHT);
         ownerTable.alignColumn(4, JLabel.RIGHT);
         ownerTable.alignColumn(5, JLabel.RIGHT);

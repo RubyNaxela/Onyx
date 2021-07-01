@@ -11,6 +11,7 @@
 
 package com.rubynaxela.onyx.data.datatypes.databaseobjects;
 
+@SuppressWarnings("unused")
 public class Contractor implements Identifiable {
 
     private String uuid, name, details;
