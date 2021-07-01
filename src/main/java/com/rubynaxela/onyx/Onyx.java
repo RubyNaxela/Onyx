@@ -19,8 +19,15 @@ import com.rubynaxela.onyx.gui.dialogs.MessageDialogsHandler;
 import com.rubynaxela.onyx.io.IOHandler;
 import com.rubynaxela.onyx.util.Reference;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+
 @SuppressWarnings("FieldCanBeLocal")
 public final class Onyx {
+
+    private static Onyx currentInstance;
 
     private final OnyxDatabase database;
     private final MessageDialogsHandler messageDialogsHandler;
@@ -46,7 +53,22 @@ public final class Onyx {
     }
 
     public static void main(String[] args) {
-        new Onyx();
+        currentInstance = new Onyx();
+    }
+
+    public static void restart() {
+        try {
+            final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+            final File currentJar = new File(Onyx.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            if (!currentJar.getName().endsWith(".jar")) {
+                currentInstance.messageDialogsHandler.showInfo(Reference.getString("message.info.app_needs_restart"));
+                return;
+            }
+            new ProcessBuilder(Arrays.asList(javaBin, "-jar", currentJar.getPath())).start();
+            System.exit(0);
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     public OnyxDatabase getDatabase() {
