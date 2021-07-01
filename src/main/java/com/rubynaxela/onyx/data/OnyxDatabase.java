@@ -33,6 +33,10 @@ public final class OnyxDatabase {
         return companyName;
     }
 
+    public void setCompanyName(String name) {
+        companyName = name;
+    }
+
     public TreeSet<? super Identifiable> getAll() {
         return objects;
     }

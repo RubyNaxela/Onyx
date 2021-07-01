@@ -39,8 +39,18 @@ public final class InputDialogsHandler {
         return JOptionPane.showOptionDialog(anchor, msg, "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
                                             Reference.getIcon("dialog.question"), new String[]{
                         Reference.getString("button.yes", "Yes"),
-                        Reference.getString("button.no", "No")
-                }, defaultAnswer ? "Tak" : "Nie") == 0;
+                        Reference.getString("button.no", "No")}, defaultAnswer ? "Tak" : "Nie") == 0;
+    }
+
+    @Nullable
+    public String showCompanyNameDialog(@Nullable String name) {
+        final CompanyNameInputDialog dialogPanel = new CompanyNameInputDialog(name);
+        if (JOptionPane.showOptionDialog(anchor, dialogPanel, Reference.getString("title.dialog.company_name"),
+                                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                                         Reference.getIcon("dialog.data"),
+                                         new Object[]{dialogPanel.okButton, Reference.getString("button.cancel")},
+                                         dialogPanel.okButton) == 0) return dialogPanel.nameInput.getText();
+        else return null;
     }
 
     @Nullable

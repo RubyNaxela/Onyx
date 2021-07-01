@@ -47,6 +47,11 @@ public final class DatabaseController {
         ioHandler.exportDatabase(new RawDatabase(database));
     }
 
+    public void setCompanyName(String newName) {
+        database.setCompanyName(newName);
+        saveChanges();
+    }
+
     public void addEntry(Identifiable entry) {
         database.getAll().add(entry);
         saveChanges();

@@ -98,6 +98,13 @@ public final class GUIManager {
 
     @SuppressWarnings("unchecked")
     private void setupListeners() {
+        window.companyNameAcion.setListener(e->{
+            final String newName = inputDialogsHandler.showCompanyNameDialog(databaseAccessor.getCompanyName());
+            if (newName != null) {
+                databaseController.setCompanyName(newName);
+                window.navigation.getRoot().setUserObject(databaseAccessor.getCompanyName());
+            }
+        });
         window.themeAction.setListener(e -> {
             Reference.setProperty("theme", Reference.getProperty("theme").equals("dark") ? "light" : "dark");
             Onyx.restart();
