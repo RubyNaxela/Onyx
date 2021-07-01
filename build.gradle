@@ -21,8 +21,18 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.0.1'
-    implementation 'com.formdev:flatlaf:0.43'
-    implementation 'net.java.balloontip:balloontip:1.2.4.1'
-    implementation 'org.jetbrains:annotations:16.0.1'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.0.1'
+    compile 'com.formdev:flatlaf:0.43'
+    compile 'net.java.balloontip:balloontip:1.2.4.1'
+    compile 'org.jetbrains:annotations:16.0.1'
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "com.rubynaxela.onyx.Onyx"
+    }
+
+    from {
+        configurations.'compile'.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
