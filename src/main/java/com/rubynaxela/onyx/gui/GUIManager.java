@@ -59,6 +59,8 @@ public final class GUIManager {
         initialSettings();
         window = new MainWindow("Onyx", databaseAccessor);
         inputDialogsHandler = new InputDialogsHandler(window, databaseAccessor);
+        if (databaseAccessor.getCompanyName().equals(""))
+            databaseController.setCompanyName(inputDialogsHandler.showCompanyNameDialog(""));
         setupListeners();
     }
 
