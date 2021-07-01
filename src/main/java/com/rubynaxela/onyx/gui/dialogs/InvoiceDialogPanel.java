@@ -99,7 +99,6 @@ public final class InvoiceDialogPanel extends DefaultJPanel {
         idInput.getDocument().addDocumentListener(textFieldListener);
         dateInput.getDocument().addDocumentListener(textFieldListener);
 
-        okButton.setEnabled(editedObject != null);
         okButton.addActionListener(e -> Utils.getOptionPane((JComponent) e.getSource()).setValue(okButton));
         okButton.setEnabled(textFieldListener.dataValid());
     }

@@ -90,7 +90,6 @@ public final class OperationDialogPanel extends DefaultJPanel {
         amountInput.getDocument().addDocumentListener(textFieldListener);
         invoiceIdInput.getDocument().addDocumentListener(textFieldListener);
 
-        okButton.setEnabled(editedObject != null);
         okButton.addActionListener(e -> Utils.getOptionPane((JComponent) e.getSource()).setValue(okButton));
         okButton.setEnabled(textFieldListener.dataValid());
     }

@@ -48,7 +48,6 @@ public final class ContractorDialogPanel extends DefaultJPanel {
         nameInput.getDocument().addDocumentListener(textFieldListener);
         detailsInput.getDocument().addDocumentListener(textFieldListener);
 
-        okButton.setEnabled(editedObject != null);
         okButton.addActionListener(e -> Utils.getOptionPane((JComponent) e.getSource()).setValue(okButton));
         okButton.setEnabled(textFieldListener.dataValid());
     }
