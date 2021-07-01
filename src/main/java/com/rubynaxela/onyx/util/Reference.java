@@ -23,8 +23,8 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +37,6 @@ import static java.awt.event.KeyEvent.*;
 
 public final class Reference {
 
-    private static final File PROPERTIES_FILE = new File(".properties");
     private static final Properties properties = new Properties();
     private static final HashMap<String, String> primaryDictionary = new HashMap<>(), backupDictionary = new HashMap<>();
 
