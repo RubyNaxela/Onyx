@@ -43,9 +43,16 @@ public final class Reference {
 
     public static void loadProperties(MessageDialogsHandler messageDialogsHandler) {
         try {
-            properties.load(new FileReader(PROPERTIES_FILE));
+            properties.load(new FileReader(".properties"));
         } catch (IOException e) {
             messageDialogsHandler.showError("Could not read the properties file. Using default settings.", false);
+            try {
+                properties.put("language", "en_US");
+                properties.put("theme", "light");
+                properties.store(new FileWriter(".properties"), "");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
