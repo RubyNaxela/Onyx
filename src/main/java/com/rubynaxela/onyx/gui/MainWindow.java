@@ -11,6 +11,7 @@
 
 package com.rubynaxela.onyx.gui;
 
+import com.rubynaxela.onyx.Onyx;
 import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.LeafLabel;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectType;
@@ -59,6 +60,7 @@ public final class MainWindow extends DefaultJFrame {
     public MainWindow(String title, DatabaseAccessor databaseAccessor) {
         super(true);
         setTitle(title);
+        setIconImage(Toolkit.getDefaultToolkit().createImage(Onyx.class.getResource("/assets/icons/onyx.png")));
 
         setJMenuBar(menuBar);
 

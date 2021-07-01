@@ -28,6 +28,7 @@ import com.rubynaxela.onyx.util.Reference;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -88,6 +89,11 @@ public final class GUIManager {
             e.printStackTrace();
         }
         UIManager.put("CheckBox.icon.style", "filled");
+        try {
+            Taskbar.getTaskbar().setIconImage(Toolkit.getDefaultToolkit().createImage(
+                    Onyx.class.getResource("/assets/icons/onyx.png")));
+        } catch (UnsupportedOperationException | SecurityException ignored) {
+        }
     }
 
     @SuppressWarnings("unchecked")
