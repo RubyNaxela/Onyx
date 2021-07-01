@@ -100,7 +100,7 @@ public final class GUIManager {
 
     @SuppressWarnings("unchecked")
     private void setupListeners() {
-        window.companyNameAcion.setListener(e->{
+        window.companyNameAcion.setListener(e -> {
             final String newName = inputDialogsHandler.showCompanyNameDialog(databaseAccessor.getCompanyName());
             if (newName != null) {
                 databaseController.setCompanyName(newName);
