@@ -15,6 +15,7 @@ import com.rubynaxela.onyx.data.DatabaseAccessor;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.Monetary;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectType;
 import com.rubynaxela.onyx.data.datatypes.auxiliary.PaymentMethod;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.Quantity;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.*;
 import com.rubynaxela.onyx.util.Reference;
 import org.jetbrains.annotations.NotNull;
@@ -87,6 +88,25 @@ public final class InputDialogsHandler {
     @Nullable
     public Invoice showInvoiceDialog(@Nullable Invoice editedObject) {
         return showInvoiceDialog(editedObject, false);
+    }
+
+    @Nullable
+    public InvoiceItem showInvoiceItemDialog(@Nullable InvoiceItem editedObject) {
+        final InvoiceItemDialogPanel dialogPanel = new InvoiceItemDialogPanel(editedObject);
+        final String title = editedObject == null ? Reference.getString("title.dialog.invoice_item.new")
+                                                  : Reference.getString("title.dialog.invoice_item.edit");
+        if (JOptionPane.showOptionDialog(anchor, dialogPanel, title, JOptionPane.YES_NO_OPTION,
+                                         JOptionPane.QUESTION_MESSAGE, Reference.getIcon("dialog.data"),
+                                         new Object[]{dialogPanel.okButton, Reference.getString("button.cancel")},
+                                         dialogPanel.okButton) == 0)
+            return new InvoiceItem(editedObject == null ? UUID.randomUUID().toString() : editedObject.getUuid(),
+                                   dialogPanel.dateInput.getText(),
+                                   dialogPanel.sourceInput.getText(),
+                                   dialogPanel.descriptionInput.getText(),
+                                   new Monetary(dialogPanel.priceInput.getText()).toDouble(),
+                                   new Quantity(dialogPanel.quantityInput.getText()).toDouble(),
+                                   dialogPanel.taxInput.getText());
+        else return null;
     }
 
     @Nullable

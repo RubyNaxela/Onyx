@@ -23,6 +23,19 @@ public class InvoiceItem implements Identifiable {
     private String uuid, date, source, description, tax;
     private double rate, quantity;
 
+    public InvoiceItem() {
+    }
+
+    public InvoiceItem(String uuid, String date, String source, String description, double rate, double quantity, String tax) {
+        this.uuid = uuid;
+        this.date = date;
+        this.source = source;
+        this.description = description;
+        this.tax = tax;
+        this.rate = rate;
+        this.quantity = quantity;
+    }
+
     public String getDate() {
         return date;
     }

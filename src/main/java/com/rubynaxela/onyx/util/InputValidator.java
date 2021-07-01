@@ -12,10 +12,12 @@
 package com.rubynaxela.onyx.util;
 
 import com.rubynaxela.onyx.data.DatabaseAccessor;
+import com.rubynaxela.onyx.data.datatypes.auxiliary.TaxRate;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 
 public class InputValidator {
 
@@ -47,5 +49,9 @@ public class InputValidator {
 
     public static boolean isExistingInvoiceId(String id, DatabaseAccessor databaseAccessor) {
         return databaseAccessor.getInvoicesVector().stream().anyMatch(i -> i.getId().equals(id));
+    }
+
+    public static boolean isValidTaxRate(String rate) {
+        return Arrays.stream(TaxRate.class.getEnumConstants()).map(Enum::name).anyMatch(r -> r.equals(rate)) || rate.equals("");
     }
 }

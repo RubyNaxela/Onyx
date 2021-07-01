@@ -28,6 +28,14 @@ public class Quantity {
         this.thousandthsPart = sign * _thousandthsPart;
     }
 
+    public Quantity(String amount) {
+        this(Double.parseDouble(amount.replace(",", ".")));
+    }
+
+    public double toDouble() {
+        return wholePart + 0.001 * thousandthsPart;
+    }
+
     @Override
     public String toString() {
         long absThousandths = Math.abs(this.thousandthsPart);

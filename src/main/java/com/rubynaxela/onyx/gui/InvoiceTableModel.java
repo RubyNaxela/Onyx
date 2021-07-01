@@ -11,7 +11,6 @@
 
 package com.rubynaxela.onyx.gui;
 
-import com.rubynaxela.onyx.data.datatypes.auxiliary.ObjectRow;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.ClosedInvoice;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.Invoice;
 import com.rubynaxela.onyx.data.datatypes.databaseobjects.InvoiceItem;
@@ -21,10 +20,7 @@ import com.rubynaxela.onyx.util.Reference;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 public final class InvoiceTableModel extends DefaultTableModel {
 
@@ -37,7 +33,7 @@ public final class InvoiceTableModel extends DefaultTableModel {
                           Reference.getString("label.invoice_item.net_total"),
                           Reference.getString("label.invoice_item.tax"),
                           Reference.getString("label.invoice_item.total")));
-    private final ActionController addButton, editButton, removeButton;
+    private final ActionController addAction, editAction, removeAction;
 
     private final StaticJTable ownerTable;
     private final InputDialogsHandler inputDialogsHandler;
@@ -46,14 +42,14 @@ public final class InvoiceTableModel extends DefaultTableModel {
     private final List<InvoiceItem> items;
     private InvoiceItem currentItem;
 
-    public InvoiceTableModel(Invoice invoice, StaticJTable ownerTable, ActionController addButton, ActionController editButton,
-                             ActionController removeButton, InputDialogsHandler inputDialogsHandler, boolean imported) {
+    public InvoiceTableModel(Invoice invoice, StaticJTable ownerTable, ActionController addAction, ActionController editAction,
+                             ActionController removeAction, InputDialogsHandler inputDialogsHandler, boolean imported) {
         super();
         this.items = invoice != null ? new LinkedList<>(Arrays.asList(invoice.getItems())) : new LinkedList<>();
         this.ownerTable = ownerTable;
-        this.addButton = addButton;
-        this.editButton = editButton;
-        this.removeButton = removeButton;
+        this.addAction = addAction;
+        this.editAction = editAction;
+        this.removeAction = removeAction;
         this.inputDialogsHandler = inputDialogsHandler;
         this.editsEnabled = !(invoice instanceof ClosedInvoice) || imported;
         setupListeners();
@@ -67,14 +63,18 @@ public final class InvoiceTableModel extends DefaultTableModel {
             final int rowIndex = ownerTable.getSelectedRow();
             if (editsEnabled && rowIndex >= 0) {
                 currentItem = items.get(rowIndex);
-                editButton.setEnabled(true);
-                removeButton.setEnabled(true);
+                editAction.setEnabled(true);
+                removeAction.setEnabled(true);
             }
         });
         ownerTable.resizeColumnWidth(15, 300);
     }
 
     public void refresh() {
+        items.sort(Comparator.comparing(InvoiceItem::getDate)
+                             .thenComparing(InvoiceItem::getSource)
+                             .thenComparing(InvoiceItem::getDescription)
+                             .thenComparing(InvoiceItem::getRate));
         setDataVector(Invoice.getItemsTableVector(items), invoiceItemsTableHeaders);
         ownerTable.alignColumn(3, JLabel.RIGHT);
         ownerTable.alignColumn(4, JLabel.RIGHT);
@@ -88,14 +88,31 @@ public final class InvoiceTableModel extends DefaultTableModel {
     }
 
     private void setupListeners() {
-        addButton.setListener(e -> System.out.println("Dodawanie przedmiotu is here"));
-        editButton.setListener(e -> System.out.println("Edycja przedmiotu is here"));
-        removeButton.setListener(e -> {
+        addAction.setListener(e -> {
+            final InvoiceItem newItem = inputDialogsHandler.showInvoiceItemDialog(null);
+            if (newItem != null) {
+                items.add(newItem);
+                refresh();
+            }
+        });
+        editAction.setListener(e -> {
+            final InvoiceItem newItem = inputDialogsHandler.showInvoiceItemDialog(currentItem);
+            if (newItem != null) {
+                items.remove(currentItem);
+                items.add(newItem);
+                refresh();
+            }
+        });
+        removeAction.setListener(e -> {
             if (inputDialogsHandler.askYesNoQuestion(
                     Reference.getString("message.action.confirm_remove"), false)) {
                 items.remove(currentItem);
                 refresh();
             }
+        });
+        ownerTable.addMouseListener((MousePressListener) event -> {
+            if (event.getClickCount() == 2 && ((JTable) event.getSource()).getSelectedRow() != -1)
+                editAction.perform();
         });
     }
 }
