@@ -45,6 +45,8 @@
   "menu.exit": "Exit",
   "menu.file": "File",
   "menu.language": "Language",
+  "menu.language.en_US": "English (US)",
+  "menu.language.pl_PL": "Polski",
   "menu.options": "Options",
   "menu.theme.dark": "Switch to dark theme",
   "menu.theme.light": "Switch to light theme",

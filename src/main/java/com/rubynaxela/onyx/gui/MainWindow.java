@@ -52,7 +52,8 @@ public final class MainWindow extends DefaultJFrame {
             documentAction = new ActionController(
                     new DefaultJButton(Reference.getString("button.add_document")), menuBar.addDocument),
             companyNameAcion = new ActionController(null, menuBar.companyName),
-            languageAction = new ActionController(null, menuBar.language),
+            languagePlAction = new ActionController(null, menuBar.languagePl),
+            languageEnUsAction = new ActionController(null, menuBar.languageEnUs),
             themeAction = new ActionController(null, menuBar.theme);
     public final StaticJTable dataTable;
     public final OnyxTableModel dataTableModel;

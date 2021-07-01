@@ -18,13 +18,14 @@ import javax.swing.*;
 @SuppressWarnings("FieldCanBeLocal")
 public class MenuBar extends JMenuBar {
 
-    public final JMenuItem close, exit, addEntry, editEntry, removeEntry, addDocument, companyName, language, theme;
+    public final JMenuItem exit, addEntry, editEntry, removeEntry, addDocument, companyName, theme, languagePl, languageEnUs;
 
     public MenuBar() {
 
         JMenu fileMenu = new JMenu(Reference.getString("menu.file")),
                 editMenu = new JMenu(Reference.getString("menu.edit")),
-                optionsMenu = new JMenu(Reference.getString("menu.options"));
+                optionsMenu = new JMenu(Reference.getString("menu.options")),
+                languageMenu = new JMenu(Reference.getString("menu.language"));
 
         addEntry = new JMenuItem(Reference.getString("menu.entry.add"));
         addEntry.setAccelerator(Reference.Shortcuts.NEW_STROKE);
@@ -46,19 +47,23 @@ public class MenuBar extends JMenuBar {
         addDocument.setEnabled(false);
         editMenu.add(addDocument);
 
-        close = new JMenuItem(Reference.getString("menu.close"));
-        close.setAccelerator(Reference.Shortcuts.CLOSE_STROKE);
-        fileMenu.add(close);
-
-        exit = new JMenuItem(Reference.getString("menu.exit"));
+        exit = new JMenuItem(Reference.getString("menu.close"));
         exit.setAccelerator(Reference.Shortcuts.EXIT_STROKE);
+        exit.addActionListener(e -> System.exit(0));
         fileMenu.add(exit);
 
         companyName = new JMenuItem(Reference.getString("menu.company_name"));
         optionsMenu.add(companyName);
 
-        language = new JMenuItem(Reference.getString("menu.language"));
-        optionsMenu.add(language);
+        optionsMenu.add(languageMenu);
+
+        languagePl = new JMenuItem(Reference.getString("menu.language.pl_PL"));
+        languagePl.setEnabled(!Reference.getProperty("language").equals("pl_PL"));
+        languageMenu.add(languagePl);
+
+        languageEnUs = new JMenuItem(Reference.getString("menu.language.en_US"));
+        languageEnUs.setEnabled(!Reference.getProperty("language").equals("en_US"));
+        languageMenu.add(languageEnUs);
 
         theme = new JMenuItem(Reference.getString(Reference.getProperty("theme").equals("dark") ?
                                                   "menu.theme.light" : "menu.theme.dark"));

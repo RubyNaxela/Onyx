@@ -105,6 +105,14 @@ public final class GUIManager {
                 window.navigation.getRoot().setUserObject(databaseAccessor.getCompanyName());
             }
         });
+        window.languagePlAction.setListener(e -> {
+            Reference.setProperty("language", "pl_PL");
+            Onyx.restart();
+        });
+        window.languageEnUsAction.setListener(e -> {
+            Reference.setProperty("language", "en_US");
+            Onyx.restart();
+        });
         window.themeAction.setListener(e -> {
             Reference.setProperty("theme", Reference.getProperty("theme").equals("dark") ? "light" : "dark");
             Onyx.restart();

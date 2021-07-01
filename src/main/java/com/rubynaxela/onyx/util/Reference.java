@@ -142,7 +142,6 @@ public final class Reference {
                 EDIT_STROKE = KeyStroke.getKeyStroke(VK_ENTER, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK),
                 REMOVE_STROKE = KeyStroke.getKeyStroke(VK_BACK_SPACE, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK),
                 DOCUMENT_STROKE = KeyStroke.getKeyStroke(VK_D, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK),
-                CLOSE_STROKE = KeyStroke.getKeyStroke(VK_W, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK),
-                EXIT_STROKE = KeyStroke.getKeyStroke(VK_Q, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK);
+                EXIT_STROKE = KeyStroke.getKeyStroke(VK_W, !isMacOS ? CTRL_DOWN_MASK : META_DOWN_MASK);
     }
 }
