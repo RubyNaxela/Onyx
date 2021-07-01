@@ -59,6 +59,15 @@ public final class Reference {
         return properties.containsKey(key) ? properties.getProperty(key) : "property." + key;
     }
 
+    public static void setProperty(@NotNull String key, @NotNull String value) {
+        try {
+            properties.put(key, value);
+            properties.store(new FileWriter(".properties"), "");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void loadDictionary(IOHandler ioHandler, MessageDialogsHandler messageDialogsHandler) {
         final Map<String, String> _primaryDictionary = ioHandler.parseLanguageFile(getProperty("language"));
         final Map<String, String> _backupDictionary = ioHandler.parseLanguageFile("en_US");

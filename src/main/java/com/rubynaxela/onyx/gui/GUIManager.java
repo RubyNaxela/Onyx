@@ -92,6 +92,10 @@ public final class GUIManager {
 
     @SuppressWarnings("unchecked")
     private void setupListeners() {
+        window.themeAction.setListener(e -> {
+            Reference.setProperty("theme", Reference.getProperty("theme").equals("dark") ? "light" : "dark");
+            Onyx.restart();
+        });
         new DropTarget(window, (FileDropListener) event -> {
             try {
                 if (event.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {

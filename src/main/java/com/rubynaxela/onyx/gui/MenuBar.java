@@ -60,7 +60,8 @@ public class MenuBar extends JMenuBar {
         language = new JMenuItem(Reference.getString("menu.language"));
         optionsMenu.add(language);
 
-        theme = new JMenuItem(Reference.getString("menu.theme"));
+        theme = new JMenuItem(Reference.getString(Reference.getProperty("theme").equals("dark") ?
+                                                  "menu.theme.light" : "menu.theme.dark"));
         optionsMenu.add(theme);
 
         this.add(fileMenu);
